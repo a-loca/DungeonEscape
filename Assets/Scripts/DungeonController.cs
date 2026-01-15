@@ -24,14 +24,14 @@ public class DungeonController : MonoBehaviour
         // On the door's side of the floor
         float z = -1 * size.z / 2 + 0.2f;
 
-        // Random x
+        // Random position on the door's side of the floor
         float xRange = size.x / 2 - 0.1f;
         float randX = Random.Range(-xRange, xRange);
 
-        Vector3 dragonPos = new Vector3(ftp.x + randX, ftp.y, z);
+        Vector3 dragonPos = new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
 
         // Instantiate the dragon
-        GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity);
+        GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform);
 
         // Turn the dragon towards the cave
         dragon.transform.LookAt(cave.transform);
