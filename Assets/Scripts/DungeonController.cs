@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,11 +9,19 @@ public class DungeonController : MonoBehaviour
     public GameObject cave;
     public GameObject floor;
     public GameObject dragonPrefab;
+    public GameObject agentPrefab;
 
-    // Start is called before the first frame update
     void Start()
     {
         SpawnDragon();
+        SpawnAgent();
+    }
+
+    private void SpawnAgent()
+    {
+        Vector3 ftp = floor.transform.position;
+        Vector3 pos = new Vector3(ftp.x, ftp.y + 0.5f, ftp.z);
+        GameObject agent = Instantiate(agentPrefab, pos, Quaternion.identity, transform);
     }
 
     private void SpawnDragon()
@@ -31,15 +40,8 @@ public class DungeonController : MonoBehaviour
         Vector3 dragonPos = new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
 
         // Instantiate the dragon
-        GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform);
-
-        // Turn the dragon towards the cave
-        dragon.transform.LookAt(cave.transform);
-
-        // Instruct the dragon to walk towards the cave
-        dragon.GetComponent<NavMeshAgent>().SetDestination(cave.transform.position);
+        DragonBehavior dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform)
+            .GetComponent<DragonBehavior>();
+        dragon.SetCave(cave);
     }
-
-    // Update is called once per frame
-    void Update() { }
 }

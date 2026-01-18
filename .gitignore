@@ -31,6 +31,10 @@
 .vs/
 .vscode/
 
+# ml-agents
+ML-Agents/
+ML-Agents.meta
+
 # Gradle cache directory
 .gradle/
 
