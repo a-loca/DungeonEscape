@@ -86,6 +86,8 @@ public class AgentBehavior : Agent
     {
         // Set rewards
         //...
+        
+        gameObject.SetActive(false);
 
         EndEpisode();
     }

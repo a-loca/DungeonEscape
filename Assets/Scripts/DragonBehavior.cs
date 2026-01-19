@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.AI;
 
 public class DragonBehavior : MonoBehaviour
 {
+    public event Action onDragonEscapeEvent;
     private GameObject cave;
     private Renderer renderer;
     private Color originalColor;
@@ -34,14 +36,16 @@ public class DragonBehavior : MonoBehaviour
         // When the dragon reaches its destination the episode should end
         if (collision.gameObject.name == cave.name)
         {
-            Debug.Log("The dragon ran away! Quest failed.");
             gameObject.SetActive(false);
+
+            if (onDragonEscapeEvent != null)
+                onDragonEscapeEvent();
         }
     }
 
     public int TakeAHit()
     {
-        // Agent has hit the dragon
+        // Agent hit the dragon
 
         // Take damage
         lives--;

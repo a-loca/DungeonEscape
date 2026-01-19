@@ -10,6 +10,7 @@ public class DungeonController : MonoBehaviour
     public GameObject floor;
     public GameObject dragonPrefab;
     public GameObject agentPrefab;
+    private List<AgentBehavior> agents = new List<AgentBehavior>();
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class DungeonController : MonoBehaviour
         Vector3 ftp = floor.transform.position;
         Vector3 pos = new Vector3(ftp.x, ftp.y + 0.5f, ftp.z);
         GameObject agent = Instantiate(agentPrefab, pos, Quaternion.identity, transform);
+        agents.Add(agent.GetComponent<AgentBehavior>());
     }
 
     private void SpawnDragon()
@@ -43,5 +45,16 @@ public class DungeonController : MonoBehaviour
         DragonBehavior dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform)
             .GetComponent<DragonBehavior>();
         dragon.SetCave(cave);
+        dragon.onDragonEscapeEvent += FailEpisode;
+    }
+
+    private void FailEpisode()
+    {
+        Debug.Log("The dragon ran away! Quest failed.");
+        // Fail every agent
+        foreach (var agent in agents)
+        {
+            agent.FailEscape();
+        }
     }
 }
