@@ -10,14 +10,22 @@ public class DragonBehavior : MonoBehaviour
     private GameObject cave;
     private Renderer renderer;
     private Color originalColor;
-    private int lives = 3;
+    public int maxLives = 3;
+    private int lives;
 
     void Start()
     {
+        lives = maxLives;
+
         // Get the dragon's color to allow flashing
         // when taking a hit and getting back to original color
         renderer = transform.GetChild(0).GetComponent<Renderer>();
         originalColor = renderer.material.color;
+    }
+
+    public void FullHeal()
+    {
+        lives = maxLives;
     }
 
     public void SetCave(GameObject cave)
@@ -36,8 +44,6 @@ public class DragonBehavior : MonoBehaviour
         // When the dragon reaches its destination the episode should end
         if (collision.gameObject.name == cave.name)
         {
-            gameObject.SetActive(false);
-
             if (onDragonEscapeEvent != null)
                 onDragonEscapeEvent();
         }

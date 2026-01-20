@@ -105,6 +105,7 @@ MonoBehaviour:
   MaxStep: 0
   speed: 2
   key: {fileID: 2939766909146709846}
+  swordAnimator: {fileID: 8918848384089547495}
 --- !u!114 &3018013978012542415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +130,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -337,8 +338,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 876358235190438772, guid: aceba3724ce2e8f33a18341100a15776, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8918848384089547495}
   m_SourcePrefab: {fileID: 100100000, guid: aceba3724ce2e8f33a18341100a15776, type: 3}
+--- !u!1 &8116397500341712152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 876358235190438772, guid: aceba3724ce2e8f33a18341100a15776, type: 3}
+  m_PrefabInstance: {fileID: 8974072815682575980}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8918848384089547495
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8116397500341712152}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a02781f016d21153899613c8c7940f9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &8396767309774911251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 580120805447379327, guid: aceba3724ce2e8f33a18341100a15776, type: 3}

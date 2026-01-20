@@ -7,15 +7,28 @@ using UnityEngine;
 
 public class AgentBehavior : Agent
 {
+    private DungeonController dungeon;
     public float speed = 2.0f;
     private Rigidbody rb;
     public GameObject key;
     private bool hasKey = false;
+    public Animator swordAnimator;
 
     public override void Initialize()
     {
         // Get rigid body component to allow movement
         rb = GetComponent<Rigidbody>();
+    }
+
+    public override void OnEpisodeBegin()
+    {
+        hasKey = false;
+        dungeon.ResetEnvironment();
+    }
+
+    public void SetDungeonController(DungeonController dungeon)
+    {
+        this.dungeon = dungeon;
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -59,9 +72,13 @@ public class AgentBehavior : Agent
     private void HitDragon(GameObject dragon)
     {
         Debug.Log("A knight hit the dragon!");
+        AddReward(2f);
 
         // Inflict damage to the dragon
         int livesLeft = dragon.GetComponent<DragonBehavior>().TakeAHit();
+
+        // Swing sword
+        swordAnimator.SetTrigger("swing");
 
         // If the dragon has been slain, the agent
         // will retrieve the key
@@ -77,7 +94,7 @@ public class AgentBehavior : Agent
     {
         Debug.Log($"{gameObject.name} has escaped successfully!");
         // Set rewards
-        // ...
+        AddReward(10f);
 
         EndEpisode();
     }
@@ -85,9 +102,7 @@ public class AgentBehavior : Agent
     public void FailEscape()
     {
         // Set rewards
-        //...
-        
-        gameObject.SetActive(false);
+        AddReward(-10f);
 
         EndEpisode();
     }

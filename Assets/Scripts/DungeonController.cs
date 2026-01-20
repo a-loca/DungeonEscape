@@ -10,7 +10,8 @@ public class DungeonController : MonoBehaviour
     public GameObject floor;
     public GameObject dragonPrefab;
     public GameObject agentPrefab;
-    private List<AgentBehavior> agents = new List<AgentBehavior>();
+    private GameObject agent;
+    private GameObject dragon;
 
     void Start()
     {
@@ -18,15 +19,44 @@ public class DungeonController : MonoBehaviour
         SpawnAgent();
     }
 
+    public void ResetEnvironment()
+    {
+        // Reposition agent
+        agent.transform.position = GetNewAgentPosition();
+        // Reposition dragon
+        dragon.transform.position = GetNewDragonPosition();
+
+        // Heal dragon
+        dragon.GetComponent<DragonBehavior>().FullHeal();
+    }
+
     private void SpawnAgent()
     {
-        Vector3 ftp = floor.transform.position;
-        Vector3 pos = new Vector3(ftp.x, ftp.y + 0.5f, ftp.z);
+        Vector3 pos = GetNewAgentPosition();
         GameObject agent = Instantiate(agentPrefab, pos, Quaternion.identity, transform);
-        agents.Add(agent.GetComponent<AgentBehavior>());
+        agent.GetComponent<AgentBehavior>().SetDungeonController(this);
+        this.agent = agent;
     }
 
     private void SpawnDragon()
+    {
+        Vector3 dragonPos = GetNewAgentPosition();
+
+        // Instantiate the dragon
+        GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform);
+        this.dragon = dragon;
+        DragonBehavior db = dragon.GetComponent<DragonBehavior>();
+        db.SetCave(cave);
+        db.onDragonEscapeEvent += FailEpisode;
+    }
+
+    private Vector3 GetNewAgentPosition()
+    {
+        Vector3 ftp = floor.transform.position;
+        return new Vector3(ftp.x, ftp.y + 0.5f, ftp.z);
+    }
+
+    private Vector3 GetNewDragonPosition()
     {
         // Floor's transform and size
         Vector3 ftp = floor.transform.position;
@@ -39,22 +69,13 @@ public class DungeonController : MonoBehaviour
         float xRange = size.x / 2 - 0.1f;
         float randX = Random.Range(-xRange, xRange);
 
-        Vector3 dragonPos = new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
-
-        // Instantiate the dragon
-        DragonBehavior dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform)
-            .GetComponent<DragonBehavior>();
-        dragon.SetCave(cave);
-        dragon.onDragonEscapeEvent += FailEpisode;
+        return new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
     }
 
     private void FailEpisode()
     {
         Debug.Log("The dragon ran away! Quest failed.");
-        // Fail every agent
-        foreach (var agent in agents)
-        {
-            agent.FailEscape();
-        }
+
+        agent.GetComponent<AgentBehavior>().FailEscape();
     }
 }
