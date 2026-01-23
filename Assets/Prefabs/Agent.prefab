@@ -165,6 +165,7 @@ MonoBehaviour:
   speed: 2
   key: {fileID: 2939766909146709846}
   swordAnimator: {fileID: 8918848384089547495}
+  rewardSystem: {fileID: 11400000, guid: ea8c8e01bb9864511acc0a141702cdc7, type: 2}
 --- !u!114 &3018013978012542415
 MonoBehaviour:
   m_ObjectHideFlags: 0

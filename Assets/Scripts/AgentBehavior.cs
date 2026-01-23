@@ -8,11 +8,20 @@ using UnityEngine;
 public class AgentBehavior : Agent
 {
     private DungeonController dungeon;
-    public float speed = 2.0f;
     private Rigidbody rb;
-    public GameObject key;
     private bool hasKey = false;
-    public Animator swordAnimator;
+
+    [SerializeField]
+    private float speed = 2.0f;
+
+    [SerializeField]
+    private GameObject key;
+
+    [SerializeField]
+    private Animator swordAnimator;
+
+    [SerializeField]
+    private RewardSystem rewardSystem;
 
     public override void Initialize()
     {
@@ -49,7 +58,7 @@ public class AgentBehavior : Agent
     private void HitDragon(GameObject dragon)
     {
         Debug.Log("A knight hit the dragon!");
-        AddReward(2f);
+        AddReward(rewardSystem.hitDragon);
 
         // Inflict damage to the dragon
         int livesLeft = dragon.GetComponent<DragonBehavior>().TakeAHit();
@@ -71,7 +80,7 @@ public class AgentBehavior : Agent
     {
         Debug.Log($"{gameObject.name} has escaped successfully!");
         // Set rewards
-        AddReward(10f);
+        AddReward(rewardSystem.escape);
 
         EndEpisode();
     }
@@ -79,7 +88,7 @@ public class AgentBehavior : Agent
     public void FailEscape()
     {
         // Set rewards
-        AddReward(-10f);
+        AddReward(rewardSystem.failEscape);
 
         EndEpisode();
     }
@@ -93,7 +102,6 @@ public class AgentBehavior : Agent
             transform.position + transform.forward * moveForward * speed * Time.deltaTime
         );
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
-
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
