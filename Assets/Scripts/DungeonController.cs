@@ -23,6 +23,7 @@ public class DungeonController : MonoBehaviour
     {
         // Reposition agent
         agent.transform.position = GetNewAgentPosition();
+
         // Reposition dragon
         dragon.transform.position = GetNewDragonPosition();
 
@@ -33,8 +34,11 @@ public class DungeonController : MonoBehaviour
     private void SpawnAgent()
     {
         Vector3 pos = GetNewAgentPosition();
+
         GameObject agent = Instantiate(agentPrefab, pos, Quaternion.identity, transform);
+
         agent.GetComponent<AgentBehavior>().SetDungeonController(this);
+
         this.agent = agent;
     }
 
@@ -44,9 +48,13 @@ public class DungeonController : MonoBehaviour
 
         // Instantiate the dragon
         GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform);
+
         this.dragon = dragon;
+
         DragonBehavior db = dragon.GetComponent<DragonBehavior>();
+
         db.SetCave(cave);
+
         db.onDragonEscapeEvent += FailEpisode;
     }
 
