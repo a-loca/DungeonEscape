@@ -38,17 +38,17 @@ public class AgentBehavior : Agent
         dungeon.ResetEnvironment();
     }
 
-    public void SetDungeonController(DungeonController dungeon)
-    {
-        this.dungeon = dungeon;
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Dragon")
         {
             HitDragon(collision.gameObject);
         }
+    }
+
+    public void SetDungeonController(DungeonController dungeon)
+    {
+        this.dungeon = dungeon;
     }
 
     public bool HasKey()

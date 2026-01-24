@@ -14,32 +14,30 @@ public class DragonBehavior : MonoBehaviour
     public int maxLives = 3;
     private int lives;
 
-    void Start()
+    void Awake()
     {
-        lives = maxLives;
-
         // Get the dragon's color to allow flashing
         // when taking a hit and getting back to original color
         renderer = transform.GetChild(0).GetComponent<Renderer>();
         originalColor = renderer.material.color;
-    }
 
-    public void FullHeal()
-    {
-        lives = maxLives;
+        meshAgent = GetComponent<NavMeshAgent>();
     }
 
     public void SetCave(GameObject cave)
     {
         this.cave = cave;
+    }
 
-        meshAgent = GetComponent<NavMeshAgent>();
-
+    public void StartWalking()
+    {
         // Instruct the dragon to walk towards the cave
         meshAgent.SetDestination(cave.transform.position);
 
         // Turn the dragon towards the cave
         transform.LookAt(cave.transform);
+
+        meshAgent.isStopped = false;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -75,16 +73,27 @@ public class DragonBehavior : MonoBehaviour
 
     public void Die()
     {
+        // Stop walking
         meshAgent.isStopped = true;
+
+        // Hide the dragon
         gameObject.SetActive(false);
     }
 
     public void Resuscitate()
     {
+        // Heal lives
+        lives = maxLives;
+
+        // Turn color back to origin after the hit that
+        // killed the dragon turned it to red
+        // Needed because coroutines are stopped once SetActive(false)
+        // is called, so the dragon will stay red
         renderer.material.color = originalColor;
+
+        // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
-        meshAgent.SetDestination(cave.transform.position);
-        meshAgent.isStopped = false;
+        StartWalking();
     }
 
     private void Flash()

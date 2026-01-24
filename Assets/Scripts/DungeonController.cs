@@ -6,11 +6,20 @@ using UnityEngine.AI;
 
 public class DungeonController : MonoBehaviour
 {
-    public GameObject cave;
-    public GameObject floor;
-    public GameObject door;
-    public GameObject dragonPrefab;
-    public GameObject agentPrefab;
+    [SerializeField]
+    private GameObject cave;
+
+    [SerializeField]
+    private GameObject floor;
+
+    [SerializeField]
+    private GameObject door;
+
+    [SerializeField]
+    private GameObject dragonPrefab;
+
+    [SerializeField]
+    private GameObject agentPrefab;
     private GameObject agent;
     private GameObject dragon;
 
@@ -29,9 +38,7 @@ public class DungeonController : MonoBehaviour
         dragon.transform.position = GetNewDragonPosition();
 
         // Heal dragon
-        DragonBehavior db = dragon.GetComponent<DragonBehavior>();
-        db.FullHeal();
-        db.Resuscitate();
+        dragon.GetComponent<DragonBehavior>().Resuscitate();
 
         // Lock door
         door.GetComponent<DoorController>().LockDoor();
@@ -39,9 +46,7 @@ public class DungeonController : MonoBehaviour
 
     private void SpawnAgent()
     {
-        Vector3 pos = GetNewAgentPosition();
-
-        GameObject agent = Instantiate(agentPrefab, pos, Quaternion.identity, transform);
+        GameObject agent = Instantiate(agentPrefab, transform);
 
         agent.GetComponent<AgentBehavior>().SetDungeonController(this);
 
@@ -50,10 +55,8 @@ public class DungeonController : MonoBehaviour
 
     private void SpawnDragon()
     {
-        Vector3 dragonPos = GetNewAgentPosition();
-
         // Instantiate the dragon
-        GameObject dragon = Instantiate(dragonPrefab, dragonPos, Quaternion.identity, transform);
+        GameObject dragon = Instantiate(dragonPrefab, transform);
 
         this.dragon = dragon;
 
