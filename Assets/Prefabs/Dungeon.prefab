@@ -86,6 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cave: {fileID: 6290316947874826912}
   floor: {fileID: 3187107233971639917}
+  door: {fileID: 7446194794802100701}
   dragonPrefab: {fileID: 3100879234182129007, guid: e296c5a2d32705a9795f213aef4df769, type: 3}
   agentPrefab: {fileID: 6466754151421513070, guid: f15fe412b32e0d20a9314d2762d151c2, type: 3}
 --- !u!1 &3187107233971639917
@@ -208,7 +209,7 @@ GameObject:
   - component: {fileID: 4657204719188795460}
   m_Layer: 0
   m_Name: Wall (2)
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313,7 +314,7 @@ GameObject:
   - component: {fileID: 8661025262752532184}
   m_Layer: 0
   m_Name: Wall (4)
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -478,7 +479,7 @@ GameObject:
   - component: {fileID: 4909555024193488298}
   m_Layer: 0
   m_Name: Walls
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -517,7 +518,7 @@ GameObject:
   - component: {fileID: 1786753018569191346}
   m_Layer: 0
   m_Name: Wall (1)
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -622,7 +623,7 @@ GameObject:
   - component: {fileID: 8521972974316692534}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -727,7 +728,7 @@ GameObject:
   - component: {fileID: 6194541396506573940}
   m_Layer: 0
   m_Name: Wall (3)
-  m_TagString: Untagged
+  m_TagString: Walls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1139,6 +1140,11 @@ PrefabInstance:
 --- !u!4 &792549182970150788 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7824513887136453079, guid: 6a7d273e70726929fad8341fef2a5714, type: 3}
+  m_PrefabInstance: {fileID: 7379696254824427091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7446194794802100701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 90001701710174094, guid: 6a7d273e70726929fad8341fef2a5714, type: 3}
   m_PrefabInstance: {fileID: 7379696254824427091}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8554764763572476520

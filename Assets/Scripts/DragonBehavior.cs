@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class DragonBehavior : MonoBehaviour
 {
     public event Action onDragonEscapeEvent;
+    private NavMeshAgent meshAgent;
     private GameObject cave;
     private Renderer renderer;
     private Color originalColor;
@@ -32,8 +33,10 @@ public class DragonBehavior : MonoBehaviour
     {
         this.cave = cave;
 
+        meshAgent = GetComponent<NavMeshAgent>();
+
         // Instruct the dragon to walk towards the cave
-        GetComponent<NavMeshAgent>().SetDestination(cave.transform.position);
+        meshAgent.SetDestination(cave.transform.position);
 
         // Turn the dragon towards the cave
         transform.LookAt(cave.transform);
@@ -64,10 +67,24 @@ public class DragonBehavior : MonoBehaviour
         if (lives == 0)
         {
             Debug.Log("Dragon slain!");
-            gameObject.SetActive(false);
+            Die();
         }
 
         return lives;
+    }
+
+    public void Die()
+    {
+        meshAgent.isStopped = true;
+        gameObject.SetActive(false);
+    }
+
+    public void Resuscitate()
+    {
+        renderer.material.color = originalColor;
+        gameObject.SetActive(true);
+        meshAgent.SetDestination(cave.transform.position);
+        meshAgent.isStopped = false;
     }
 
     private void Flash()

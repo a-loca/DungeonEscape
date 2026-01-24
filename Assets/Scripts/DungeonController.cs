@@ -8,6 +8,7 @@ public class DungeonController : MonoBehaviour
 {
     public GameObject cave;
     public GameObject floor;
+    public GameObject door;
     public GameObject dragonPrefab;
     public GameObject agentPrefab;
     private GameObject agent;
@@ -28,7 +29,12 @@ public class DungeonController : MonoBehaviour
         dragon.transform.position = GetNewDragonPosition();
 
         // Heal dragon
-        dragon.GetComponent<DragonBehavior>().FullHeal();
+        DragonBehavior db = dragon.GetComponent<DragonBehavior>();
+        db.FullHeal();
+        db.Resuscitate();
+
+        // Lock door
+        door.GetComponent<DoorController>().LockDoor();
     }
 
     private void SpawnAgent()

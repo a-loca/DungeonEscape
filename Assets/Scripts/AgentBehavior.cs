@@ -32,6 +32,7 @@ public class AgentBehavior : Agent
     public override void OnEpisodeBegin()
     {
         hasKey = false;
+        key.SetActive(false);
 
         // Repositions agent and dragon
         dungeon.ResetEnvironment();
@@ -73,6 +74,7 @@ public class AgentBehavior : Agent
             // Acquire the key
             key.SetActive(true);
             hasKey = true;
+            AddReward(rewardSystem.slayDragon);
         }
     }
 
@@ -102,6 +104,8 @@ public class AgentBehavior : Agent
             transform.position + transform.forward * moveForward * speed * Time.deltaTime
         );
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
+
+        AddReward(rewardSystem.punishStep);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

@@ -13,6 +13,11 @@ public class DoorController : MonoBehaviour
         isLocked = false;
     }
 
+    public void LockDoor()
+    {
+        isLocked = true;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         // Check if agent is trying to escape

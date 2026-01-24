@@ -11,4 +11,8 @@ public class RewardSystem : ScriptableObject
 
     [Header("Combat")]
     public float hitDragon = 2f;
+    public float slayDragon = 5f;
+
+    [Header("Roaming around")]
+    public float punishStep = -0.001f;
 }
