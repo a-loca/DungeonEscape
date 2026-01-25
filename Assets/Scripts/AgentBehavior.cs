@@ -84,6 +84,8 @@ public class AgentBehavior : Agent
         // Set rewards
         AddReward(rewardSystem.escape);
 
+        dungeon.ChangeLightsColor("green");
+
         EndEpisode();
     }
 

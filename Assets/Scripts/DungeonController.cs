@@ -20,6 +20,9 @@ public class DungeonController : MonoBehaviour
 
     [SerializeField]
     private GameObject agentPrefab;
+
+    [SerializeField]
+    private GameObject columns;
     private GameObject agent;
     private GameObject dragon;
 
@@ -89,9 +92,39 @@ public class DungeonController : MonoBehaviour
         return new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
     }
 
+    public void ChangeLightsColor(string color)
+    {
+        Color newColor;
+        switch (color)
+        {
+            case "green":
+                ColorUtility.TryParseHtmlString("#3AC186", out newColor);
+                break;
+            case "red":
+                ColorUtility.TryParseHtmlString("#C13A61", out newColor);
+                break;
+            default:
+                ColorUtility.TryParseHtmlString("#943AC1", out newColor);
+                break;
+        }
+
+        Debug.Log(newColor);
+
+        // Change color of each column light
+        foreach (Transform column in columns.transform)
+        {
+            // Get light game object
+            Light light = column.transform.GetChild(1).GetComponent<Light>();
+
+            light.color = newColor;
+        }
+    }
+
     private void FailEpisode()
     {
         Debug.Log("The dragon ran away! Quest failed.");
+
+        ChangeLightsColor("red");
 
         agent.GetComponent<AgentBehavior>().FailEscape();
     }
