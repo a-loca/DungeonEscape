@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
@@ -22,6 +23,7 @@ public class AgentBehavior : Agent
 
     [SerializeField]
     private RewardSystem rewardSystem;
+    private bool dragonAlive = true;
 
     public override void Initialize()
     {
@@ -33,6 +35,7 @@ public class AgentBehavior : Agent
     {
         hasKey = false;
         key.SetActive(false);
+        dragonAlive = true;
 
         // Repositions agent and dragon
         dungeon.ResetEnvironment();
@@ -74,6 +77,7 @@ public class AgentBehavior : Agent
             // Acquire the key
             key.SetActive(true);
             hasKey = true;
+            dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
         }
     }
@@ -81,6 +85,7 @@ public class AgentBehavior : Agent
     public void Escape()
     {
         Debug.Log($"{gameObject.name} has escaped successfully!");
+
         // Set rewards
         AddReward(rewardSystem.escape);
 
@@ -122,5 +127,8 @@ public class AgentBehavior : Agent
     {
         // Agent knows its location
         sensor.AddObservation(transform.localPosition);
+
+        // Knows if dragon is dead or alive
+        sensor.AddObservation(dragonAlive ? 1f : 0f);
     }
 }

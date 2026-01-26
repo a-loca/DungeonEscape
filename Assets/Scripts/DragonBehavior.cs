@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class DragonBehavior : MonoBehaviour
 {
     public event Action onDragonEscapeEvent;
+    public event Action onDragonSlainEvent;
     private NavMeshAgent meshAgent;
     private GameObject cave;
     private Renderer renderer;
@@ -64,7 +65,6 @@ public class DragonBehavior : MonoBehaviour
         // Check if the dragon has been slain
         if (lives == 0)
         {
-            Debug.Log("Dragon slain!");
             Die();
         }
 
@@ -73,6 +73,11 @@ public class DragonBehavior : MonoBehaviour
 
     public void Die()
     {
+        Debug.Log("Dragon slain!");
+
+        if (onDragonSlainEvent != null)
+            onDragonSlainEvent();
+
         // Stop walking
         meshAgent.isStopped = true;
 

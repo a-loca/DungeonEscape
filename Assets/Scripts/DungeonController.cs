@@ -26,10 +26,15 @@ public class DungeonController : MonoBehaviour
     private GameObject agent;
     private GameObject dragon;
 
+    public Timer timer;
+
     void Start()
     {
         SpawnDragon();
         SpawnAgent();
+
+        timer = gameObject.AddComponent<Timer>();
+        timer.onTimerEndEvent += FailEpisode;
     }
 
     public void ResetEnvironment()
@@ -45,6 +50,9 @@ public class DungeonController : MonoBehaviour
 
         // Lock door
         door.GetComponent<DoorController>().LockDoor();
+
+        // Stop running timer from previous episode
+        timer.StopTimer();
     }
 
     private void SpawnAgent()
@@ -68,6 +76,7 @@ public class DungeonController : MonoBehaviour
         db.SetCave(cave);
 
         db.onDragonEscapeEvent += FailEpisode;
+        db.onDragonSlainEvent += () => timer.StartTimer(60f);
     }
 
     private Vector3 GetNewAgentPosition()
@@ -107,8 +116,6 @@ public class DungeonController : MonoBehaviour
                 ColorUtility.TryParseHtmlString("#943AC1", out newColor);
                 break;
         }
-
-        Debug.Log(newColor);
 
         // Change color of each column light
         foreach (Transform column in columns.transform)
