@@ -98,7 +98,7 @@ public class DragonBehavior : MonoBehaviour
 
         // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
-        StartWalking();
+        // StartWalking();
     }
 
     private void Flash()

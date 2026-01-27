@@ -43,9 +43,16 @@ public class AgentBehavior : Agent
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Dragon")
+        string tag = collision.gameObject.tag;
+        if (tag == "Dragon")
         {
             HitDragon(collision.gameObject);
+        }
+        if(tag == "Walls" || tag == "Column")
+        {
+            Debug.Log("Knight hit a wall");
+            AddReward(rewardSystem.hitWall);
+            EndEpisode();
         }
     }
 
@@ -79,6 +86,7 @@ public class AgentBehavior : Agent
             hasKey = true;
             dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
+            EndEpisode();
         }
     }
 

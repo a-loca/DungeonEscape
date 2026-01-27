@@ -16,4 +16,5 @@ MonoBehaviour:
   escape: 10
   hitDragon: 1
   slayDragon: 5
-  punishStep: -0.01
+  punishStep: -0.001
+  hitWall: -0.1

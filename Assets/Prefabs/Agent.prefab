@@ -47,14 +47,14 @@ MonoBehaviour:
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
   - Dragon
-  - Walls
   - Door
+  - Walls
   - Column
   - Agent
   - Cave
-  m_RaysPerDirection: 5
-  m_MaxRayDegrees: 60
-  m_SphereCastRadius: 0.5
+  m_RaysPerDirection: 3
+  m_MaxRayDegrees: 70
+  m_SphereCastRadius: 0.3
   m_RayLength: 20
   m_RayLayerMask:
     serializedVersion: 2
@@ -196,7 +196,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 1
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1
