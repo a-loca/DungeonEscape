@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   failEscape: -15
   escape: 10
-  hitDragon: 1
-  slayDragon: 5
-  punishStep: -0.001
-  hitWall: -0.1
+  hitDragon: 2
+  slayDragon: 10
+  punishStep: -0.002
+  hitWall: -5

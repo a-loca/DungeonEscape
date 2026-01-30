@@ -46,6 +46,7 @@ public class DragonBehavior : MonoBehaviour
         // When the dragon reaches its destination the episode should end
         if (collision.gameObject.name == cave.name)
         {
+            // TOGGLE: phase 1
             if (onDragonEscapeEvent != null)
                 onDragonEscapeEvent();
         }
@@ -98,7 +99,8 @@ public class DragonBehavior : MonoBehaviour
 
         // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
-        // StartWalking();
+        // TOGGLE: phase 1
+        StartWalking();
     }
 
     private void Flash()

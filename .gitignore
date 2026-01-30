@@ -34,8 +34,8 @@
 # ml-agents
 ML-Agents/
 ML-Agents.meta
-Training
-Training.meta
+# Training
+# Training.meta
 
 # Gradle cache directory
 .gradle/

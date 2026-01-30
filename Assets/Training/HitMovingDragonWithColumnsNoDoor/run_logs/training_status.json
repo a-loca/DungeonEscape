@@ -1,0 +1,29 @@
+{
+    "Agent Behavior": {
+        "checkpoints": [
+            {
+                "steps": 421528,
+                "file_path": "Assets/Training/HitMovingDragonWithColumnsNoDoor/Agent Behavior/Agent Behavior-421528.onnx",
+                "reward": null,
+                "creation_time": 1769813585.4608922,
+                "auxillary_file_paths": [
+                    "Assets/Training/HitMovingDragonWithColumnsNoDoor/Agent Behavior/Agent Behavior-421528.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 421528,
+            "file_path": "Assets/Training/HitMovingDragonWithColumnsNoDoor/Agent Behavior.onnx",
+            "reward": null,
+            "creation_time": 1769813585.4608922,
+            "auxillary_file_paths": [
+                "Assets/Training/HitMovingDragonWithColumnsNoDoor/Agent Behavior/Agent Behavior-421528.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}

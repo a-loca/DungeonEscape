@@ -48,7 +48,7 @@ public class AgentBehavior : Agent
         {
             HitDragon(collision.gameObject);
         }
-        if(tag == "Walls" || tag == "Column")
+        if (tag == "Walls" || tag == "Cave")
         {
             Debug.Log("Knight hit a wall");
             AddReward(rewardSystem.hitWall);
@@ -133,9 +133,6 @@ public class AgentBehavior : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Agent knows its location
-        sensor.AddObservation(transform.localPosition);
-
         // Knows if dragon is dead or alive
         sensor.AddObservation(dragonAlive ? 1f : 0f);
     }

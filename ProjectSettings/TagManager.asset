@@ -8,7 +8,6 @@ TagManager:
   - Dragon
   - Door
   - Walls
-  - Column
   - Cave
   layers:
   - Default

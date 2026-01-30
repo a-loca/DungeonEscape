@@ -41,6 +41,8 @@ public class DungeonController : MonoBehaviour
     {
         // Reposition agent
         agent.transform.position = GetNewAgentPosition();
+        // Reset rotation to look in a random direction
+        agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
 
         // Reposition dragon
         dragon.transform.position = GetNewDragonPosition();
@@ -91,10 +93,13 @@ public class DungeonController : MonoBehaviour
         Vector3 ftp = floor.transform.position;
         Vector3 size = floor.GetComponent<Collider>().bounds.size;
 
-        // On the door's side of the floor
+        // Always place the dragon on the door's side of the floor
         float z = -1 * size.z / 2 + 0.2f;
 
-        // Random position on the door's side of the floor
+        // Spawn anywhere, not only door's side
+        //float z = -1 * size.z / 2 + Random.Range(0.2f, size.z - 1f);
+
+        // Random position to the left or right of the door
         float xRange = size.x / 2 - 0.1f;
         float randX = Random.Range(-xRange, xRange);
 

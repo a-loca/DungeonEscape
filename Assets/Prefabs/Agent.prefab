@@ -49,7 +49,6 @@ MonoBehaviour:
   - Dragon
   - Door
   - Walls
-  - Column
   - Agent
   - Cave
   m_RaysPerDirection: 3
@@ -185,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 4
+    VectorObservationSize: 1
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -194,9 +193,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 4a64b63847028e473b441601af0a94f4, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1
