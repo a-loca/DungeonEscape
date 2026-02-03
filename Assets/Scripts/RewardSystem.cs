@@ -16,4 +16,6 @@ public class RewardSystem : ScriptableObject
     [Header("Roaming around")]
     public float punishStep = -0.001f;
     public float hitWall = -0.5f;
+    public float hitClosedDoor = -1f;
+    public float dragonNotInView = -0.002f;
 }

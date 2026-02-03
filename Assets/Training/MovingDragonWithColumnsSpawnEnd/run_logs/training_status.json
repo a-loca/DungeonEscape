@@ -1,0 +1,47 @@
+{
+    "Agent Behavior": {
+        "checkpoints": [
+            {
+                "steps": 499948,
+                "file_path": "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-499948.onnx",
+                "reward": 11.429120937983194,
+                "creation_time": 1769986737.5382855,
+                "auxillary_file_paths": [
+                    "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-499948.pt"
+                ]
+            },
+            {
+                "steps": 999961,
+                "file_path": "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-999961.onnx",
+                "reward": 14.456612739712,
+                "creation_time": 1769986998.1299736,
+                "auxillary_file_paths": [
+                    "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-999961.pt"
+                ]
+            },
+            {
+                "steps": 1145313,
+                "file_path": "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-1145313.onnx",
+                "reward": 14.832441574012911,
+                "creation_time": 1769987101.6462781,
+                "auxillary_file_paths": [
+                    "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-1145313.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1145313,
+            "file_path": "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior.onnx",
+            "reward": 14.832441574012911,
+            "creation_time": 1769987101.6462781,
+            "auxillary_file_paths": [
+                "Assets/Training/MovingDragonWithColumnsSpawnEnd/Agent Behavior/Agent Behavior-1145313.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}

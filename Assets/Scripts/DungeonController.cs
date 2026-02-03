@@ -26,7 +26,8 @@ public class DungeonController : MonoBehaviour
     private GameObject agent;
     private GameObject dragon;
 
-    public Timer timer;
+    private Timer timer;
+    public float timeToEscape = 30f;
 
     void Start()
     {
@@ -40,15 +41,22 @@ public class DungeonController : MonoBehaviour
     public void ResetEnvironment()
     {
         // Reposition agent
-        agent.transform.position = GetNewAgentPosition();
+        agent.transform.position = GetNewPosition();
+
         // Reset rotation to look in a random direction
         agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
 
-        // Reposition dragon
-        dragon.transform.position = GetNewDragonPosition();
+        // Respawn cave
+        Vector3 dragonPosition = SpawnCaveAndDragon();
 
-        // Heal dragon
-        dragon.GetComponent<DragonBehavior>().Resuscitate();
+        // Respawn door
+        SpawnDoor();
+
+        // Heal and reposition dragon (need to warp the mesh agent)
+        // STEP 1: random position for dragon
+        //dragon.GetComponent<DragonBehavior>().Resuscitate(GetNewPosition());
+        // STEP 2
+        dragon.GetComponent<DragonBehavior>().Resuscitate(dragonPosition);
 
         // Lock door
         door.GetComponent<DoorController>().LockDoor();
@@ -78,32 +86,202 @@ public class DungeonController : MonoBehaviour
         db.SetCave(cave);
 
         db.onDragonEscapeEvent += FailEpisode;
-        db.onDragonSlainEvent += () => timer.StartTimer(60f);
+        db.onDragonSlainEvent += () => timer.StartTimer(timeToEscape);
     }
 
-    private Vector3 GetNewAgentPosition()
+    private Vector3 GetNewPosition()
     {
-        Vector3 ftp = floor.transform.position;
-        return new Vector3(ftp.x, ftp.y + 0.5f, ftp.z);
+        if (columns.activeSelf)
+        {
+            // STEP 2: check that new position is not overlapping columns
+            return GetRandomPosition(true);
+        }
+        else
+        {
+            // STEP 1: spawn random
+            return GetRandomPosition(false);
+        }
     }
 
-    private Vector3 GetNewDragonPosition()
+    private Vector3 GetRandomPosition(bool checkColumns)
     {
-        // Floor's transform and size
-        Vector3 ftp = floor.transform.position;
-        Vector3 size = floor.GetComponent<Collider>().bounds.size;
+        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
 
-        // Always place the dragon on the door's side of the floor
-        float z = -1 * size.z / 2 + 0.2f;
+        // Position slightly on top of the floor
+        float y = floorBounds.max.y + 0.5f;
 
-        // Spawn anywhere, not only door's side
-        //float z = -1 * size.z / 2 + Random.Range(0.2f, size.z - 1f);
+        // Generate positions until one is not overlapping columns
+        bool foundPosition = false;
+        Vector3 position = new Vector3(0, 0, 0);
 
-        // Random position to the left or right of the door
-        float xRange = size.x / 2 - 0.1f;
-        float randX = Random.Range(-xRange, xRange);
+        // Some margin to avoid spawning on the walls
+        float margin = 0.7f;
 
-        return new Vector3(ftp.x + randX, ftp.y, ftp.z + z);
+        while (!foundPosition)
+        {
+            float randomX = Random.Range(floorBounds.min.x + margin, floorBounds.max.x - margin);
+            float randomZ = Random.Range(floorBounds.min.z + margin, floorBounds.max.z - margin);
+
+            position = new Vector3(randomX, y, randomZ);
+
+            // If the new position is not overlapping with a column
+            // or if there is no need to check for columns
+            if (!IsOverlappingColumns(position) || !checkColumns)
+                foundPosition = true;
+        }
+
+        return position;
+    }
+
+    private bool IsOverlappingColumns(Vector3 position)
+    {
+        Collider[] columnColliders = columns.GetComponentsInChildren<Collider>();
+
+        float margin = 1f;
+
+        foreach (Collider col in columnColliders)
+        {
+            // If inside the colum's bounds
+            if (col.bounds.Contains(position))
+            {
+                return true;
+            }
+
+            // Avoid being too close to the column, otherwise
+            // episode will end instantly due to collision
+            Vector3 closest = col.bounds.ClosestPoint(position);
+
+            if (Vector3.Distance(closest, position) < margin)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Vector3 SpawnCaveAndDragon()
+    {
+        float margin = 0.7f;
+
+        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
+
+        float y = floorBounds.max.y + 0.5f;
+
+        // Define the 4 corners
+        Vector3[] corners = new Vector3[4];
+        corners[0] = new Vector3(floorBounds.min.x + margin, y, floorBounds.min.z + margin);
+        corners[1] = new Vector3(floorBounds.min.x + margin, y, floorBounds.max.z - margin);
+        corners[2] = new Vector3(floorBounds.max.x - margin, y, floorBounds.min.z + margin);
+        corners[3] = new Vector3(floorBounds.max.x - margin, y, floorBounds.max.z - margin);
+
+        // Choose a random corner of the 4 available on the floor
+        int caveIndex = Random.Range(0, corners.Length);
+        Vector3 cavePosition = corners[caveIndex];
+
+        // Move cave to generated position
+        cave.transform.position = cavePosition;
+
+        // Rotate cave towards center of the floor
+        cave.transform.LookAt(floorBounds.center);
+
+        // Find bounds of the opposite half of the dungeon
+        // with respect to the cave
+        float minX,
+            maxX,
+            minZ,
+            maxZ;
+
+        // Check where the cave is
+        bool caveOnLeft = cavePosition.x < floorBounds.center.x;
+        bool caveOnBottom = cavePosition.z < floorBounds.center.z;
+
+        if (caveOnLeft)
+        {
+            // If the cave is on the left,
+            // then the lower boun of the spawn area of the dragon
+            // should be the center, and the top the top right
+            minX = floorBounds.center.x;
+            maxX = floorBounds.max.x - margin;
+        }
+        else
+        {
+            // If the cave is on the right, then the upper bound is the
+            // center of the arena, the lower bound is the opposite corner
+            minX = floorBounds.min.x + margin;
+            maxX = floorBounds.center.x;
+        }
+
+        if (caveOnBottom)
+        {
+            // If the cave is on the bottom side,
+            // lower bound is the center, upper bound is the
+            // top of the arena
+            minZ = floorBounds.center.z;
+            maxZ = floorBounds.max.z - margin;
+        }
+        else
+        {
+            minZ = floorBounds.min.z + margin;
+            maxZ = floorBounds.center.z;
+        }
+
+        // Get a position for the dragon within the opposite side of the cave
+        // avoiding columns
+        Vector3 dragonPos = Vector3.zero;
+        bool foundPosition = false;
+
+        while (!foundPosition)
+        {
+            float x = Random.Range(minX, maxX);
+            float z = Random.Range(minZ, maxZ);
+
+            dragonPos = new Vector3(x, y, z);
+
+            // Keep sampling positions until you find one
+            // that is not overlapping a column
+            if (!IsOverlappingColumns(dragonPos))
+            {
+                foundPosition = true;
+            }
+        }
+
+        return dragonPos;
+    }
+
+    private void SpawnDoor()
+    {
+        // Spawn the door in one of the 4 sides of the arena
+        float margin = 0.6f;
+        float marginBottom = 0.9f;
+
+        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
+
+        float y = floorBounds.max.y + marginBottom;
+        Vector3 center = floorBounds.center;
+
+        // Defining the 4 possible spawn points
+        // which are the center point of each wall
+        Vector3[] sideCenters = new Vector3[4];
+
+        // Left side
+        sideCenters[0] = new Vector3(floorBounds.min.x + margin, y, center.z);
+
+        // Right side
+        sideCenters[1] = new Vector3(floorBounds.max.x - margin, y, center.z);
+
+        // Bottom side
+        sideCenters[2] = new Vector3(center.x, y, floorBounds.min.z + margin);
+
+        // Top side
+        sideCenters[3] = new Vector3(center.x, y, floorBounds.max.z - margin);
+
+        // Extracting a random side
+        Vector3 doorPos = sideCenters[Random.Range(0, sideCenters.Length)];
+        door.transform.position = doorPos;
+
+        // Rotate door towards center of the floor
+        door.transform.LookAt(new Vector3(center.x, center.y + marginBottom, center.z));
     }
 
     public void ChangeLightsColor(string color)

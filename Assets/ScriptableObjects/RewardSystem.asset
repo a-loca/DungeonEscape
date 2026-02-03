@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: RewardSystem
   m_EditorClassIdentifier: 
   failEscape: -15
-  escape: 10
+  escape: 15
   hitDragon: 2
   slayDragon: 10
   punishStep: -0.002
   hitWall: -5
+  hitClosedDoor: -5
+  dragonNotInView: 0

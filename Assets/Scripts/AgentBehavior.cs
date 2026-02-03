@@ -25,10 +25,15 @@ public class AgentBehavior : Agent
     private RewardSystem rewardSystem;
     private bool dragonAlive = true;
 
+    [SerializeField]
+    private GameObject rays;
+    private RaysHelper raysHelper;
+
     public override void Initialize()
     {
         // Get rigid body component to allow movement
         rb = GetComponent<Rigidbody>();
+        raysHelper = rays.GetComponent<RaysHelper>();
     }
 
     public override void OnEpisodeBegin()
@@ -52,6 +57,7 @@ public class AgentBehavior : Agent
         {
             Debug.Log("Knight hit a wall");
             AddReward(rewardSystem.hitWall);
+            dungeon.ChangeLightsColor("red");
             EndEpisode();
         }
     }
@@ -86,10 +92,17 @@ public class AgentBehavior : Agent
             hasKey = true;
             dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
-            EndEpisode();
+
+            // TOGGLE: step 3
+            // EndEpisode();
+            dungeon.ChangeLightsColor("green");
         }
     }
 
+    public void HitClosedDoor()
+    {
+        AddReward(rewardSystem.hitClosedDoor);
+    }
     public void Escape()
     {
         Debug.Log($"{gameObject.name} has escaped successfully!");
@@ -120,7 +133,14 @@ public class AgentBehavior : Agent
         );
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
 
+        // Small punishment
         AddReward(rewardSystem.punishStep);
+
+        // Punish if dragon is not in view
+        if (!raysHelper.CanSeeDragon())
+        {
+            AddReward(rewardSystem.dragonNotInView);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

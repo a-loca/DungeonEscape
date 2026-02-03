@@ -30,23 +30,11 @@ public class DragonBehavior : MonoBehaviour
         this.cave = cave;
     }
 
-    public void StartWalking()
-    {
-        // Instruct the dragon to walk towards the cave
-        meshAgent.SetDestination(cave.transform.position);
-
-        // Turn the dragon towards the cave
-        transform.LookAt(cave.transform);
-
-        meshAgent.isStopped = false;
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         // When the dragon reaches its destination the episode should end
         if (collision.gameObject.name == cave.name)
         {
-            // TOGGLE: phase 1
             if (onDragonEscapeEvent != null)
                 onDragonEscapeEvent();
         }
@@ -79,15 +67,14 @@ public class DragonBehavior : MonoBehaviour
         if (onDragonSlainEvent != null)
             onDragonSlainEvent();
 
-        // Stop walking
-        meshAgent.isStopped = true;
-
-        // Hide the dragon
-        gameObject.SetActive(false);
+        StopWalking();
     }
 
-    public void Resuscitate()
+    public void Resuscitate(Vector3 position)
     {
+        meshAgent.Warp(position);
+        transform.LookAt(cave.transform);
+
         // Heal lives
         lives = maxLives;
 
@@ -99,8 +86,36 @@ public class DragonBehavior : MonoBehaviour
 
         // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
+
         // TOGGLE: phase 1
         StartWalking();
+    }
+
+    public void StartWalking()
+    {
+        meshAgent.enabled = true;
+
+        // Instruct the dragon to walk towards the cave
+        meshAgent.SetDestination(cave.transform.position);
+
+        // Turn the dragon towards the cave
+        // transform.LookAt(cave.transform);
+        meshAgent.updateRotation = true;
+
+        meshAgent.isStopped = false;
+    }
+
+    public void StopWalking()
+    {
+        // Reset navmesh path computed at the beginning of the episode
+        meshAgent.ResetPath();
+
+        // Stop walking
+        meshAgent.isStopped = true;
+        meshAgent.enabled = false;
+
+        // Hide the dragon
+        gameObject.SetActive(false);
     }
 
     private void Flash()

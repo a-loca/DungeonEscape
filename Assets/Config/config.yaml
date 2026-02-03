@@ -2,7 +2,7 @@ engine_settings:
   width: 84
   height: 84
   quality_level: 5
-  time_scale: 30
+  time_scale: 20
   target_frame_rate: -1
   capture_frame_rate: 60
   no_graphics: false
@@ -27,6 +27,11 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
+      curiosity:
+        gamma: 0.99
+        strength: 0.05
+        learning_rate: 0.0003
+        encoding_size: 128
     keep_checkpoints: 5
     max_steps: 2000000
     time_horizon: 64
