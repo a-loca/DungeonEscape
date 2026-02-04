@@ -17,6 +17,6 @@ MonoBehaviour:
   hitDragon: 2
   slayDragon: 10
   punishStep: -0.002
-  hitWall: -5
+  hitWall: -15
   hitClosedDoor: -5
-  dragonNotInView: 0
+  dragonNotInView: -0.002

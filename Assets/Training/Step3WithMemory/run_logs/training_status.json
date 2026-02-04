@@ -1,0 +1,38 @@
+{
+    "Agent Behavior": {
+        "checkpoints": [
+            {
+                "steps": 499987,
+                "file_path": "Assets/Training/Step3WithMemory/Agent Behavior/Agent Behavior-499987.onnx",
+                "reward": 12.523685490817167,
+                "creation_time": 1770162320.3534791,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step3WithMemory/Agent Behavior/Agent Behavior-499987.pt"
+                ]
+            },
+            {
+                "steps": 774674,
+                "file_path": "Assets/Training/Step3WithMemory/Agent Behavior/Agent Behavior-774674.onnx",
+                "reward": 13.832750129203001,
+                "creation_time": 1770162666.082186,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step3WithMemory/Agent Behavior/Agent Behavior-774674.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 774674,
+            "file_path": "Assets/Training/Step3WithMemory/Agent Behavior.onnx",
+            "reward": 13.832750129203001,
+            "creation_time": 1770162666.082186,
+            "auxillary_file_paths": [
+                "Assets/Training/Step3WithMemory/Agent Behavior/Agent Behavior-774674.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}

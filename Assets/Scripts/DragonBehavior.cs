@@ -67,6 +67,7 @@ public class DragonBehavior : MonoBehaviour
         if (onDragonSlainEvent != null)
             onDragonSlainEvent();
 
+        // TOGGLE: step 3
         StopWalking();
     }
 
@@ -87,7 +88,7 @@ public class DragonBehavior : MonoBehaviour
         // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
 
-        // TOGGLE: phase 1
+        // TOGGLE: phase 3
         StartWalking();
     }
 

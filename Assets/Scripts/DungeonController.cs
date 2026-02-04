@@ -47,7 +47,7 @@ public class DungeonController : MonoBehaviour
         agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
 
         // Respawn cave
-        Vector3 dragonPosition = SpawnCaveAndDragon();
+        Vector3 dragonPosition = SpawnCaveAndDragon(agent.GetComponent<Collider>());
 
         // Respawn door
         SpawnDoor();
@@ -55,7 +55,7 @@ public class DungeonController : MonoBehaviour
         // Heal and reposition dragon (need to warp the mesh agent)
         // STEP 1: random position for dragon
         //dragon.GetComponent<DragonBehavior>().Resuscitate(GetNewPosition());
-        // STEP 2
+        // STEP 3
         dragon.GetComponent<DragonBehavior>().Resuscitate(dragonPosition);
 
         // Lock door
@@ -115,7 +115,7 @@ public class DungeonController : MonoBehaviour
         Vector3 position = new Vector3(0, 0, 0);
 
         // Some margin to avoid spawning on the walls
-        float margin = 0.7f;
+        float margin = 1f;
 
         while (!foundPosition)
         {
@@ -137,7 +137,7 @@ public class DungeonController : MonoBehaviour
     {
         Collider[] columnColliders = columns.GetComponentsInChildren<Collider>();
 
-        float margin = 1f;
+        float margin = 1.5f;
 
         foreach (Collider col in columnColliders)
         {
@@ -160,7 +160,7 @@ public class DungeonController : MonoBehaviour
         return false;
     }
 
-    private Vector3 SpawnCaveAndDragon()
+    private Vector3 SpawnCaveAndDragon(Collider agent)
     {
         float margin = 0.7f;
 
@@ -230,6 +230,7 @@ public class DungeonController : MonoBehaviour
         // avoiding columns
         Vector3 dragonPos = Vector3.zero;
         bool foundPosition = false;
+        Collider dragonCollider = dragon.GetComponent<Collider>();
 
         while (!foundPosition)
         {
@@ -238,9 +239,12 @@ public class DungeonController : MonoBehaviour
 
             dragonPos = new Vector3(x, y, z);
 
+            Bounds dragonBounds = new Bounds(dragonPos, dragonCollider.bounds.size);
+
             // Keep sampling positions until you find one
-            // that is not overlapping a column
-            if (!IsOverlappingColumns(dragonPos))
+            // that is not overlapping a column. Also, avoid spawning
+            // overlapping agent
+            if (!IsOverlappingColumns(dragonPos) && !agent.bounds.Intersects(dragonBounds))
             {
                 foundPosition = true;
             }

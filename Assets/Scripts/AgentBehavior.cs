@@ -95,7 +95,7 @@ public class AgentBehavior : Agent
 
             // TOGGLE: step 3
             // EndEpisode();
-            dungeon.ChangeLightsColor("green");
+            // dungeon.ChangeLightsColor("green");
         }
     }
 
@@ -103,6 +103,7 @@ public class AgentBehavior : Agent
     {
         AddReward(rewardSystem.hitClosedDoor);
     }
+
     public void Escape()
     {
         Debug.Log($"{gameObject.name} has escaped successfully!");
@@ -136,8 +137,8 @@ public class AgentBehavior : Agent
         // Small punishment
         AddReward(rewardSystem.punishStep);
 
-        // Punish if dragon is not in view
-        if (!raysHelper.CanSeeDragon())
+        // Punish if dragon is not in view and still alive
+        if (!raysHelper.CanSeeDragon() && dragonAlive)
         {
             AddReward(rewardSystem.dragonNotInView);
         }
