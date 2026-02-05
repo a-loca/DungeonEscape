@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using UnityEditor;
 using UnityEngine;
 
 public class AgentBehavior : Agent
@@ -132,6 +133,7 @@ public class AgentBehavior : Agent
         rb.MovePosition(
             transform.position + transform.forward * moveForward * speed * Time.deltaTime
         );
+
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
 
         // Small punishment
@@ -156,5 +158,11 @@ public class AgentBehavior : Agent
     {
         // Knows if dragon is dead or alive
         sensor.AddObservation(dragonAlive ? 1f : 0f);
+    }
+
+    void OnDrawGizmos()
+    {
+        // Draw sphere around the agent
+        // Gizmos.DrawSphere(transform.position, 0.7f);
     }
 }

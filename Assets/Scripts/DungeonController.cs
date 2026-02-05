@@ -34,7 +34,7 @@ public class DungeonController : MonoBehaviour
         SpawnDragon();
         SpawnAgent();
 
-        timer = gameObject.AddComponent<Timer>();
+        timer = GetComponent<Timer>();
         timer.onTimerEndEvent += FailEpisode;
     }
 
@@ -47,12 +47,13 @@ public class DungeonController : MonoBehaviour
         agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
 
         // Respawn cave
-        Vector3 dragonPosition = SpawnCaveAndDragon(agent.GetComponent<Collider>());
+        Vector3 dragonPosition = SpawnCaveAndDragon();
 
         // Respawn door
         SpawnDoor();
 
         // Heal and reposition dragon (need to warp the mesh agent)
+
         // STEP 1: random position for dragon
         //dragon.GetComponent<DragonBehavior>().Resuscitate(GetNewPosition());
         // STEP 3
@@ -91,24 +92,15 @@ public class DungeonController : MonoBehaviour
 
     private Vector3 GetNewPosition()
     {
-        if (columns.activeSelf)
-        {
-            // STEP 2: check that new position is not overlapping columns
-            return GetRandomPosition(true);
-        }
-        else
-        {
-            // STEP 1: spawn random
-            return GetRandomPosition(false);
-        }
+        return GetRandomPosition();
     }
 
-    private Vector3 GetRandomPosition(bool checkColumns)
+    private Vector3 GetRandomPosition()
     {
         Bounds floorBounds = floor.GetComponent<Collider>().bounds;
 
         // Position slightly on top of the floor
-        float y = floorBounds.max.y + 0.5f;
+        float y = floorBounds.max.y + 0.3f;
 
         // Generate positions until one is not overlapping columns
         bool foundPosition = false;
@@ -116,6 +108,8 @@ public class DungeonController : MonoBehaviour
 
         // Some margin to avoid spawning on the walls
         float margin = 1f;
+        float safeRadius = 0.8f;
+        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon");
 
         while (!foundPosition)
         {
@@ -124,43 +118,17 @@ public class DungeonController : MonoBehaviour
 
             position = new Vector3(randomX, y, randomZ);
 
-            // If the new position is not overlapping with a column
-            // or if there is no need to check for columns
-            if (!IsOverlappingColumns(position) || !checkColumns)
+            Debug.DrawLine(position, position + Vector3.up * 2, Color.red, 5f);
+
+            // If the new position is not overlapping with a column/wall/cave/others
+            if (!Physics.CheckSphere(position, safeRadius, blockers))
                 foundPosition = true;
         }
 
         return position;
     }
 
-    private bool IsOverlappingColumns(Vector3 position)
-    {
-        Collider[] columnColliders = columns.GetComponentsInChildren<Collider>();
-
-        float margin = 1.5f;
-
-        foreach (Collider col in columnColliders)
-        {
-            // If inside the colum's bounds
-            if (col.bounds.Contains(position))
-            {
-                return true;
-            }
-
-            // Avoid being too close to the column, otherwise
-            // episode will end instantly due to collision
-            Vector3 closest = col.bounds.ClosestPoint(position);
-
-            if (Vector3.Distance(closest, position) < margin)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private Vector3 SpawnCaveAndDragon(Collider agent)
+    private Vector3 SpawnCaveAndDragon()
     {
         float margin = 0.7f;
 
@@ -230,7 +198,8 @@ public class DungeonController : MonoBehaviour
         // avoiding columns
         Vector3 dragonPos = Vector3.zero;
         bool foundPosition = false;
-        Collider dragonCollider = dragon.GetComponent<Collider>();
+        float safeRadius = 0.8f;
+        LayerMask spawnBlockers = LayerMask.GetMask("Obstacle", "Agent");
 
         while (!foundPosition)
         {
@@ -239,12 +208,12 @@ public class DungeonController : MonoBehaviour
 
             dragonPos = new Vector3(x, y, z);
 
-            Bounds dragonBounds = new Bounds(dragonPos, dragonCollider.bounds.size);
+            Debug.DrawLine(dragonPos, dragonPos + Vector3.up * 2, Color.green, 5f);
 
             // Keep sampling positions until you find one
             // that is not overlapping a column. Also, avoid spawning
             // overlapping agent
-            if (!IsOverlappingColumns(dragonPos) && !agent.bounds.Intersects(dragonBounds))
+            if (!Physics.CheckSphere(dragonPos, safeRadius, spawnBlockers))
             {
                 foundPosition = true;
             }
@@ -256,7 +225,7 @@ public class DungeonController : MonoBehaviour
     private void SpawnDoor()
     {
         // Spawn the door in one of the 4 sides of the arena
-        float margin = 0.6f;
+        float margin = 1f;
         float marginBottom = 0.9f;
 
         Bounds floorBounds = floor.GetComponent<Collider>().bounds;

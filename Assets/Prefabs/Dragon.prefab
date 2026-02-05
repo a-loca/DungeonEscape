@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1279510685729261495}
   - component: {fileID: 4554943676752834758}
   - component: {fileID: 1928846541438521970}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dragon
   m_TagString: Dragon
   m_Icon: {fileID: 0}
@@ -56,8 +56,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.5706537, z: 0.77763784}
-  m_Center: {x: 0, y: 0.014673173, z: 0.52103823}
+  m_Size: {x: 0.5634848, y: 0.556511, z: 0.7550285}
+  m_Center: {x: 0.001688838, y: 0.0076018274, z: -0.019977748}
 --- !u!114 &1279510685729261495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044763574353088505, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.969
+      value: 0.41499996
       objectReference: {fileID: 0}
     - target: {fileID: 5044763574353088505, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -196,7 +196,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_LocalPosition.y
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.634
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_LocalRotation.w
@@ -237,6 +237,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_Name
       value: dragon
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

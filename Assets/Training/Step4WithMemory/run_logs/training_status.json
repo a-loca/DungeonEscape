@@ -2,24 +2,6 @@
     "Agent Behavior": {
         "checkpoints": [
             {
-                "steps": 499945,
-                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-499945.onnx",
-                "reward": 29.197598898410796,
-                "creation_time": 1770163987.0272284,
-                "auxillary_file_paths": [
-                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-499945.pt"
-                ]
-            },
-            {
-                "steps": 999955,
-                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-999955.onnx",
-                "reward": 10.027714235442025,
-                "creation_time": 1770164483.4712977,
-                "auxillary_file_paths": [
-                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-999955.pt"
-                ]
-            },
-            {
                 "steps": 1067549,
                 "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1067549.onnx",
                 "reward": 27.49754241364343,
@@ -27,15 +9,51 @@
                 "auxillary_file_paths": [
                     "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1067549.pt"
                 ]
+            },
+            {
+                "steps": 1468639,
+                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1468639.onnx",
+                "reward": 29.65754017475489,
+                "creation_time": 1770311034.7615266,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1468639.pt"
+                ]
+            },
+            {
+                "steps": 1499955,
+                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1499955.onnx",
+                "reward": 29.99983294142617,
+                "creation_time": 1770311086.7201576,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1499955.pt"
+                ]
+            },
+            {
+                "steps": 1999965,
+                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1999965.onnx",
+                "reward": 30.041713947341556,
+                "creation_time": 1770311471.2884705,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1999965.pt"
+                ]
+            },
+            {
+                "steps": 2000029,
+                "file_path": "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-2000029.onnx",
+                "reward": 30.041713947341556,
+                "creation_time": 1770311471.3221242,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-2000029.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 1067549,
+            "steps": 2000029,
             "file_path": "Assets/Training/Step4WithMemory/Agent Behavior.onnx",
-            "reward": 27.49754241364343,
-            "creation_time": 1770164568.288328,
+            "reward": 30.041713947341556,
+            "creation_time": 1770311471.3221242,
             "auxillary_file_paths": [
-                "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-1067549.pt"
+                "Assets/Training/Step4WithMemory/Agent Behavior/Agent Behavior-2000029.pt"
             ]
         }
     },

@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 74824100456529029}
   - component: {fileID: 3018013978012542415}
   - component: {fileID: -7320467814263574626}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Agent
   m_TagString: Agent
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Size: {x: 0.4, y: 0.4, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &74824100456529029
 MonoBehaviour:
@@ -209,7 +209,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 00ec9efcaca901c0fb00e4fe4f0fa5c2, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: agent
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: caa90ebd0a3a62f578ddaf652ec9cee9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -345,7 +349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6556489793479771521, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
