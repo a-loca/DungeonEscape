@@ -7,6 +7,7 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     private bool isLocked = true;
+    public event Action<GameObject> OnAgentEscape;
 
     private void UnlockDoor()
     {
@@ -16,6 +17,11 @@ public class DoorController : MonoBehaviour
     public void LockDoor()
     {
         isLocked = true;
+    }
+
+    public bool IsDoorLocked()
+    {
+        return isLocked;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -36,8 +42,12 @@ public class DoorController : MonoBehaviour
             // the agent can escape the dungeon
             if (!isLocked)
             {
-                // Agent escape
-                agent.Escape();
+                if (OnAgentEscape != null)
+                {
+                    // Agent escape
+                    OnAgentEscape(collision.gameObject);
+                }
+
                 return;
             }
 

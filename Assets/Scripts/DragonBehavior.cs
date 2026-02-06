@@ -10,7 +10,7 @@ public class DragonBehavior : MonoBehaviour
     public event Action onDragonSlainEvent;
     private NavMeshAgent meshAgent;
     private GameObject cave;
-    private Renderer renderer;
+    private Renderer dragonRenderer;
     private Color originalColor;
     public int maxLives = 3;
     private int lives;
@@ -19,8 +19,8 @@ public class DragonBehavior : MonoBehaviour
     {
         // Get the dragon's color to allow flashing
         // when taking a hit and getting back to original color
-        renderer = transform.GetChild(0).GetComponent<Renderer>();
-        originalColor = renderer.material.color;
+        dragonRenderer = transform.GetChild(0).GetComponent<Renderer>();
+        originalColor = dragonRenderer.material.color;
 
         meshAgent = GetComponent<NavMeshAgent>();
     }
@@ -83,7 +83,7 @@ public class DragonBehavior : MonoBehaviour
         // killed the dragon turned it to red
         // Needed because coroutines are stopped once SetActive(false)
         // is called, so the dragon will stay red
-        renderer.material.color = originalColor;
+        dragonRenderer.material.color = originalColor;
 
         // Start navmesh again from the new spawn point
         gameObject.SetActive(true);
@@ -131,13 +131,13 @@ public class DragonBehavior : MonoBehaviour
 
         // The first time the function is called by the coroutine
         // the material will turn red
-        renderer.material.color = Color.red;
+        dragonRenderer.material.color = Color.red;
 
         // Wait for established time, then call again the function
         yield return new WaitForSeconds(flashTimeInSeconds);
 
         // The second time the function is called, the original
         // color of the dragon will be restored
-        renderer.material.color = originalColor;
+        dragonRenderer.material.color = originalColor;
     }
 }

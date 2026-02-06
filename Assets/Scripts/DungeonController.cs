@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.MLAgents;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,37 +15,71 @@ public class DungeonController : MonoBehaviour
 
     [SerializeField]
     private GameObject door;
+    private DoorController doorController;
 
     [SerializeField]
     private GameObject dragonPrefab;
+    private GameObject dragon;
 
     [SerializeField]
     private GameObject agentPrefab;
+    private List<GameObject> agents;
+
+    [SerializeField]
+    public int numberOfAgents = 3;
+    private int remainingAgents;
 
     [SerializeField]
     private GameObject columns;
-    private GameObject agent;
-    private GameObject dragon;
 
     private Timer timer;
     public float timeToEscape = 30f;
 
+    private SimpleMultiAgentGroup agentGroup;
+
+    [SerializeField]
+    private GroupRewardSystem groupRewardSystem;
+
     void Start()
     {
+        agents = new List<GameObject>();
+
+        agentGroup = new SimpleMultiAgentGroup();
+
         SpawnDragon();
-        SpawnAgent();
+        SpawnAgents(numberOfAgents);
 
         timer = GetComponent<Timer>();
         timer.onTimerEndEvent += FailEpisode;
+
+        doorController = door.GetComponent<DoorController>();
+        doorController.OnAgentEscape += AgentEscape;
+
+        ResetEnvironment();
     }
 
     public void ResetEnvironment()
     {
-        // Reposition agent
-        agent.transform.position = GetNewPosition();
+        // Empty out the list of escaped agents
+        remainingAgents = numberOfAgents;
 
-        // Reset rotation to look in a random direction
-        agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+        // Reposition agents
+        foreach (var agent in agents)
+        {
+            AgentBehavior ab = agent.GetComponent<AgentBehavior>();
+
+            ab.Reset();
+
+            // Need to re-register the agent in the group
+            // after having disabled them
+            agentGroup.RegisterAgent(ab);
+
+            // Reposition the agent
+            agent.transform.position = GetRandomPosition();
+
+            // Reset rotation to look in a random direction
+            agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+        }
 
         // Respawn cave
         Vector3 dragonPosition = SpawnCaveAndDragon();
@@ -53,26 +88,73 @@ public class DungeonController : MonoBehaviour
         SpawnDoor();
 
         // Heal and reposition dragon (need to warp the mesh agent)
-
-        // STEP 1: random position for dragon
-        //dragon.GetComponent<DragonBehavior>().Resuscitate(GetNewPosition());
-        // STEP 3
         dragon.GetComponent<DragonBehavior>().Resuscitate(dragonPosition);
 
         // Lock door
-        door.GetComponent<DoorController>().LockDoor();
+        doorController.LockDoor();
 
         // Stop running timer from previous episode
         timer.StopTimer();
     }
 
-    private void SpawnAgent()
+    private void FailEpisode()
     {
-        GameObject agent = Instantiate(agentPrefab, transform);
+        Debug.Log("The dragon ran away! Quest failed.");
 
-        agent.GetComponent<AgentBehavior>().SetDungeonController(this);
+        ChangeLightsColor("red");
 
-        this.agent = agent;
+        foreach (var agent in agents)
+        {
+            // Each agent fails its goal
+            agent.GetComponent<AgentBehavior>().FailEscape();
+        }
+
+        // The group also gets a punishment
+        agentGroup.AddGroupReward(groupRewardSystem.dragonEscape);
+
+        // End group episode
+        agentGroup.EndGroupEpisode();
+        ResetEnvironment();
+    }
+
+    private void AgentEscape(GameObject agent)
+    {
+        agent.GetComponent<AgentBehavior>().Escape();
+        remainingAgents--;
+
+        // If all agents have escaped
+        if (remainingAgents == 0)
+        {
+            Debug.Log("All agents have escaped!");
+
+            ChangeLightsColor("green");
+
+            // Add a reward for everyone
+            agentGroup.AddGroupReward(groupRewardSystem.allAgentsEscape);
+
+            // End the episode
+            agentGroup.EndGroupEpisode();
+
+            // Prepare for next episode
+            ResetEnvironment();
+        }
+    }
+
+    private void SpawnAgents(int number)
+    {
+        for (int i = 0; i < number; i++)
+        {
+            GameObject agent = Instantiate(agentPrefab, transform);
+
+            AgentBehavior ab = agent.GetComponent<AgentBehavior>();
+            ab.SetDungeonController(this);
+
+            // Add to the collection of agents spawned by the environment
+            this.agents.Add(agent);
+
+            // Register the agent to the multiagent group
+            agentGroup.RegisterAgent(ab);
+        }
     }
 
     private void SpawnDragon()
@@ -90,11 +172,6 @@ public class DungeonController : MonoBehaviour
         db.onDragonSlainEvent += () => timer.StartTimer(timeToEscape);
     }
 
-    private Vector3 GetNewPosition()
-    {
-        return GetRandomPosition();
-    }
-
     private Vector3 GetRandomPosition()
     {
         Bounds floorBounds = floor.GetComponent<Collider>().bounds;
@@ -109,7 +186,7 @@ public class DungeonController : MonoBehaviour
         // Some margin to avoid spawning on the walls
         float margin = 1f;
         float safeRadius = 0.8f;
-        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon");
+        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent");
 
         while (!foundPosition)
         {
@@ -283,12 +360,8 @@ public class DungeonController : MonoBehaviour
         }
     }
 
-    private void FailEpisode()
+    public bool IsDoorLocked()
     {
-        Debug.Log("The dragon ran away! Quest failed.");
-
-        ChangeLightsColor("red");
-
-        agent.GetComponent<AgentBehavior>().FailEscape();
+        return doorController.IsDoorLocked();
     }
 }

@@ -37,14 +37,22 @@ public class AgentBehavior : Agent
         raysHelper = rays.GetComponent<RaysHelper>();
     }
 
-    public override void OnEpisodeBegin()
+    public void Reset()
     {
+        gameObject.SetActive(true);
         hasKey = false;
         key.SetActive(false);
         dragonAlive = true;
+    }
 
-        // Repositions agent and dragon
-        dungeon.ResetEnvironment();
+    public void SetDungeonController(DungeonController dungeon)
+    {
+        this.dungeon = dungeon;
+    }
+
+    public bool HasKey()
+    {
+        return hasKey;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -58,19 +66,10 @@ public class AgentBehavior : Agent
         {
             Debug.Log("Knight hit a wall");
             AddReward(rewardSystem.hitWall);
-            dungeon.ChangeLightsColor("red");
-            EndEpisode();
+
+            // EndEpisode();
+            gameObject.SetActive(false);
         }
-    }
-
-    public void SetDungeonController(DungeonController dungeon)
-    {
-        this.dungeon = dungeon;
-    }
-
-    public bool HasKey()
-    {
-        return hasKey;
     }
 
     private void HitDragon(GameObject dragon)
@@ -93,10 +92,6 @@ public class AgentBehavior : Agent
             hasKey = true;
             dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
-
-            // TOGGLE: step 3
-            // EndEpisode();
-            // dungeon.ChangeLightsColor("green");
         }
     }
 
@@ -112,9 +107,7 @@ public class AgentBehavior : Agent
         // Set rewards
         AddReward(rewardSystem.escape);
 
-        dungeon.ChangeLightsColor("green");
-
-        EndEpisode();
+        gameObject.SetActive(false);
     }
 
     public void FailEscape()
@@ -122,7 +115,7 @@ public class AgentBehavior : Agent
         // Set rewards
         AddReward(rewardSystem.failEscape);
 
-        EndEpisode();
+        gameObject.SetActive(false);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -158,11 +151,8 @@ public class AgentBehavior : Agent
     {
         // Knows if dragon is dead or alive
         sensor.AddObservation(dragonAlive ? 1f : 0f);
-    }
 
-    void OnDrawGizmos()
-    {
-        // Draw sphere around the agent
-        // Gizmos.DrawSphere(transform.position, 0.7f);
+        // Knows if the door is open or closed
+        sensor.AddObservation(dungeon.IsDoorLocked() ? 0f : 1f);
     }
 }
