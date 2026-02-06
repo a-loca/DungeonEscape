@@ -97,9 +97,9 @@ public class DungeonController : MonoBehaviour
         timer.StopTimer();
     }
 
-    private void FailEpisode()
+    public void FailEpisode()
     {
-        Debug.Log("The dragon ran away! Quest failed.");
+        Debug.Log("Agents failed to escape.");
 
         ChangeLightsColor("red");
 
@@ -137,6 +137,24 @@ public class DungeonController : MonoBehaviour
 
             // Prepare for next episode
             ResetEnvironment();
+        }
+    }
+
+    public void HitObstacle(GameObject agent)
+    {
+        remainingAgents--;
+
+        Debug.Log("Knight hit a wall");
+
+        agent.SetActive(false);
+
+        AgentBehavior ab = agent.GetComponent<AgentBehavior>();
+
+        // If the agent has the key, the episode is ended for all
+        // the other agents as well
+        if (ab.HasKey())
+        {
+            FailEpisode();
         }
     }
 

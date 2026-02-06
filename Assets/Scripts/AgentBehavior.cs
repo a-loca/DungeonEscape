@@ -64,11 +64,8 @@ public class AgentBehavior : Agent
         }
         if (tag == "Walls" || tag == "Cave")
         {
-            Debug.Log("Knight hit a wall");
             AddReward(rewardSystem.hitWall);
-
-            // EndEpisode();
-            gameObject.SetActive(false);
+            dungeon.HitObstacle(gameObject);
         }
     }
 
@@ -151,6 +148,9 @@ public class AgentBehavior : Agent
     {
         // Knows if dragon is dead or alive
         sensor.AddObservation(dragonAlive ? 1f : 0f);
+
+        // Knows if it has a key
+        sensor.AddObservation(hasKey ? 1f : 0f);
 
         // Knows if the door is open or closed
         sensor.AddObservation(dungeon.IsDoorLocked() ? 0f : 1f);
