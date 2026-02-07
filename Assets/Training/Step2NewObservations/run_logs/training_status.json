@@ -1,0 +1,56 @@
+{
+    "Agent Behavior": {
+        "checkpoints": [
+            {
+                "steps": 499944,
+                "file_path": "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-499944.onnx",
+                "reward": 15.470000457763671,
+                "creation_time": 1770420750.1119068,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-499944.pt"
+                ]
+            },
+            {
+                "steps": 999950,
+                "file_path": "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-999950.onnx",
+                "reward": 14.993018780593518,
+                "creation_time": 1770421115.924281,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-999950.pt"
+                ]
+            },
+            {
+                "steps": 1499984,
+                "file_path": "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-1499984.onnx",
+                "reward": 14.980226724215274,
+                "creation_time": 1770421591.5676143,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-1499984.pt"
+                ]
+            },
+            {
+                "steps": 1656960,
+                "file_path": "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-1656960.onnx",
+                "reward": 14.43526119771211,
+                "creation_time": 1770421766.3708105,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-1656960.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1656960,
+            "file_path": "Assets/Training/Step2NewObservations/Agent Behavior.onnx",
+            "reward": 14.43526119771211,
+            "creation_time": 1770421766.3708105,
+            "auxillary_file_paths": [
+                "Assets/Training/Step2NewObservations/Agent Behavior/Agent Behavior-1656960.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}
