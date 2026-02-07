@@ -14,6 +14,7 @@ public class DungeonController : MonoBehaviour
 
     [SerializeField]
     private GameObject door;
+    private DoorController doorController;
 
     [SerializeField]
     private GameObject dragonPrefab;
@@ -34,6 +35,8 @@ public class DungeonController : MonoBehaviour
         SpawnDragon();
         SpawnAgent();
 
+        doorController = door.GetComponent<DoorController>();
+
         timer = GetComponent<Timer>();
         timer.onTimerEndEvent += FailEpisode;
     }
@@ -41,7 +44,7 @@ public class DungeonController : MonoBehaviour
     public void ResetEnvironment()
     {
         // Reposition agent
-        agent.transform.position = GetNewPosition();
+        agent.transform.position = GetRandomPosition();
 
         // Reset rotation to look in a random direction
         agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
@@ -55,7 +58,7 @@ public class DungeonController : MonoBehaviour
         // Heal and reposition dragon (need to warp the mesh agent)
 
         // STEP 1: random position for dragon
-        //dragon.GetComponent<DragonBehavior>().Resuscitate(GetNewPosition());
+        // dragon.GetComponent<DragonBehavior>().Resuscitate(GetRandomPosition());
         // STEP 3
         dragon.GetComponent<DragonBehavior>().Resuscitate(dragonPosition);
 
@@ -90,9 +93,9 @@ public class DungeonController : MonoBehaviour
         db.onDragonSlainEvent += () => timer.StartTimer(timeToEscape);
     }
 
-    private Vector3 GetNewPosition()
+    public bool IsDoorLocked()
     {
-        return GetRandomPosition();
+        return doorController.IsDoorLocked();
     }
 
     private Vector3 GetRandomPosition()
@@ -109,7 +112,7 @@ public class DungeonController : MonoBehaviour
         // Some margin to avoid spawning on the walls
         float margin = 1f;
         float safeRadius = 0.8f;
-        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon");
+        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent");
 
         while (!foundPosition)
         {
