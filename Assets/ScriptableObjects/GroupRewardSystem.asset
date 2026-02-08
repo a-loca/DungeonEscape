@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923eca71bbea3e4379c3e14a33fde4c3, type: 3}
   m_Name: GroupRewardSystem
   m_EditorClassIdentifier: 
-  dragonEscape: -10
+  dragonEscape: -15
   allAgentsEscape: 10
+  killDragon: 5

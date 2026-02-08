@@ -24,7 +24,8 @@ public class AgentBehavior : Agent
 
     [SerializeField]
     private RewardSystem rewardSystem;
-    private bool dragonAlive = true;
+    [HideInInspector]
+    public bool dragonAlive = true;
 
     [SerializeField]
     private GameObject rays;
@@ -89,6 +90,7 @@ public class AgentBehavior : Agent
             hasKey = true;
             dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
+            dungeon.DragonWasKilled();
         }
     }
 

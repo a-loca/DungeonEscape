@@ -9,6 +9,9 @@ using UnityEngine;
 public class GroupRewardSystem : ScriptableObject
 {
     [Header("Episode Outcome")]
-    public float dragonEscape = -10f;
+    public float dragonEscape = -15f;
     public float allAgentsEscape = 10f;
+
+    [Header("Combat")]
+    public float killDragon = 5f;
 }

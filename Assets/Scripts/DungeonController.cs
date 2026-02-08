@@ -144,18 +144,20 @@ public class DungeonController : MonoBehaviour
     {
         remainingAgents--;
 
-        Debug.Log("Knight hit a wall");
+        Debug.Log("Knight hit an obstacle");
 
         agent.SetActive(false);
 
-        AgentBehavior ab = agent.GetComponent<AgentBehavior>();
+        AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
         // If the agent has the key, the episode is ended for all
         // the other agents as well
-        if (ab.HasKey())
+        if (agentBehavior.HasKey())
         {
+            Debug.Log("Agent with key died");
             FailEpisode();
         }
+
     }
 
     private void SpawnAgents(int number)
@@ -164,14 +166,14 @@ public class DungeonController : MonoBehaviour
         {
             GameObject agent = Instantiate(agentPrefab, transform);
 
-            AgentBehavior ab = agent.GetComponent<AgentBehavior>();
-            ab.SetDungeonController(this);
+            AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
+            agentBehavior.SetDungeonController(this);
 
             // Add to the collection of agents spawned by the environment
             this.agents.Add(agent);
 
             // Register the agent to the multiagent group
-            agentGroup.RegisterAgent(ab);
+            agentGroup.RegisterAgent(agentBehavior);
         }
     }
 
@@ -188,6 +190,18 @@ public class DungeonController : MonoBehaviour
 
         db.onDragonEscapeEvent += FailEpisode;
         db.onDragonSlainEvent += () => timer.StartTimer(timeToEscape);
+    }
+
+    public void DragonWasKilled()
+    {
+        // All agents need to know that the dragon is dead
+        foreach (var agent in agents)
+        {
+            agent.GetComponent<AgentBehavior>().dragonAlive = false;
+        }
+
+        // Also add a global reward
+        agentGroup.AddGroupReward(groupRewardSystem.killDragon);
     }
 
     private Vector3 GetRandomPosition()
