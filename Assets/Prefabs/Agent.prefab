@@ -52,6 +52,7 @@ MonoBehaviour:
   - Walls
   - Agent
   - Cave
+  - Key
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 60
   m_SphereCastRadius: 0.3
@@ -198,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 3
+    VectorObservationSize: 2
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -207,9 +208,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 171bba6c36849e193b87bf66f5094ae5, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: a3d8ec913d1eeef368fa90944ee5e0c4, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1

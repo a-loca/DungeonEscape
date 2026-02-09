@@ -9,6 +9,7 @@ TagManager:
   - Door
   - Walls
   - Cave
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Dragon
   - Agent
   - Cave
-  - 
+  - Key
   - 
   - 
   - 

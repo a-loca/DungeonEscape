@@ -61,6 +61,20 @@ public class AgentBehavior : Agent
             dungeon.ChangeLightsColor("red");
             EndEpisode();
         }
+        if (tag == "Key")
+        {
+            // Hide the key
+            Destroy(collision.gameObject);
+
+            Debug.Log("Knight picked up the key!");
+
+            // Agent acquires the key
+            hasKey = true;
+            key.SetActive(true);
+
+            // Agent gets reward for getting the key
+            AddReward(rewardSystem.grabKey);
+        }
     }
 
     public void SetDungeonController(DungeonController dungeon)
@@ -88,13 +102,11 @@ public class AgentBehavior : Agent
         // will retrieve the key
         if (livesLeft == 0)
         {
-            // Acquire the key
-            key.SetActive(true);
-            hasKey = true;
+            // Knows the dragon was slain
             dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
 
-            // TOGGLE: step 3
+            // TOGGLE: step 4
             // EndEpisode();
             // dungeon.ChangeLightsColor("green");
         }
@@ -161,8 +173,5 @@ public class AgentBehavior : Agent
 
         // Knows if it has a key
         sensor.AddObservation(hasKey ? 1f : 0f);
-
-        // Knows if the door is open or closed
-        sensor.AddObservation(dungeon.IsDoorLocked() ? 0f : 1f);
     }
 }

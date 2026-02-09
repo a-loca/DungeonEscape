@@ -6,6 +6,10 @@ using UnityEngine.AI;
 
 public class DungeonController : MonoBehaviour
 {
+    [Header("Environment Objects")]
+    [SerializeField]
+    private GameObject columns;
+
     [SerializeField]
     private GameObject cave;
 
@@ -16,6 +20,7 @@ public class DungeonController : MonoBehaviour
     private GameObject door;
     private DoorController doorController;
 
+    [Header("Prefabs")]
     [SerializeField]
     private GameObject dragonPrefab;
 
@@ -23,12 +28,15 @@ public class DungeonController : MonoBehaviour
     private GameObject agentPrefab;
 
     [SerializeField]
-    private GameObject columns;
+    private GameObject keyPrefab;
+
     private GameObject agent;
     private GameObject dragon;
+    private GameObject key;
 
-    private Timer timer;
+    [Header("Timer")]
     public float timeToEscape = 30f;
+    private Timer timer;
 
     void Start()
     {
@@ -43,6 +51,10 @@ public class DungeonController : MonoBehaviour
 
     public void ResetEnvironment()
     {
+        // Destroy key if it has not been picked up
+        if (key != null)
+            Destroy(key);
+
         // Reposition agent
         agent.transform.position = GetRandomPosition();
 
@@ -57,8 +69,8 @@ public class DungeonController : MonoBehaviour
 
         // Heal and reposition dragon (need to warp the mesh agent)
 
-        // STEP 1: random position for dragon
-        // dragon.GetComponent<DragonBehavior>().Resuscitate(GetRandomPosition());
+        // TOGGLE - STEP 1: random position for dragon
+        //dragon.GetComponent<DragonBehavior>().Resuscitate(GetRandomPosition());
         // STEP 3
         dragon.GetComponent<DragonBehavior>().Resuscitate(dragonPosition);
 
@@ -90,7 +102,16 @@ public class DungeonController : MonoBehaviour
         db.SetCave(cave);
 
         db.onDragonEscapeEvent += FailEpisode;
-        db.onDragonSlainEvent += () => timer.StartTimer(timeToEscape);
+        db.onDragonSlainEvent += DragonWasKilled;
+    }
+
+    private void DragonWasKilled()
+    {
+        // Start timer
+        timer.StartTimer(timeToEscape);
+
+        // Spawn key
+        SpawnKey();
     }
 
     public bool IsDoorLocked()
@@ -112,7 +133,14 @@ public class DungeonController : MonoBehaviour
         // Some margin to avoid spawning on the walls
         float margin = 1f;
         float safeRadius = 0.8f;
-        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent");
+        LayerMask blockers = LayerMask.GetMask(
+            "Obstacle",
+            "Door",
+            "Dragon",
+            "Agent",
+            "Key",
+            "Cave"
+        );
 
         while (!foundPosition)
         {
@@ -202,7 +230,7 @@ public class DungeonController : MonoBehaviour
         Vector3 dragonPos = Vector3.zero;
         bool foundPosition = false;
         float safeRadius = 0.8f;
-        LayerMask spawnBlockers = LayerMask.GetMask("Obstacle", "Agent");
+        LayerMask spawnBlockers = LayerMask.GetMask("Obstacle", "Agent", "Key");
 
         while (!foundPosition)
         {
@@ -258,6 +286,19 @@ public class DungeonController : MonoBehaviour
 
         // Rotate door towards center of the floor
         door.transform.LookAt(new Vector3(center.x, center.y + marginBottom, center.z));
+    }
+
+    private void SpawnKey()
+    {
+        // Spawn key in random position
+        GameObject key = Instantiate(
+            keyPrefab,
+            GetRandomPosition(),
+            Quaternion.identity,
+            transform
+        );
+
+        this.key = key;
     }
 
     public void ChangeLightsColor(string color)
