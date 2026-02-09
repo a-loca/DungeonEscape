@@ -68,6 +68,20 @@ public class AgentBehavior : Agent
             AddReward(rewardSystem.hitWall);
             dungeon.HitObstacle(gameObject);
         }
+        if (tag == "Key")
+        {
+            // Destroy the key
+            Destroy(collision.gameObject);
+
+            Debug.Log("Knight picked up the key!");
+
+            // Agent acquires the key
+            hasKey = true;
+            key.SetActive(true);
+
+            // Agent gets reward for getting the key
+            AddReward(rewardSystem.grabKey);
+        }
     }
 
     private void HitDragon(GameObject dragon)
@@ -81,14 +95,9 @@ public class AgentBehavior : Agent
         // Swing sword
         swordAnimator.SetTrigger("swing");
 
-        // If the dragon has been slain, the agent
-        // will retrieve the key
+        // If the dragon has been slain
         if (livesLeft == 0)
         {
-            // Acquire the key
-            key.SetActive(true);
-            hasKey = true;
-            dragonAlive = false;
             AddReward(rewardSystem.slayDragon);
             dungeon.DragonWasKilled();
         }
@@ -153,8 +162,5 @@ public class AgentBehavior : Agent
 
         // Knows if it has a key
         sensor.AddObservation(hasKey ? 1f : 0f);
-
-        // Knows if the door is open or closed
-        sensor.AddObservation(dungeon.IsDoorLocked() ? 0f : 1f);
     }
 }

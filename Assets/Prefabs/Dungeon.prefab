@@ -89,10 +89,11 @@ MonoBehaviour:
   cave: {fileID: 6290316947874826912}
   floor: {fileID: 3187107233971639917}
   door: {fileID: 7446194794802100701}
+  columns: {fileID: 2431468561080318138}
   dragonPrefab: {fileID: 3100879234182129007, guid: e296c5a2d32705a9795f213aef4df769, type: 3}
   agentPrefab: {fileID: 6466754151421513070, guid: f15fe412b32e0d20a9314d2762d151c2, type: 3}
+  keyPrefab: {fileID: 6556489793479771521, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
   numberOfAgents: 3
-  columns: {fileID: 2431468561080318138}
   timeToEscape: 30
   groupRewardSystem: {fileID: 11400000, guid: f3237ebf172c4ef0ebdd466d5c896db7, type: 2}
 --- !u!114 &2318661600785869606

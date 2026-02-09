@@ -8,6 +8,7 @@ public class RewardSystem : ScriptableObject
     [Header("Episode Outcome")]
     public float failEscape = -10f;
     public float escape = 10f;
+    public float grabKey = 1f;
 
     [Header("Combat")]
     public float hitDragon = 2f;

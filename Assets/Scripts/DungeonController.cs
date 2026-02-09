@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class DungeonController : MonoBehaviour
 {
+    [Header("Environment Objects")]
     [SerializeField]
     private GameObject cave;
 
@@ -18,6 +19,10 @@ public class DungeonController : MonoBehaviour
     private DoorController doorController;
 
     [SerializeField]
+    private GameObject columns;
+
+    [Header("Prefabs")]
+    [SerializeField]
     private GameObject dragonPrefab;
     private GameObject dragon;
 
@@ -26,17 +31,21 @@ public class DungeonController : MonoBehaviour
     private List<GameObject> agents;
 
     [SerializeField]
+    private GameObject keyPrefab;
+    private GameObject key;
+
+    [Header("Episode Settings")]
+    [SerializeField]
     public int numberOfAgents = 3;
     private int remainingAgents;
 
-    [SerializeField]
-    private GameObject columns;
-
-    private Timer timer;
+    [Header("Timer")]
     public float timeToEscape = 30f;
+    private Timer timer;
 
     private SimpleMultiAgentGroup agentGroup;
 
+    [Header("Reward System")]
     [SerializeField]
     private GroupRewardSystem groupRewardSystem;
 
@@ -60,25 +69,32 @@ public class DungeonController : MonoBehaviour
 
     public void ResetEnvironment()
     {
-        // Empty out the list of escaped agents
+        // Stop running timer from previous episode
+        timer.StopTimer();
+
+        // Destroy key if it has not been picked up
+        if (key != null)
+            Destroy(key);
+
+        // Reset number of agents in the environment
         remainingAgents = numberOfAgents;
 
-        // Reposition agents
+        // Reposition and register agents
         foreach (var agent in agents)
         {
-            AgentBehavior ab = agent.GetComponent<AgentBehavior>();
+            AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
-            ab.Reset();
-
-            // Need to re-register the agent in the group
-            // after having disabled them
-            agentGroup.RegisterAgent(ab);
+            agentBehavior.Reset();
 
             // Reposition the agent
             agent.transform.position = GetRandomPosition();
 
             // Reset rotation to look in a random direction
-            agent.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+            agent.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+
+            // Need to re-register the agent in the group
+            // after having disabled them
+            agentGroup.RegisterAgent(agentBehavior);
         }
 
         // Respawn cave
@@ -92,9 +108,6 @@ public class DungeonController : MonoBehaviour
 
         // Lock door
         doorController.LockDoor();
-
-        // Stop running timer from previous episode
-        timer.StopTimer();
     }
 
     public void FailEpisode()
@@ -109,8 +122,8 @@ public class DungeonController : MonoBehaviour
             agent.GetComponent<AgentBehavior>().FailEscape();
         }
 
-        // The group also gets a punishment
-        agentGroup.AddGroupReward(groupRewardSystem.dragonEscape);
+        // The group also gets a punishment (Unity's Dungeon escape does not do this)
+        // agentGroup.AddGroupReward(groupRewardSystem.dragonEscape);
 
         // End group episode
         agentGroup.EndGroupEpisode();
@@ -119,45 +132,41 @@ public class DungeonController : MonoBehaviour
 
     private void AgentEscape(GameObject agent)
     {
+        Debug.Log("Door was unlocked, agents escaped");
+
         agent.GetComponent<AgentBehavior>().Escape();
-        remainingAgents--;
 
-        // If all agents have escaped
-        if (remainingAgents == 0)
-        {
-            Debug.Log("All agents have escaped!");
+        ChangeLightsColor("green");
 
-            ChangeLightsColor("green");
+        // Add a reward for everyone
+        agentGroup.AddGroupReward(groupRewardSystem.allAgentsEscape);
 
-            // Add a reward for everyone
-            agentGroup.AddGroupReward(groupRewardSystem.allAgentsEscape);
+        // End the episode
+        agentGroup.EndGroupEpisode();
 
-            // End the episode
-            agentGroup.EndGroupEpisode();
-
-            // Prepare for next episode
-            ResetEnvironment();
-        }
+        // Prepare for next episode
+        ResetEnvironment();
     }
 
     public void HitObstacle(GameObject agent)
     {
-        remainingAgents--;
-
         Debug.Log("Knight hit an obstacle");
 
+        // One less agent left in the environment
+        remainingAgents--;
+
+        // Deactivate the agent
         agent.SetActive(false);
 
+        // If the agent has the key, the episode is ended for all
+        // the other agents as well. Also, if all agents have
+        // died before getting the key, then the episode should end.
         AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
-        // If the agent has the key, the episode is ended for all
-        // the other agents as well
-        if (agentBehavior.HasKey())
+        if (agentBehavior.HasKey() || remainingAgents == 0)
         {
-            Debug.Log("Agent with key died");
             FailEpisode();
         }
-
     }
 
     private void SpawnAgents(int number)
@@ -200,8 +209,24 @@ public class DungeonController : MonoBehaviour
             agent.GetComponent<AgentBehavior>().dragonAlive = false;
         }
 
+        // Spawn the key in the environment
+        SpawnKey();
+
         // Also add a global reward
         agentGroup.AddGroupReward(groupRewardSystem.killDragon);
+    }
+
+    private void SpawnKey()
+    {
+        // Spawn key in random position
+        GameObject key = Instantiate(
+            keyPrefab,
+            GetRandomPosition(),
+            Quaternion.identity,
+            transform
+        );
+
+        this.key = key;
     }
 
     private Vector3 GetRandomPosition()
@@ -218,7 +243,7 @@ public class DungeonController : MonoBehaviour
         // Some margin to avoid spawning on the walls
         float margin = 1f;
         float safeRadius = 0.8f;
-        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent");
+        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent", "Key");
 
         while (!foundPosition)
         {
@@ -390,10 +415,5 @@ public class DungeonController : MonoBehaviour
 
             light.color = newColor;
         }
-    }
-
-    public bool IsDoorLocked()
-    {
-        return doorController.IsDoorLocked();
     }
 }

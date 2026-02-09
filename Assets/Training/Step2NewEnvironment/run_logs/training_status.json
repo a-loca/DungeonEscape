@@ -1,0 +1,56 @@
+{
+    "Agent Behavior": {
+        "checkpoints": [
+            {
+                "steps": 499960,
+                "file_path": "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-499960.onnx",
+                "reward": 4.971538386283776,
+                "creation_time": 1770600331.18518,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-499960.pt"
+                ]
+            },
+            {
+                "steps": 999976,
+                "file_path": "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-999976.onnx",
+                "reward": 7.0512243771107395,
+                "creation_time": 1770600671.9830287,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-999976.pt"
+                ]
+            },
+            {
+                "steps": 1000040,
+                "file_path": "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-1000040.onnx",
+                "reward": 7.0512243771107395,
+                "creation_time": 1770600672.0981965,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-1000040.pt"
+                ]
+            },
+            {
+                "steps": 1404999,
+                "file_path": "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-1404999.onnx",
+                "reward": 7.06008050633573,
+                "creation_time": 1770601016.30358,
+                "auxillary_file_paths": [
+                    "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-1404999.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1404999,
+            "file_path": "Assets/Training/Step2NewEnvironment/Agent Behavior.onnx",
+            "reward": 7.06008050633573,
+            "creation_time": 1770601016.30358,
+            "auxillary_file_paths": [
+                "Assets/Training/Step2NewEnvironment/Agent Behavior/Agent Behavior-1404999.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}
