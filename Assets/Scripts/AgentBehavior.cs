@@ -24,8 +24,9 @@ public class AgentBehavior : Agent
 
     [SerializeField]
     private RewardSystem rewardSystem;
+
     [HideInInspector]
-    public bool dragonAlive = true;
+    public bool areDragonsAlive = true;
 
     [SerializeField]
     private GameObject rays;
@@ -43,7 +44,7 @@ public class AgentBehavior : Agent
         gameObject.SetActive(true);
         hasKey = false;
         key.SetActive(false);
-        dragonAlive = true;
+        areDragonsAlive = true;
     }
 
     public void SetDungeonController(DungeonController dungeon)
@@ -89,17 +90,16 @@ public class AgentBehavior : Agent
         Debug.Log("A knight hit the dragon!");
         AddReward(rewardSystem.hitDragon);
 
-        // Inflict damage to the dragon
-        int livesLeft = dragon.GetComponent<DragonBehavior>().TakeAHit();
-
         // Swing sword
         swordAnimator.SetTrigger("swing");
+
+        // Inflict damage to the dragon
+        int livesLeft = dragon.GetComponent<DragonBehavior>().TakeAHit();
 
         // If the dragon has been slain
         if (livesLeft == 0)
         {
             AddReward(rewardSystem.slayDragon);
-            dungeon.DragonWasKilled();
         }
     }
 
@@ -141,7 +141,7 @@ public class AgentBehavior : Agent
         AddReward(rewardSystem.punishStep);
 
         // Punish if dragon is not in view and still alive
-        if (!raysHelper.CanSeeDragon() && dragonAlive)
+        if (!raysHelper.CanSeeDragon() && areDragonsAlive)
         {
             AddReward(rewardSystem.dragonNotInView);
         }
@@ -157,8 +157,8 @@ public class AgentBehavior : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Knows if dragon is dead or alive
-        sensor.AddObservation(dragonAlive ? 1f : 0f);
+        // Knows if dragons are dead or alive
+        sensor.AddObservation(areDragonsAlive ? 1f : 0f);
 
         // Knows if it has a key
         sensor.AddObservation(hasKey ? 1f : 0f);

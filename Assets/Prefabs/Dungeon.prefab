@@ -94,6 +94,7 @@ MonoBehaviour:
   agentPrefab: {fileID: 6466754151421513070, guid: f15fe412b32e0d20a9314d2762d151c2, type: 3}
   keyPrefab: {fileID: 6556489793479771521, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
   numberOfAgents: 3
+  numberOfDragons: 2
   timeToEscape: 30
   groupRewardSystem: {fileID: 11400000, guid: f3237ebf172c4ef0ebdd466d5c896db7, type: 2}
 --- !u!114 &2318661600785869606

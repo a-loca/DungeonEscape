@@ -42,8 +42,6 @@ public class DragonBehavior : MonoBehaviour
 
     public int TakeAHit()
     {
-        // Agent hit the dragon
-
         // Take damage
         lives--;
 
