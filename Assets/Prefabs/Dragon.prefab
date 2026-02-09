@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1279510685729261495}
   - component: {fileID: 4554943676752834758}
   - component: {fileID: 1928846541438521970}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Dragon
   m_TagString: Dragon
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31a45d2909d8e23ccaddc5d41a16e085, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

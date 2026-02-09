@@ -52,6 +52,7 @@ MonoBehaviour:
   - Walls
   - Agent
   - Cave
+  - Key
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 60
   m_SphereCastRadius: 0.3
@@ -90,7 +91,7 @@ GameObject:
   - component: {fileID: 74824100456529029}
   - component: {fileID: 3018013978012542415}
   - component: {fileID: -7320467814263574626}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Agent
   m_TagString: Agent
   m_Icon: {fileID: 0}
@@ -184,6 +185,7 @@ MonoBehaviour:
   key: {fileID: 2939766909146709846}
   swordAnimator: {fileID: 8918848384089547495}
   rewardSystem: {fileID: 11400000, guid: ea8c8e01bb9864511acc0a141702cdc7, type: 2}
+  dragonAlive: 1
   rays: {fileID: 3087726038682997373}
 --- !u!114 &3018013978012542415
 MonoBehaviour:
@@ -207,7 +209,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 951d11e38f4eb61b2acfdedc38217628, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
@@ -283,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: caa90ebd0a3a62f578ddaf652ec9cee9, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
