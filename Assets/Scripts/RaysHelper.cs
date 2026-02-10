@@ -12,12 +12,12 @@ public class RaysHelper : MonoBehaviour
         rays = GetComponent<RayPerceptionSensorComponent3D>();
     }
 
-    public (bool, float, float) CanSeeDragon()
+    public (bool, float, float) CanSeeObjectWithTag(string tag)
     {
         var rayOutputs = RayPerceptionSensor.Perceive(rays.GetRayPerceptionInput()).RayOutputs;
         int lengthOfRayOutputs = rayOutputs.Length;
 
-        bool dragonVisible = false;
+        bool objectVisible = false;
         float angle = 0;
         float closestDistance = float.MaxValue;
 
@@ -27,9 +27,9 @@ public class RaysHelper : MonoBehaviour
         for (int i = 0; i < lengthOfRayOutputs; i++)
         {
             GameObject goHit = rayOutputs[i].HitGameObject;
-            if (goHit != null && goHit.CompareTag("Dragon"))
+            if (goHit != null && goHit.CompareTag(tag))
             {
-                dragonVisible = true;
+                objectVisible = true;
 
                 // Calc distance
                 var rayDirection =
@@ -39,7 +39,7 @@ public class RaysHelper : MonoBehaviour
 
                 if (hitDistance < closestDistance)
                 {
-                    dragonVisible = true;
+                    objectVisible = true;
                     closestDistance = hitDistance;
 
                     // Calc angle between agent and dragon
@@ -51,11 +51,11 @@ public class RaysHelper : MonoBehaviour
             }
         }
 
-        if (!dragonVisible)
+        if (!objectVisible)
         {
             return (false, 0f, 0f);
         }
 
-        return (dragonVisible, closestDistance, angle);
+        return (objectVisible, closestDistance, angle);
     }
 }

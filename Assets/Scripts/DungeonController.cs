@@ -43,6 +43,7 @@ public class DungeonController : MonoBehaviour
 
     [Header("Timer")]
     public float timeToEscape = 30f;
+    [HideInInspector]
     public Timer timer;
 
     private SimpleMultiAgentGroup agentGroup;
@@ -50,6 +51,9 @@ public class DungeonController : MonoBehaviour
     [Header("Reward System")]
     [SerializeField]
     private GroupRewardSystem groupRewardSystem;
+
+    [SerializeField]
+    private Personality[] personalities;
 
     void Start()
     {
@@ -184,6 +188,7 @@ public class DungeonController : MonoBehaviour
 
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
             agentBehavior.SetDungeonController(this);
+            agentBehavior.SetPersonality(personalities[i]);
 
             // Add to the collection of agents spawned by the environment
             this.agents.Add(agent);
@@ -271,7 +276,6 @@ public class DungeonController : MonoBehaviour
 
             position = new Vector3(randomX, y, randomZ);
 
-            Debug.DrawLine(position, position + Vector3.up * 2, Color.red, 5f);
 
             // If the new position is not overlapping with a column/wall/cave/others
             if (!Physics.CheckSphere(position, safeRadius, blockers))
@@ -360,8 +364,6 @@ public class DungeonController : MonoBehaviour
             float z = Random.Range(minZ, maxZ);
 
             Vector3 dragonPos = new Vector3(x, y, z);
-
-            Debug.DrawLine(dragonPos, dragonPos + Vector3.up * 2, Color.green, 5f);
 
             // Keep sampling positions until you find one
             // that is not overlapping a column. Also, avoid spawning

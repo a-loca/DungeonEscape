@@ -96,7 +96,12 @@ MonoBehaviour:
   numberOfAgents: 3
   numberOfDragons: 2
   timeToEscape: 30
+  timer: {fileID: 0}
   groupRewardSystem: {fileID: 11400000, guid: f3237ebf172c4ef0ebdd466d5c896db7, type: 2}
+  personalities:
+  - {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+  - {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+  - {fileID: 11400000, guid: d132936f1f3b88ec795404532b3d0b0c, type: 2}
 --- !u!114 &2318661600785869606
 MonoBehaviour:
   m_ObjectHideFlags: 0

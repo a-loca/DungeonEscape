@@ -15,7 +15,8 @@ public class DragonBehavior : MonoBehaviour
     public int maxLives = 3;
     private int lives;
 
-    private List<GameObject> whoHitMe = new List<GameObject>();
+[HideInInspector]
+    public HashSet<GameObject> whoHitMe = new HashSet<GameObject>();
 
     void Awake()
     {
@@ -42,8 +43,9 @@ public class DragonBehavior : MonoBehaviour
         }
     }
 
-    public int TakeAHit()
+    public int TakeAHit(GameObject agent)
     {
+        whoHitMe.Add(agent);
         // Take damage
         lives--;
 

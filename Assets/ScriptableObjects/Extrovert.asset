@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5503980f084a97fdb4a7d132e677952, type: 3}
-  m_Name: Introvert
+  m_Name: Extrovert
   m_EditorClassIdentifier: 
-  personalityName: Introvert
+  personalityName: Extrovert
   openness: 0
   conscientiousness: 0
-  extraversion: -1
+  extraversion: 1
   agreeableness: 0
   neuroticism: 0
