@@ -15,6 +15,8 @@ public class DragonBehavior : MonoBehaviour
     public int maxLives = 3;
     private int lives;
 
+    private List<GameObject> whoHitMe = new List<GameObject>();
+
     void Awake()
     {
         // Get the dragon's color to allow flashing
@@ -73,6 +75,8 @@ public class DragonBehavior : MonoBehaviour
     {
         meshAgent.Warp(position);
         transform.LookAt(cave.transform);
+
+        whoHitMe.Clear();
 
         // Heal lives
         lives = maxLives;

@@ -19,6 +19,11 @@ public class Timer : MonoBehaviour
         isActive = false;
     }
 
+    public float TimeLeft()
+    {
+        return remainingTime;
+    }
+
     void Update()
     {
         if (isActive)

@@ -43,7 +43,7 @@ public class DungeonController : MonoBehaviour
 
     [Header("Timer")]
     public float timeToEscape = 30f;
-    private Timer timer;
+    public Timer timer;
 
     private SimpleMultiAgentGroup agentGroup;
 
