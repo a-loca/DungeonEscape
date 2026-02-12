@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.MLAgents;
+using Unity.MLAgents.Policies;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class DungeonController : MonoBehaviour
 {
+    private int episodeCounter = 0;
+
     [Header("Environment Objects")]
     [SerializeField]
     private GameObject cave;
@@ -24,11 +27,15 @@ public class DungeonController : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField]
     private GameObject dragonPrefab;
-    private List<GameObject> dragons;
+
+    [HideInInspector]
+    public List<GameObject> dragons;
 
     [SerializeField]
     private GameObject agentPrefab;
-    private List<GameObject> agents;
+
+    [HideInInspector]
+    public List<GameObject> agents;
 
     [SerializeField]
     private GameObject keyPrefab;
@@ -38,22 +45,31 @@ public class DungeonController : MonoBehaviour
     [SerializeField]
     public int numberOfAgents = 3;
     public int numberOfDragons = 2;
-    private int remainingAgents;
     private int remainingDragons;
 
     [Header("Timer")]
     public float timeToEscape = 30f;
+
     [HideInInspector]
     public Timer timer;
-
-    private SimpleMultiAgentGroup agentGroup;
 
     [Header("Reward System")]
     [SerializeField]
     private GroupRewardSystem groupRewardSystem;
 
+    private SimpleMultiAgentGroup agentGroup;
+
+    // Need an object of both personality and behavior name
+    public struct PersonalitySettings
+    {
+        public Personality personality;
+        public string behaviorName;
+    }
+
     [SerializeField]
-    private Personality[] personalities;
+    private PersonalitySettings[] personalitySettings;
+
+    private GlobalEpisodeStats globalEpisodeStats;
 
     void Start()
     {
@@ -64,6 +80,8 @@ public class DungeonController : MonoBehaviour
 
         SpawnDragons();
         SpawnAgents();
+
+        globalEpisodeStats = new GlobalEpisodeStats();
 
         timer = GetComponent<Timer>();
         timer.onTimerEndEvent += FailEpisode;
@@ -76,6 +94,10 @@ public class DungeonController : MonoBehaviour
 
     public void ResetEnvironment()
     {
+        // Save global episode stats and create a new object for the next episode
+        EpisodeCSVLogger.LogGlobalEpisode(globalEpisodeStats.ToCSVString(episodeCounter));
+        globalEpisodeStats = new GlobalEpisodeStats();
+
         // Stop running timer from previous episode
         timer.StopTimer();
 
@@ -83,14 +105,16 @@ public class DungeonController : MonoBehaviour
         if (key != null)
             Destroy(key);
 
-        // Reset number of agents/dragons in the environment
-        remainingAgents = numberOfAgents;
+        // Reset number of dragons in the environment
         remainingDragons = numberOfDragons;
 
         // Reposition and register agents
         foreach (var agent in agents)
         {
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
+
+            // Log stats of the episode that just ended
+            EpisodeCSVLogger.LogAgentEpisode(agentBehavior.stats.ToCSVString(episodeCounter));
 
             agentBehavior.Reset();
 
@@ -119,6 +143,10 @@ public class DungeonController : MonoBehaviour
 
         // Lock door
         doorController.LockDoor();
+
+        // Increment episode counter
+        episodeCounter++;
+        Debug.Log("Starting episode " + episodeCounter);
     }
 
     public void FailEpisode()
@@ -159,27 +187,6 @@ public class DungeonController : MonoBehaviour
         ResetEnvironment();
     }
 
-    public void HitObstacle(GameObject agent)
-    {
-        Debug.Log("Knight hit an obstacle");
-
-        // One less agent left in the environment
-        remainingAgents--;
-
-        // If the agent has the key, the episode is ended for all
-        // the other agents as well. Also, if all agents have
-        // died before getting the key, then the episode should end.
-        AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
-
-        if (agentBehavior.HasKey() || remainingAgents == 0)
-        {
-            FailEpisode();
-        }
-
-        // Deactivate the agent
-        agent.SetActive(false);
-    }
-
     private void SpawnAgents()
     {
         for (int i = 0; i < numberOfAgents; i++)
@@ -188,10 +195,17 @@ public class DungeonController : MonoBehaviour
 
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
             agentBehavior.SetDungeonController(this);
-            agentBehavior.SetPersonality(personalities[i]);
+
+            // Set the OCEAN personality parameters of the agent
+            agentBehavior.SetPersonality(personalitySettings[i].personality);
+
+            // Set the correct behavior name in order to train the correct model
+            agent.GetComponent<BehaviorParameters>().BehaviorName = personalitySettings[
+                i
+            ].behaviorName;
 
             // Add to the collection of agents spawned by the environment
-            this.agents.Add(agent);
+            agents.Add(agent);
 
             // Register the agent to the multiagent group
             agentGroup.RegisterAgent(agentBehavior);
@@ -275,7 +289,6 @@ public class DungeonController : MonoBehaviour
             float randomZ = Random.Range(floorBounds.min.z + margin, floorBounds.max.z - margin);
 
             position = new Vector3(randomX, y, randomZ);
-
 
             // If the new position is not overlapping with a column/wall/cave/others
             if (!Physics.CheckSphere(position, safeRadius, blockers))

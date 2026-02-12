@@ -6,9 +6,11 @@ public class Timer : MonoBehaviour
     private float remainingTime;
     public event Action onTimerEndEvent;
     private bool isActive = false;
+    public float maxTime;
 
     public void StartTimer(float time)
     {
+        maxTime = time;
         remainingTime = time;
         isActive = true;
         Debug.Log($"Timer started, {time}s to escape.");
@@ -22,6 +24,11 @@ public class Timer : MonoBehaviour
     public float TimeLeft()
     {
         return remainingTime;
+    }
+
+    public float TimeElapsed()
+    {
+        return maxTime - remainingTime;
     }
 
     void Update()
