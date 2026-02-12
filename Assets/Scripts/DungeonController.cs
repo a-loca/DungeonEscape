@@ -39,13 +39,20 @@ public class DungeonController : MonoBehaviour
 
     [SerializeField]
     private GameObject keyPrefab;
-    private GameObject key;
+
+    [HideInInspector]
+    public GameObject key;
+
+    [HideInInspector]
+    public bool keyGrabbedByAgent = false;
 
     [Header("Episode Settings")]
     [SerializeField]
     public int numberOfAgents = 3;
     public int numberOfDragons = 2;
-    private int remainingDragons;
+
+    [HideInInspector]
+    public int remainingDragons;
 
     [Header("Timer")]
     public float timeToEscape = 30f;
@@ -60,14 +67,14 @@ public class DungeonController : MonoBehaviour
     private SimpleMultiAgentGroup agentGroup;
 
     // Need an object of both personality and behavior name
+    [System.Serializable]
     public struct PersonalitySettings
     {
         public Personality personality;
         public string behaviorName;
     }
 
-    [SerializeField]
-    private PersonalitySettings[] personalitySettings;
+    public PersonalitySettings[] personalitySettings;
 
     private GlobalEpisodeStats globalEpisodeStats;
 
@@ -81,10 +88,8 @@ public class DungeonController : MonoBehaviour
         SpawnDragons();
         SpawnAgents();
 
-        globalEpisodeStats = new GlobalEpisodeStats();
-
         timer = GetComponent<Timer>();
-        timer.onTimerEndEvent += FailEpisode;
+        timer.onTimerEndEvent += () => FailEpisode(FailureReason.Timer);
 
         doorController = door.GetComponent<DoorController>();
         doorController.OnAgentEscape += WinGroupEpisode;
@@ -95,8 +100,11 @@ public class DungeonController : MonoBehaviour
     public void ResetEnvironment()
     {
         // Save global episode stats and create a new object for the next episode
-        EpisodeCSVLogger.LogGlobalEpisode(globalEpisodeStats.ToCSVString(episodeCounter));
-        globalEpisodeStats = new GlobalEpisodeStats();
+        if (episodeCounter > 0)
+            EpisodeCSVLogger.LogGlobalEpisode(globalEpisodeStats.ToCSVString(episodeCounter));
+
+        // Reset the stats
+        globalEpisodeStats = new GlobalEpisodeStats(this);
 
         // Stop running timer from previous episode
         timer.StopTimer();
@@ -104,6 +112,8 @@ public class DungeonController : MonoBehaviour
         // Destroy key if it has not been picked up
         if (key != null)
             Destroy(key);
+
+        keyGrabbedByAgent = false;
 
         // Reset number of dragons in the environment
         remainingDragons = numberOfDragons;
@@ -114,7 +124,8 @@ public class DungeonController : MonoBehaviour
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
             // Log stats of the episode that just ended
-            EpisodeCSVLogger.LogAgentEpisode(agentBehavior.stats.ToCSVString(episodeCounter));
+            if (episodeCounter > 0)
+                EpisodeCSVLogger.LogAgentEpisode(agentBehavior.stats.ToCSVString(episodeCounter));
 
             agentBehavior.Reset();
 
@@ -149,9 +160,13 @@ public class DungeonController : MonoBehaviour
         Debug.Log("Starting episode " + episodeCounter);
     }
 
-    public void FailEpisode()
+    public void FailEpisode(FailureReason reason)
     {
         Debug.Log("Agents failed to escape.");
+
+        // Record the loss and the reason for stats
+        globalEpisodeStats.failReason = reason;
+        globalEpisodeStats.win = false;
 
         // The group also gets a punishment
         agentGroup.AddGroupReward(groupRewardSystem.dragonEscape);
@@ -172,6 +187,9 @@ public class DungeonController : MonoBehaviour
     private void WinGroupEpisode(GameObject agent)
     {
         Debug.Log("Door was unlocked, agents escaped!");
+
+        // Record the win in the stats
+        globalEpisodeStats.win = true;
 
         agent.GetComponent<AgentBehavior>().Escape();
 
@@ -222,7 +240,7 @@ public class DungeonController : MonoBehaviour
 
             db.SetCave(cave);
 
-            db.onDragonEscapeEvent += FailEpisode;
+            db.onDragonEscapeEvent += () => FailEpisode(FailureReason.DragonEscaped);
             db.onDragonSlainEvent += DragonWasKilled;
 
             dragons.Add(dragon);
@@ -265,6 +283,12 @@ public class DungeonController : MonoBehaviour
         );
 
         this.key = key;
+    }
+
+    public void RemoveKey()
+    {
+        Destroy(key);
+        keyGrabbedByAgent = true;
     }
 
     private Vector3 GetRandomPosition()
@@ -450,5 +474,10 @@ public class DungeonController : MonoBehaviour
 
             light.color = newColor;
         }
+    }
+
+    void FixedUpdate()
+    {
+        globalEpisodeStats.UpdateTimedStats();
     }
 }

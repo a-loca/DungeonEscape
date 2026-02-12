@@ -54,8 +54,6 @@ public class AgentBehavior : Agent
         // Get rigid body component to allow movement
         rb = GetComponent<Rigidbody>();
         raysHelper = rays.GetComponent<RaysHelper>();
-
-        stats = new AgentEpisodeStats(this);
     }
 
     public void Reset()

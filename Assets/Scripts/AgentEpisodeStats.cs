@@ -123,14 +123,14 @@ public class AgentEpisodeStats
             agent.personality.name,
             hitsInflicted.ToString(),
             dragonsKilled.ToString(),
-            hasKey.ToString(),
-            timeToFindKey.ToString(),
+            hasKey ? "1" : "0",
+            timeToFindKey.ToString("0.000"),
             agentCollisions.ToString(),
-            distanceTraveled.ToString(),
+            distanceTraveled.ToString("0.000"),
             runningAverageOfDistancesFromAgents.ToString("0.000"),
             runningAverageOfDistancesFromDragons.ToString("0.000"),
-            idleTime.ToString("0.00"),
-            timeInVicinityOfAgents.ToString("0.00"),
+            idleTime.ToString("0.000"),
+            timeInVicinityOfAgents.ToString("0.000"),
         };
 
         return string.Join(";", values);
