@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ba7ebc430ba9914b20eb6c3176a99b, type: 3}
   m_Name: RewardSystem
   m_EditorClassIdentifier: 
-  failEscape: -15
-  escape: 15
+  grabKey: 5
   hitDragon: 2
-  slayDragon: 10
-  punishStep: -0.002
-  hitWall: -15
+  hitWall: -5
   hitClosedDoor: -5
-  dragonNotInView: -0.002

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.MLAgents;
@@ -10,12 +9,18 @@ public class DungeonController : MonoBehaviour
 {
     private int episodeCounter = 0;
 
+    [Header("Stats")]
+    public bool computeEpisodeStats = false;
+
     [Header("Environment Objects")]
     [SerializeField]
     private GameObject cave;
 
     [SerializeField]
     private GameObject floor;
+
+    [HideInInspector]
+    public float maxDistance;
 
     [SerializeField]
     private GameObject door;
@@ -86,13 +91,22 @@ public class DungeonController : MonoBehaviour
         agentGroup = new SimpleMultiAgentGroup();
 
         SpawnDragons();
+
+        // Instantiate agents and register them in the group
         SpawnAgents();
 
         timer = GetComponent<Timer>();
         timer.onTimerEndEvent += () => FailEpisode(FailureReason.Timer);
 
         doorController = door.GetComponent<DoorController>();
-        doorController.OnAgentEscape += WinGroupEpisode;
+        doorController.OnAgentEscape += WinEpisode;
+
+        // Get maximum distance two objects can be placed at in the arena
+        // Needed for agent rewards
+        Bounds bounds = floor.GetComponent<Collider>().bounds;
+        // Pythagorean theorem
+        maxDistance = (float)
+            Mathf.Sqrt(bounds.size.x * bounds.size.x + bounds.size.z * bounds.size.z);
 
         ResetEnvironment();
     }
@@ -100,11 +114,12 @@ public class DungeonController : MonoBehaviour
     public void ResetEnvironment()
     {
         // Save global episode stats and create a new object for the next episode
-        if (episodeCounter > 0)
+        if (episodeCounter > 0 && computeEpisodeStats)
             EpisodeCSVLogger.LogGlobalEpisode(globalEpisodeStats.ToCSVString(episodeCounter));
 
         // Reset the stats
-        globalEpisodeStats = new GlobalEpisodeStats(this);
+        if (computeEpisodeStats)
+            globalEpisodeStats = new GlobalEpisodeStats(this);
 
         // Stop running timer from previous episode
         timer.StopTimer();
@@ -124,7 +139,7 @@ public class DungeonController : MonoBehaviour
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
             // Log stats of the episode that just ended
-            if (episodeCounter > 0)
+            if (episodeCounter > 0 && computeEpisodeStats)
                 EpisodeCSVLogger.LogAgentEpisode(agentBehavior.stats.ToCSVString(episodeCounter));
 
             agentBehavior.Reset();
@@ -134,10 +149,6 @@ public class DungeonController : MonoBehaviour
 
             // Reset rotation to look in a random direction
             agent.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-
-            // Need to re-register the agent in the group
-            // after having disabled them
-            agentGroup.RegisterAgent(agentBehavior);
         }
 
         // Respawn cave
@@ -165,38 +176,34 @@ public class DungeonController : MonoBehaviour
         Debug.Log("Agents failed to escape.");
 
         // Record the loss and the reason for stats
-        globalEpisodeStats.failReason = reason;
-        globalEpisodeStats.win = false;
+        if (computeEpisodeStats)
+        {
+            globalEpisodeStats.failReason = reason;
+            globalEpisodeStats.win = false;
+        }
 
-        // The group also gets a punishment
-        agentGroup.AddGroupReward(groupRewardSystem.dragonEscape);
+        // The group gets a punishment
+        agentGroup.AddGroupReward(groupRewardSystem.dragonsEscape);
 
         ChangeLightsColor("red");
-
-        foreach (var agent in agents)
-        {
-            // Each agent fails its goal
-            agent.GetComponent<AgentBehavior>().FailEscape();
-        }
 
         // End group episode
         agentGroup.EndGroupEpisode();
         ResetEnvironment();
     }
 
-    private void WinGroupEpisode(GameObject agent)
+    private void WinEpisode(GameObject agent)
     {
         Debug.Log("Door was unlocked, agents escaped!");
 
         // Record the win in the stats
-        globalEpisodeStats.win = true;
-
-        agent.GetComponent<AgentBehavior>().Escape();
+        if (computeEpisodeStats)
+            globalEpisodeStats.win = true;
 
         ChangeLightsColor("green");
 
-        // Add a reward for everyone
-        agentGroup.AddGroupReward(groupRewardSystem.allAgentsEscape);
+        // Group reward
+        agentGroup.AddGroupReward(groupRewardSystem.escape);
 
         // End the episode
         agentGroup.EndGroupEpisode();
@@ -212,6 +219,8 @@ public class DungeonController : MonoBehaviour
             GameObject agent = Instantiate(agentPrefab, transform);
 
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
+
+            agentBehavior.computeEpisodeStats = computeEpisodeStats;
             agentBehavior.SetDungeonController(this);
 
             // Set the OCEAN personality parameters of the agent
@@ -251,6 +260,8 @@ public class DungeonController : MonoBehaviour
     {
         remainingDragons--;
 
+        agentGroup.AddGroupReward(groupRewardSystem.killDragon);
+
         if (remainingDragons == 0)
         {
             Debug.Log("All dragons have been slain!");
@@ -266,9 +277,6 @@ public class DungeonController : MonoBehaviour
 
             // Spawn the key in the environment
             SpawnKey();
-
-            // Also add a global reward
-            agentGroup.AddGroupReward(groupRewardSystem.killDragon);
         }
     }
 
@@ -478,6 +486,9 @@ public class DungeonController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!computeEpisodeStats)
+            return;
+
         globalEpisodeStats.UpdateTimedStats();
     }
 }

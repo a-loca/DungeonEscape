@@ -181,6 +181,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  computeEpisodeStats: 0
   key: {fileID: 2939766909146709846}
   swordAnimator: {fileID: 8918848384089547495}
   rays: {fileID: 3087726038682997373}
@@ -212,7 +213,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 7061e4b117cfd8521a3b47b3cace7269, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: Agent Behavior
   TeamId: 0
   m_UseChildSensors: 1

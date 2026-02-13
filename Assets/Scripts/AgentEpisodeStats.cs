@@ -49,7 +49,7 @@ public class AgentEpisodeStats
     // Time spent in the vicinity of other agents during the episode
     public float timeInVicinityOfAgents = 0f;
 
-    public void MeanDistanceFromAllAgents(List<GameObject> agents)
+    public void MeanDistanceAndProximityFromAllAgents(List<GameObject> agents)
     {
         (float meanDistance, bool isInVicinity) = MeanDistanceFromGameObjects(agents);
 

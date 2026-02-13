@@ -86,8 +86,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000497972a824be44be02bc1418cf26b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  computeEpisodeStats: 1
   cave: {fileID: 6290316947874826912}
   floor: {fileID: 3187107233971639917}
+  maxDistance: 0
   door: {fileID: 7446194794802100701}
   columns: {fileID: 2431468561080318138}
   dragonPrefab: {fileID: 3100879234182129007, guid: e296c5a2d32705a9795f213aef4df769, type: 3}
@@ -95,12 +97,21 @@ MonoBehaviour:
   agentPrefab: {fileID: 6466754151421513070, guid: f15fe412b32e0d20a9314d2762d151c2, type: 3}
   agents: []
   keyPrefab: {fileID: 6556489793479771521, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
+  key: {fileID: 0}
+  keyGrabbedByAgent: 0
   numberOfAgents: 3
   numberOfDragons: 2
+  remainingDragons: 0
   timeToEscape: 30
   timer: {fileID: 0}
   groupRewardSystem: {fileID: 11400000, guid: f3237ebf172c4ef0ebdd466d5c896db7, type: 2}
-  personalitySettings: []
+  personalitySettings:
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+  - personality: {fileID: 11400000, guid: d132936f1f3b88ec795404532b3d0b0c, type: 2}
+    behaviorName: NeuroticBehavior
 --- !u!114 &2318661600785869606
 MonoBehaviour:
   m_ObjectHideFlags: 0

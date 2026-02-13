@@ -6,17 +6,12 @@ using UnityEngine;
 public class RewardSystem : ScriptableObject
 {
     [Header("Episode Outcome")]
-    public float failEscape = -10f;
-    public float escape = 10f;
     public float grabKey = 1f;
 
     [Header("Combat")]
     public float hitDragon = 2f;
-    public float slayDragon = 5f;
 
     [Header("Roaming around")]
-    public float punishStep = -0.001f;
     public float hitWall = -0.5f;
     public float hitClosedDoor = -1f;
-    public float dragonNotInView = -0.002f;
 }

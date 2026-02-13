@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -11,6 +12,9 @@ public class AgentBehavior : Agent
 {
     private DungeonController dungeon;
     private Rigidbody rb;
+
+    [HideInInspector]
+    public bool computeEpisodeStats;
 
     [Header("Agent components")]
     [SerializeField]
@@ -40,7 +44,7 @@ public class AgentBehavior : Agent
     public Personality personality;
 
     // Time of the last hit inflicted to a dragon
-    private DateTime latestHit;
+    private float latestHitTime;
 
     // Stats
     [HideInInspector]
@@ -48,6 +52,9 @@ public class AgentBehavior : Agent
 
     // Last position the agent was in, used to compute distance traveled
     private Vector3 lastPosition;
+
+    // Max radius within which an agent is considered in proximity of another
+    private float MAX_PROXIMITY_RADIUS = 1f;
 
     public override void Initialize()
     {
@@ -59,12 +66,11 @@ public class AgentBehavior : Agent
     public void Reset()
     {
         hitsInflicted = 0;
-        gameObject.SetActive(true);
         hasKey = false;
-        key.SetActive(false);
         areDragonsAlive = true;
 
-        stats = new AgentEpisodeStats(this);
+        if (computeEpisodeStats)
+            stats = new AgentEpisodeStats(this);
     }
 
     public void SetDungeonController(DungeonController dungeon)
@@ -112,7 +118,8 @@ public class AgentBehavior : Agent
             reward = -1f * personality.agreeableness;
             AddReward(reward);
 
-            stats.agentCollisions++;
+            if (computeEpisodeStats)
+                stats.agentCollisions++;
         }
         if (tag == "Key")
         {
@@ -129,13 +136,16 @@ public class AgentBehavior : Agent
             // If low conscientiousness, the agent is rewarded for grabbing the key
             // as soon as possible. If high conscientiousness, it is rewarded for
             // being patient
-            float reward =
-                rewardSystem.grabKey
-                - 0.1f * dungeon.timer.TimeLeft() * personality.conscientiousness;
+            float timerFactor = 0.1f * dungeon.timer.TimeLeft();
+            float reward = rewardSystem.grabKey - (timerFactor * personality.conscientiousness);
+
             AddReward(reward);
 
-            stats.hasKey = true;
-            stats.timeToFindKey = dungeon.timer.TimeElapsed();
+            if (computeEpisodeStats)
+            {
+                stats.hasKey = true;
+                stats.timeToFindKey = dungeon.timer.TimeElapsed();
+            }
         }
     }
 
@@ -143,7 +153,9 @@ public class AgentBehavior : Agent
     {
         Debug.Log("A knight hit the dragon!");
         hitsInflicted++;
-        stats.hitsInflicted = hitsInflicted;
+
+        if (computeEpisodeStats)
+            stats.hitsInflicted = hitsInflicted;
 
         // Swing sword
         swordAnimator.SetTrigger("swing");
@@ -152,67 +164,63 @@ public class AgentBehavior : Agent
         DragonBehavior dragonBehavior = dragon.GetComponent<DragonBehavior>();
         int livesLeft = dragonBehavior.TakeAHit(gameObject);
 
-        float reward = rewardSystem.hitDragon;
+        float initiativeReward;
+        float panicReward;
+        float coopReward;
+        float baseHitReward = rewardSystem.hitDragon;
 
         // [OCEAN, extraversion] Initiative
         // If extroverted, rewarded progressively more for every hit inflicted.
-        // If introverted, rewards diminish
-        reward += rewardSystem.hitDragon * personality.extraversion * hitsInflicted * 0.5f;
+        // If introverted, get rewarded at first, then diminish
+        if (personality.extraversion > 0)
+            initiativeReward = baseHitReward * personality.extraversion * hitsInflicted * 0.5f;
+        else
+            initiativeReward = baseHitReward + personality.extraversion * hitsInflicted;
 
         // [OCEAN, neuroticism] Panic
         // Punish/reward an agents based on how long it has been since
         // the last hit it has inflicted to a dragon. The more neurotic,
         // the more it is punished for hitting the dragon quickly again
-        reward += 0.001f * personality.neuroticism * (float)(DateTime.Now - latestHit).TotalSeconds;
-        latestHit = DateTime.Now;
+        float timeDiff = Time.time - latestHitTime;
+        panicReward = -personality.neuroticism * Mathf.Exp(-1 * timeDiff);
+        latestHitTime = Time.time;
 
         // [OCEAN, agreeableness] cooperation
         // Agreeable agent should be rewarded for hitting dragons already
         // wounded by others, non agreeable agent should be rewarded
         // for hitting dragons that have not been hit by others yet
-        if (dragonBehavior.whoHitMe.Count == 1 && dragonBehavior.whoHitMe.Contains(gameObject))
+        bool dragonHitByOthers = dragonBehavior.whoHitMe.Any(a => a != gameObject);
+
+        if (!dragonHitByOthers && personality.agreeableness < 0)
         {
-            // The only agent to have hit the dragon is this one, so reward if not agreeable, punish if agreeable
-            reward += rewardSystem.hitDragon * (1 - personality.agreeableness);
+            // The agent is the only one to have hit the dragon so far
+            // Reward non agreeable
+            coopReward = baseHitReward * (1 - personality.agreeableness);
         }
         else
         {
-            // Multiple agents have already hit the dragon or the dragon was not hit by
-            // this agent, so reward if agreeable, punish if not agreeable
-            reward += rewardSystem.hitDragon * personality.agreeableness;
+            // Some other agent hit the dragon before
+            // Reward agreeable agent, punish non agreeable agent
+            coopReward = baseHitReward * personality.agreeableness * 0.5f;
         }
 
-        AddReward(reward);
+        Debug.Log(
+            $"{personality.name}: initiative = {initiativeReward}, panic = {panicReward}, cooperation = {coopReward}"
+        );
+
+        AddReward(initiativeReward + panicReward + coopReward);
 
         // If the dragon has been slain
         if (livesLeft == 0)
         {
-            stats.dragonsKilled++;
-            AddReward(rewardSystem.slayDragon);
+            if (computeEpisodeStats)
+                stats.dragonsKilled++;
         }
     }
 
     public void HitClosedDoor()
     {
         AddReward(rewardSystem.hitClosedDoor);
-    }
-
-    public void Escape()
-    {
-        Debug.Log($"{gameObject.name} has escaped successfully!");
-
-        // Set rewards
-        AddReward(rewardSystem.escape);
-
-        gameObject.SetActive(false);
-    }
-
-    public void FailEscape()
-    {
-        // Set rewards
-        AddReward(rewardSystem.failEscape);
-
-        gameObject.SetActive(false);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -226,9 +234,6 @@ public class AgentBehavior : Agent
 
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
 
-        // Small punishment
-        AddReward(rewardSystem.punishStep);
-
         var (dragonVisible, distanceFromDragon, angleWithDragon) = raysHelper.CanSeeObjectWithTag(
             "Dragon"
         );
@@ -241,55 +246,57 @@ public class AgentBehavior : Agent
             // [OCEAN, extraversion] Socialization
             // Reward an extroverted agent for staying in close proximity
             // with another agent, punish an introverted agent for it
-            float reward =
-                0.001f
-                * personality.extraversion
-                * (distanceFromAgent < 1f ? 1f - distanceFromAgent : 0f);
-            AddReward(reward);
-        }
-
-        // Punish if dragon is not in view and still alive
-        if (!dragonVisible && areDragonsAlive)
-        {
-            AddReward(rewardSystem.dragonNotInView);
+            float proximity =
+                distanceFromAgent < MAX_PROXIMITY_RADIUS
+                    ? MAX_PROXIMITY_RADIUS - distanceFromAgent
+                    : 0f;
+            float socializationReward = 0.005f * personality.extraversion * proximity;
+            AddReward(socializationReward);
         }
 
         // [OCEAN, Openness] Exploration
         // Reward forward movement when dragon is not in view
         if (!dragonVisible && moveForward > 0 && areDragonsAlive)
         {
-            float reward = Math.Max(0, personality.openness) * 0.001f * moveForward;
-            AddReward(reward);
+            float explorationReward = personality.openness * 0.001f * moveForward;
+            AddReward(explorationReward);
         }
 
         if (dragonVisible)
         {
+            float impatienceReward;
+            float fearReward;
+            float anxietyReward;
+
             // [OCEAN, Conscientiousness] Impatience
             // If low conscientiousness, rewarded for running towards the dragon
             // directly once it is in view, otherwise punished for it to encourage patience
-            float reward =
-                -0.002f
-                * personality.conscientiousness
-                * moveForward
-                * (float)Math.Cos(angleWithDragon * Mathf.Deg2Rad);
+            float cosine = (float)Math.Cos(angleWithDragon * Mathf.Deg2Rad);
+            impatienceReward = -0.002f * personality.conscientiousness * moveForward * cosine;
 
-            // [OCEAN, neuroticism] Scared
+            // [OCEAN, neuroticism] Fear
             // High neuroticism leads to being scared of the dragons,
-            // meaning that the agent will be punished if it looks at them
-            reward += 0.002f * personality.neuroticism;
+            // meaning that the agent will be punished if it looks at them,
+            // otherwise the agent will be rewarded for locking onto a dragon
+            fearReward = -0.002f * personality.neuroticism;
 
             // [OCEAN, neuroticism] Anxiety
             // If the dragon is visible, then reward the more distance the agent
             // keeps from it the more neurotic it is, punish the more it approaches the dragon
-            reward += -0.001f * personality.neuroticism * distanceFromDragon;
+            float normalizedDistance = distanceFromDragon / dungeon.maxDistance;
+            anxietyReward = 0.01f * personality.neuroticism * (normalizedDistance - 0.5f);
 
-            AddReward(reward);
+            AddReward(impatienceReward + fearReward + anxietyReward);
+
+            Debug.Log(
+                $"{personality.name}: impatience = {impatienceReward}, fear = {fearReward}, anxiety = {anxietyReward}"
+            );
         }
 
         // [OCEAN, Neuroticism] Hesitance
         // The more hesitant, the more it is rewarded for moving slowly
         if (personality.neuroticism > 0)
-            AddReward(-1 * personality.neuroticism * moveForward * 0.002f);
+            AddReward(personality.neuroticism * moveForward * -0.002f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -311,6 +318,9 @@ public class AgentBehavior : Agent
 
     public void FixedUpdate()
     {
+        if (!computeEpisodeStats)
+            return;
+
         // Calc distance between last position and current one
         // in order to record distance traveled during the episode
         float dist = Vector3.Distance(transform.position, lastPosition);
@@ -319,18 +329,18 @@ public class AgentBehavior : Agent
 
         // Calc mean distance from all agents and time spent
         // in proximity of other agents
-        stats.MeanDistanceFromAllAgents(dungeon.agents);
+        stats.MeanDistanceAndProximityFromAllAgents(dungeon.agents);
 
         // Calc mean distance from all dragons
         stats.MeanDistanceFromAllDragons(dungeon.dragons);
 
         // Calc time spent moving with speed lower than threshold
         stats.UpdateIdleTime(rb.velocity.magnitude);
-
     }
 
     void OnDrawGizmos()
     {
+        // Write the agent's personality name on top of it
         Handles.Label(transform.position, personality.name);
     }
 }

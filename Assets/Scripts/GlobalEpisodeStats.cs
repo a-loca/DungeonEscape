@@ -40,6 +40,7 @@ public class GlobalEpisodeStats
         {
             episodeCounter.ToString(),
             win ? "1" : "0",
+            !win ? failReason.ToString() : "null",
             episodeDuration.ToString("0.000"),
             timeToKillAllDragons.ToString("0.000"),
             timeToGrabKey.ToString("0.000"),

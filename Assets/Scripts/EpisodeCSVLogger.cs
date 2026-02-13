@@ -17,7 +17,7 @@ public static class EpisodeCSVLogger
         string timestamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
         // Create the directory where the csv files will be stored if it does not exist
-        string directory = Application.dataPath + $"/Logs/stats_run_{timestamp}/";
+        string directory = Application.dataPath + $"/StatLogs/stats_run_{timestamp}/";
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
 
@@ -45,7 +45,7 @@ public static class EpisodeCSVLogger
 
     public static string GetGlobalEpisodeHeader()
     {
-        return "episode;win;episodeDuration;timeToKillAllDragons;timeToGrabKey;timeToEscape;timeFromKeyGrabToEscape";
+        return "episode;win;failReason;episodeDuration;timeToKillAllDragons;timeToGrabKey;timeFromKeyGrabToEscape;";
     }
 
     public static void LogAgentEpisode(string row)
