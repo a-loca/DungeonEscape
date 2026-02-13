@@ -68,6 +68,7 @@ public class AgentBehavior : Agent
         hitsInflicted = 0;
         hasKey = false;
         areDragonsAlive = true;
+        key.SetActive(false);
 
         if (computeEpisodeStats)
             stats = new AgentEpisodeStats(this);
@@ -124,7 +125,7 @@ public class AgentBehavior : Agent
         if (tag == "Key")
         {
             // Destroy the key
-            Destroy(collision.gameObject);
+            dungeon.RemoveKey();
 
             Debug.Log("Knight picked up the key!");
 
@@ -228,10 +229,11 @@ public class AgentBehavior : Agent
         float moveRotate = actions.ContinuousActions[0];
         float moveForward = actions.ContinuousActions[1];
 
-        rb.MovePosition(
-            transform.position + transform.forward * moveForward * speed * Time.deltaTime
-        );
+        // Movement forward
+        Vector3 move = transform.forward * moveForward * speed;
+        rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);
 
+        // Rotation
         transform.Rotate(0f, moveRotate * speed, 0f, Space.Self);
 
         var (dragonVisible, distanceFromDragon, angleWithDragon) = raysHelper.CanSeeObjectWithTag(
