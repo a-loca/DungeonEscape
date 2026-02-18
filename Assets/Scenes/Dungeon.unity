@@ -131,6 +131,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (12)
@@ -192,6 +204,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (57)
@@ -253,6 +277,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (24)
@@ -314,6 +350,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (34)
@@ -375,6 +423,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (38)
@@ -436,6 +496,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (1)
@@ -497,6 +569,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (19)
@@ -558,6 +642,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (17)
@@ -619,6 +715,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (9)
@@ -680,6 +788,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (16)
@@ -741,6 +861,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (42)
@@ -802,6 +934,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (13)
@@ -863,6 +1007,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (45)
@@ -924,6 +1080,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (31)
@@ -985,6 +1153,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (40)
@@ -1046,6 +1226,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (44)
@@ -1107,6 +1299,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (10)
@@ -1168,6 +1372,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (46)
@@ -1229,6 +1445,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (5)
@@ -1290,6 +1518,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (37)
@@ -1351,6 +1591,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (4)
@@ -1412,6 +1664,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (63)
@@ -1473,6 +1737,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (33)
@@ -1534,6 +1810,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (6)
@@ -1595,6 +1883,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (22)
@@ -1656,6 +1956,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (25)
@@ -1717,6 +2029,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (55)
@@ -1839,6 +2163,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (62)
@@ -1900,6 +2236,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (53)
@@ -1961,6 +2309,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (43)
@@ -2022,6 +2382,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (14)
@@ -2083,6 +2455,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (51)
@@ -2144,6 +2528,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (27)
@@ -2205,6 +2601,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (41)
@@ -2266,6 +2674,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (11)
@@ -2327,6 +2747,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (61)
@@ -2480,6 +2912,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (3)
@@ -2541,6 +2985,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (23)
@@ -2602,6 +3058,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (47)
@@ -2663,6 +3131,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (59)
@@ -2724,6 +3204,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (36)
@@ -2785,6 +3277,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (30)
@@ -2846,6 +3350,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (60)
@@ -2907,6 +3423,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (50)
@@ -2968,6 +3496,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (35)
@@ -3029,6 +3569,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (32)
@@ -3090,6 +3642,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (52)
@@ -3151,6 +3715,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (8)
@@ -3212,6 +3788,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (21)
@@ -3273,6 +3861,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (58)
@@ -3334,6 +3934,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (29)
@@ -3395,6 +4007,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (28)
@@ -3456,6 +4080,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (39)
@@ -3517,6 +4153,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (49)
@@ -3578,6 +4226,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (54)
@@ -3639,6 +4299,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (7)
@@ -3700,6 +4372,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (26)
@@ -3761,6 +4445,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (48)
@@ -3822,6 +4518,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (15)
@@ -3883,6 +4591,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (18)
@@ -3944,6 +4664,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (56)
@@ -4005,6 +4737,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (20)
@@ -4066,6 +4810,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[0].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[1].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 159458055669495560, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
+      propertyPath: personalitySettings.Array.data[2].inferenceModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2735872117046276664, guid: 20589383aa247a2bca495e9a253ec3b2, type: 3}
       propertyPath: m_Name
       value: Dungeon (2)

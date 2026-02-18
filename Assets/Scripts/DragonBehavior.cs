@@ -51,7 +51,7 @@ public class DragonBehavior : MonoBehaviour
 
         // Flash red to indicate the damage taken
         Flash();
-        Debug.Log($"Dragon took a hit! {lives} lives left.");
+        //Debug.Log($"Dragon took a hit! {lives} lives left.");
 
         // Check if the dragon has been slain
         if (lives == 0)
@@ -64,7 +64,7 @@ public class DragonBehavior : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Dragon slain!");
+        //Debug.Log("Dragon slain!");
 
         if (onDragonSlainEvent != null)
             onDragonSlainEvent();

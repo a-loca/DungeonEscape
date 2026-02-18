@@ -53,7 +53,7 @@ public class DoorController : MonoBehaviour
 
             agent.HitClosedDoor();
 
-            Debug.Log("You can't escape without a key!");
+            //Debug.Log("You can't escape without a key!");
         }
     }
 }

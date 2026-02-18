@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Barracuda;
 using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
@@ -52,7 +53,6 @@ public class DungeonController : MonoBehaviour
     public bool keyGrabbedByAgent = false;
 
     [Header("Episode Settings")]
-    [SerializeField]
     public int numberOfAgents = 3;
     public int numberOfDragons = 2;
 
@@ -72,11 +72,15 @@ public class DungeonController : MonoBehaviour
     private SimpleMultiAgentGroup agentGroup;
 
     // Need an object of both personality and behavior name
+    [Header("Personality")]
+    public bool inference = false;
+
     [System.Serializable]
     public struct PersonalitySettings
     {
         public Personality personality;
         public string behaviorName;
+        public NNModel inferenceModel;
     }
 
     public PersonalitySettings[] personalitySettings;
@@ -168,12 +172,12 @@ public class DungeonController : MonoBehaviour
 
         // Increment episode counter
         episodeCounter++;
-        Debug.Log("Starting episode " + episodeCounter);
+        //Debug.Log("Starting episode " + episodeCounter);
     }
 
     public void FailEpisode(FailureReason reason)
     {
-        Debug.Log("Agents failed to escape.");
+        //Debug.Log("Agents failed to escape.");
 
         // Record the loss and the reason for stats
         if (computeEpisodeStats)
@@ -194,7 +198,7 @@ public class DungeonController : MonoBehaviour
 
     private void WinEpisode(GameObject agent)
     {
-        Debug.Log("Door was unlocked, agents escaped!");
+        // Debug.Log("Door was unlocked, agents escaped!");
 
         // Record the win in the stats
         if (computeEpisodeStats)
@@ -227,9 +231,12 @@ public class DungeonController : MonoBehaviour
             agentBehavior.SetPersonality(personalitySettings[i].personality);
 
             // Set the correct behavior name in order to train the correct model
-            agent.GetComponent<BehaviorParameters>().BehaviorName = personalitySettings[
-                i
-            ].behaviorName;
+            BehaviorParameters behaviorParams = agent.GetComponent<BehaviorParameters>();
+            behaviorParams.BehaviorName = personalitySettings[i].behaviorName;
+            behaviorParams.Model = personalitySettings[i].inferenceModel;
+            behaviorParams.BehaviorType = inference
+                ? BehaviorType.InferenceOnly
+                : BehaviorType.Default;
 
             // Add to the collection of agents spawned by the environment
             agents.Add(agent);
@@ -264,7 +271,7 @@ public class DungeonController : MonoBehaviour
 
         if (remainingDragons == 0)
         {
-            Debug.Log("All dragons have been slain!");
+            // Debug.Log("All dragons have been slain!");
 
             // Start the timer to escape
             timer.StartTimer(timeToEscape);
@@ -297,6 +304,24 @@ public class DungeonController : MonoBehaviour
     {
         Destroy(key);
         keyGrabbedByAgent = true;
+    }
+
+    public int CountNearbyAgents(GameObject agent, float radius)
+    {
+        int count = 0;
+        foreach (var other in agents)
+        {
+            if (agent != other)
+            {
+                float dist = Vector3.Distance(other.transform.position, agent.transform.position);
+                if (dist < radius)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     private Vector3 GetRandomPosition()

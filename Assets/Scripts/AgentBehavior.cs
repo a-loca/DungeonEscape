@@ -32,6 +32,12 @@ public class AgentBehavior : Agent
     private bool hasKey = false;
     private int hitsInflicted;
 
+    // Time of the last hit inflicted to a dragon
+    private float latestHitTime;
+
+    // The last dragon that was hit
+    private GameObject latestDragonHit;
+
     [Header("Movement")]
     [SerializeField]
     private float speed = 2.0f;
@@ -43,9 +49,6 @@ public class AgentBehavior : Agent
     [HideInInspector]
     public Personality personality;
 
-    // Time of the last hit inflicted to a dragon
-    private float latestHitTime;
-
     // Stats
     [HideInInspector]
     public AgentEpisodeStats stats;
@@ -54,7 +57,10 @@ public class AgentBehavior : Agent
     private Vector3 lastPosition;
 
     // Max radius within which an agent is considered in proximity of another
-    private float MAX_PROXIMITY_RADIUS = 1f;
+    private const float MAX_PROXIMITY_RADIUS = 1f;
+
+    // How long a neurotic agents panics for after hitting a dragon
+    private const float PANIC_THRESHOLD = 5f;
 
     public override void Initialize()
     {
@@ -68,6 +74,7 @@ public class AgentBehavior : Agent
         hitsInflicted = 0;
         hasKey = false;
         areDragonsAlive = true;
+        latestDragonHit = null;
         key.SetActive(false);
 
         if (computeEpisodeStats)
@@ -111,13 +118,17 @@ public class AgentBehavior : Agent
             // A conscientious agent should be punished for hitting
             // other agents, otherwise a low conscientiousness agent
             // should be prone to panic and hit others
-            float reward = -1f * personality.conscientiousness;
-            AddReward(reward);
+            float panicReward = -0.1f * personality.conscientiousness;
+            AddReward(panicReward);
 
-            // [OCEAN, agreeableness] Don't interfere with others
+            // [OCEAN, agreeableness] politeness
             // Punish an agreeable agent if it obstructs another agent
-            reward = -1f * personality.agreeableness;
-            AddReward(reward);
+            float politenessReward = -1f * personality.agreeableness;
+            AddReward(politenessReward);
+
+            Debug.Log(
+                $"{personality.name}: politeness = {politenessReward}, panic = {panicReward}"
+            );
 
             if (computeEpisodeStats)
                 stats.agentCollisions++;
@@ -127,7 +138,7 @@ public class AgentBehavior : Agent
             // Destroy the key
             dungeon.RemoveKey();
 
-            Debug.Log("Knight picked up the key!");
+            // Debug.Log("Knight picked up the key!");
 
             // Agent acquires the key
             hasKey = true;
@@ -139,6 +150,8 @@ public class AgentBehavior : Agent
             // being patient
             float timerFactor = 0.1f * dungeon.timer.TimeLeft();
             float reward = rewardSystem.grabKey - (timerFactor * personality.conscientiousness);
+
+            // Debug.Log($"{personality.name}: key impatience = {reward}");
 
             AddReward(reward);
 
@@ -152,7 +165,7 @@ public class AgentBehavior : Agent
 
     private void HitDragon(GameObject dragon)
     {
-        Debug.Log("A knight hit the dragon!");
+        // Debug.Log("A knight hit the dragon!");
         hitsInflicted++;
 
         if (computeEpisodeStats)
@@ -165,25 +178,45 @@ public class AgentBehavior : Agent
         DragonBehavior dragonBehavior = dragon.GetComponent<DragonBehavior>();
         int livesLeft = dragonBehavior.TakeAHit(gameObject);
 
-        float initiativeReward;
-        float panicReward;
-        float coopReward;
+        float initiativeReward = 0;
+        float commitmentReward = 0;
+        float panicReward = 0;
+        float coopReward = 0;
         float baseHitReward = rewardSystem.hitDragon;
 
         // [OCEAN, extraversion] Initiative
         // If extroverted, rewarded progressively more for every hit inflicted.
-        // If introverted, get rewarded at first, then diminish
+        // For introverted agents, reward them for hitting dragons when going on a solo mission
+        // Full reward when solo, reduced when around other agents, punish when crowded
         if (personality.extraversion > 0)
             initiativeReward = baseHitReward * personality.extraversion * hitsInflicted * 0.5f;
-        else
-            initiativeReward = baseHitReward + personality.extraversion * hitsInflicted;
+        else if (personality.extraversion < 0)
+        {
+            int nearbyAgents = dungeon.CountNearbyAgents(gameObject, MAX_PROXIMITY_RADIUS);
+            float agentsFactor = 1f - (nearbyAgents * 0.5f);
+            initiativeReward = baseHitReward * -personality.extraversion * agentsFactor;
+        }
 
         // [OCEAN, neuroticism] Panic
         // Punish/reward an agents based on how long it has been since
         // the last hit it has inflicted to a dragon. The more neurotic,
         // the more it is punished for hitting the dragon quickly again
         float timeDiff = Time.time - latestHitTime;
-        panicReward = -personality.neuroticism * Mathf.Exp(-1 * timeDiff);
+        if (timeDiff < PANIC_THRESHOLD)
+        {
+            // Neurotic agent hit a dragon while panicking, big punishment the less
+            // time has passed. Non neurotic agent hit a dragon in a small timeframe after
+            // the latest hit, reward it
+            panicReward = -personality.neuroticism * Mathf.Exp(-0.5f * timeDiff) * 10f;
+        }
+        else
+        {
+            // Neurotic agent has calmed down after latest hit and now hit the dragon again
+            // it will receive increasingly bigger reward the more time has passed
+            // Using log to avoid increasing reward or punishment too much
+            panicReward = personality.neuroticism * Mathf.Log(timeDiff - PANIC_THRESHOLD + 1) * 2f;
+        }
+
         latestHitTime = Time.time;
 
         // [OCEAN, agreeableness] cooperation
@@ -205,11 +238,20 @@ public class AgentBehavior : Agent
             coopReward = baseHitReward * personality.agreeableness * 0.5f;
         }
 
-        Debug.Log(
-            $"{personality.name}: initiative = {initiativeReward}, panic = {panicReward}, cooperation = {coopReward}"
-        );
+        // [OCEAN, Conscientiousness] Commitment
+        // A conscientious agent should not be switching targets while hitting dragons
+        // until it has been killed, while a non conscientious agent should be
+        // easily distracted and not disciplined and constantly switch
+        float factor = baseHitReward * 0.2f; // 20% of base hit reward
+        float switchFactor = dragon != latestDragonHit ? -1f : 1f;
+        commitmentReward = factor * personality.conscientiousness * switchFactor;
+        latestDragonHit = dragon;
 
-        AddReward(initiativeReward + panicReward + coopReward);
+        // Debug.Log(
+        //     $"{personality.name}: initiative = {initiativeReward}, panic = {panicReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
+        // );
+
+        AddReward(initiativeReward + panicReward + coopReward + commitmentReward);
 
         // If the dragon has been slain
         if (livesLeft == 0)
@@ -253,6 +295,9 @@ public class AgentBehavior : Agent
                     ? MAX_PROXIMITY_RADIUS - distanceFromAgent
                     : 0f;
             float socializationReward = 0.005f * personality.extraversion * proximity;
+
+            // Debug.Log($"{personality.name}: socialization = {socializationReward}");
+
             AddReward(socializationReward);
         }
 
@@ -261,6 +306,9 @@ public class AgentBehavior : Agent
         if (!dragonVisible && moveForward > 0 && areDragonsAlive)
         {
             float explorationReward = personality.openness * 0.001f * moveForward;
+
+            // Debug.Log($"{personality.name}: exploration = {explorationReward}");
+
             AddReward(explorationReward);
         }
 
@@ -274,31 +322,30 @@ public class AgentBehavior : Agent
             // If low conscientiousness, rewarded for running towards the dragon
             // directly once it is in view, otherwise punished for it to encourage patience
             float cosine = (float)Math.Cos(angleWithDragon * Mathf.Deg2Rad);
-            impatienceReward = -0.002f * personality.conscientiousness * moveForward * cosine;
-
-            // [OCEAN, neuroticism] Fear
-            // High neuroticism leads to being scared of the dragons,
-            // meaning that the agent will be punished if it looks at them,
-            // otherwise the agent will be rewarded for locking onto a dragon
-            fearReward = -0.002f * personality.neuroticism;
+            impatienceReward = -0.02f * personality.conscientiousness * moveForward * cosine;
 
             // [OCEAN, neuroticism] Anxiety
             // If the dragon is visible, then reward the more distance the agent
             // keeps from it the more neurotic it is, punish the more it approaches the dragon
             float normalizedDistance = distanceFromDragon / dungeon.maxDistance;
-            anxietyReward = 0.01f * personality.neuroticism * (normalizedDistance - 0.5f);
+            anxietyReward = 0.05f * personality.neuroticism * (normalizedDistance - 0.5f);
 
-            AddReward(impatienceReward + fearReward + anxietyReward);
+            // AddReward(impatienceReward + fearReward + anxietyReward);
+            AddReward(impatienceReward + anxietyReward);
 
-            Debug.Log(
-                $"{personality.name}: impatience = {impatienceReward}, fear = {fearReward}, anxiety = {anxietyReward}"
-            );
+            // Debug.Log(
+            //     $"{personality.name}: impatience = {impatienceReward}, anxiety = {anxietyReward}"
+            // );
         }
 
         // [OCEAN, Neuroticism] Hesitance
         // The more hesitant, the more it is rewarded for moving slowly
         if (personality.neuroticism > 0)
-            AddReward(personality.neuroticism * moveForward * -0.002f);
+        {
+            float hesitanceReward = personality.neuroticism * moveForward * -0.005f;
+            // Debug.Log($"{personality.name}: hesitance = {hesitanceReward}");
+            AddReward(hesitanceReward);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

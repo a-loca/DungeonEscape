@@ -127,7 +127,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -143,7 +143,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &401854850489849465
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -187,6 +187,7 @@ MonoBehaviour:
   rays: {fileID: 3087726038682997373}
   areDragonsAlive: 1
   speed: 3
+  rotationSpeed: 1
   rewardSystem: {fileID: 11400000, guid: ea8c8e01bb9864511acc0a141702cdc7, type: 2}
   personality: {fileID: 0}
 --- !u!114 &3018013978012542415
@@ -363,7 +364,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 874872903735561405, guid: 11c3a001038970a218a0ab9c00af0be2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

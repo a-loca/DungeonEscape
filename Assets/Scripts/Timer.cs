@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
         maxTime = time;
         remainingTime = time;
         isActive = true;
-        Debug.Log($"Timer started, {time}s to escape.");
+        // Debug.Log($"Timer started, {time}s to escape.");
     }
 
     public void StopTimer()
@@ -41,7 +41,7 @@ public class Timer : MonoBehaviour
             }
             else
             {
-                Debug.Log("Time is up!");
+                // Debug.Log("Time is up!");
                 if (onTimerEndEvent != null)
                     onTimerEndEvent();
                 isActive = false;
