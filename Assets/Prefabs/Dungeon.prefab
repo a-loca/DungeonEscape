@@ -109,16 +109,16 @@ MonoBehaviour:
   personalitySettings:
   - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
     behaviorName: ExtrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: a16de4d42f61f61c48e211b363618512, type: 3}
+    inferenceModel: {fileID: 5022602860645237092, guid: a75497dbefa50b7fd83d23326a27ca51, type: 3}
   - personality: {fileID: 11400000, guid: e3d0483c418d32e6ba34fa09e3f0a6b3, type: 2}
     behaviorName: IntrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: b7f4416b559583ef68f88885c6ddcb73, type: 3}
+    inferenceModel: {fileID: 5022602860645237092, guid: 38cee325700fc42f084508290581550c, type: 3}
   - personality: {fileID: 11400000, guid: 3658a782569923559a2a1b830e2a277f, type: 2}
     behaviorName: NonConscientiousBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: bcc925eb6cfbe5cf391b9a5efbd8d5be, type: 3}
+    inferenceModel: {fileID: 5022602860645237092, guid: 9f714dcaab36491ea83418c3c85ca678, type: 3}
   - personality: {fileID: 11400000, guid: d132936f1f3b88ec795404532b3d0b0c, type: 2}
     behaviorName: NeuroticBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: e321101aeff9ef00c984e02869073634, type: 3}
+    inferenceModel: {fileID: 5022602860645237092, guid: 52fc6c360ac5beecbb6f464db63ef666, type: 3}
 --- !u!114 &2318661600785869606
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,12 +17,6 @@ public class AgentEpisodeStats
     // How many dragons the agent has killed during the episode
     public int dragonsKilled = 0;
 
-    // Whether the agent has picked up the key during the episode
-    public bool hasKey = false;
-
-    // How many times the agent hit a dragon
-    public int hitsInflicted = 0;
-
     // Time between key dropped in the arena and agent picking it up
     // If -1, the agent never picked up the key
     public float timeToFindKey = -1f;
@@ -49,7 +43,7 @@ public class AgentEpisodeStats
     // Time spent in the vicinity of other agents during the episode
     public float timeInVicinityOfAgents = 0f;
 
-    public void MeanDistanceAndProximityFromAllAgents(List<GameObject> agents)
+    public void MeanDistanceAndProximityFromAllAgents(List<AgentBehavior> agents)
     {
         (float meanDistance, bool isInVicinity) = MeanDistanceFromGameObjects(agents);
 
@@ -68,7 +62,7 @@ public class AgentEpisodeStats
         }
     }
 
-    public void MeanDistanceFromAllDragons(List<GameObject> dragons)
+    public void MeanDistanceFromAllDragons(List<DragonBehavior> dragons)
     {
         (float meanDistance, _) = MeanDistanceFromGameObjects(dragons);
 
@@ -81,7 +75,8 @@ public class AgentEpisodeStats
         numberOfMeanDistanceFromDragonsCalcs++;
     }
 
-    private (float, bool) MeanDistanceFromGameObjects(List<GameObject> gameObjects)
+    private (float, bool) MeanDistanceFromGameObjects<T>(List<T> gameObjects)
+        where T : Component
     {
         float sum = 0f;
 
@@ -89,7 +84,7 @@ public class AgentEpisodeStats
 
         foreach (var obj in gameObjects)
         {
-            if (obj == agent.gameObject)
+            if (obj == agent)
             {
                 continue;
             }
@@ -120,10 +115,10 @@ public class AgentEpisodeStats
         string[] values = new string[]
         {
             episodeCounter.ToString(),
-            agent.personality.name,
-            hitsInflicted.ToString(),
+            agent.Personality.name,
+            agent.HitsInflicted.ToString(),
             dragonsKilled.ToString(),
-            hasKey ? "1" : "0",
+            agent.HasKey ? "1" : "0",
             timeToFindKey.ToString("0.000"),
             agentCollisions.ToString(),
             distanceTraveled.ToString("0.000"),
@@ -134,17 +129,5 @@ public class AgentEpisodeStats
         };
 
         return string.Join(";", values);
-    }
-
-    public void Print()
-    {
-        Debug.Log(
-            $"Dragons Killed: {dragonsKilled}, "
-                + $"Has Key: {hasKey}, "
-                + $"Hits Inflicted: {hitsInflicted}, "
-                + $"Time to Find Key: {timeToFindKey}, "
-                + $"Distance Traveled: {distanceTraveled}"
-        // + $"Average Distance to Closest Agent: {averageDistanceToClosestAgent()}"
-        );
     }
 }

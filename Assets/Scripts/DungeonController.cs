@@ -35,13 +35,13 @@ public class DungeonController : MonoBehaviour
     private GameObject dragonPrefab;
 
     [HideInInspector]
-    public List<GameObject> dragons;
+    public List<DragonBehavior> dragons;
 
     [SerializeField]
     private GameObject agentPrefab;
 
     [HideInInspector]
-    public List<GameObject> agents;
+    public List<AgentBehavior> agents;
 
     [SerializeField]
     private GameObject keyPrefab;
@@ -89,8 +89,8 @@ public class DungeonController : MonoBehaviour
 
     void Start()
     {
-        agents = new List<GameObject>();
-        dragons = new List<GameObject>();
+        agents = new List<AgentBehavior>();
+        dragons = new List<DragonBehavior>();
 
         agentGroup = new SimpleMultiAgentGroup();
 
@@ -137,16 +137,14 @@ public class DungeonController : MonoBehaviour
         // Reset number of dragons in the environment
         remainingDragons = numberOfDragons;
 
-        // Reposition and register agents
-        foreach (var agent in agents)
+        // Reposition and reset agents
+        foreach (AgentBehavior agent in agents)
         {
-            AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
-
             // Log stats of the episode that just ended
             if (episodeCounter > 0 && computeEpisodeStats)
-                EpisodeCSVLogger.LogAgentEpisode(agentBehavior.stats.ToCSVString(episodeCounter));
+                EpisodeCSVLogger.LogAgentEpisode(agent.stats.ToCSVString(episodeCounter));
 
-            agentBehavior.Reset();
+            agent.Reset();
 
             // Reposition the agent
             agent.transform.position = GetRandomPosition();
@@ -164,7 +162,7 @@ public class DungeonController : MonoBehaviour
         // Heal and reposition dragon (need to warp the mesh agent)
         for (int i = 0; i < dragons.Count; i++)
         {
-            dragons[i].GetComponent<DragonBehavior>().Resuscitate(dragonPositions[i]);
+            dragons[i].Resuscitate(dragonPositions[i]);
         }
 
         // Lock door
@@ -196,7 +194,7 @@ public class DungeonController : MonoBehaviour
         ResetEnvironment();
     }
 
-    private void WinEpisode(GameObject agent)
+    private void WinEpisode()
     {
         // Debug.Log("Door was unlocked, agents escaped!");
 
@@ -225,21 +223,25 @@ public class DungeonController : MonoBehaviour
             AgentBehavior agentBehavior = agent.GetComponent<AgentBehavior>();
 
             agentBehavior.computeEpisodeStats = computeEpisodeStats;
-            agentBehavior.SetDungeonController(this);
+
+            agentBehavior.Id = i;
+
+            agentBehavior.Dungeon = this;
 
             // Set the OCEAN personality parameters of the agent
-            agentBehavior.SetPersonality(personalitySettings[i].personality);
+            agentBehavior.Personality = personalitySettings[i].personality;
 
             // Set the correct behavior name in order to train the correct model
             BehaviorParameters behaviorParams = agent.GetComponent<BehaviorParameters>();
             behaviorParams.BehaviorName = personalitySettings[i].behaviorName;
+            // Set the correct mode: training or inference
             behaviorParams.Model = personalitySettings[i].inferenceModel;
             behaviorParams.BehaviorType = inference
                 ? BehaviorType.InferenceOnly
                 : BehaviorType.Default;
 
             // Add to the collection of agents spawned by the environment
-            agents.Add(agent);
+            agents.Add(agentBehavior);
 
             // Register the agent to the multiagent group
             agentGroup.RegisterAgent(agentBehavior);
@@ -259,7 +261,7 @@ public class DungeonController : MonoBehaviour
             db.onDragonEscapeEvent += () => FailEpisode(FailureReason.DragonEscaped);
             db.onDragonSlainEvent += DragonWasKilled;
 
-            dragons.Add(dragon);
+            dragons.Add(db);
         }
     }
 
@@ -277,9 +279,9 @@ public class DungeonController : MonoBehaviour
             timer.StartTimer(timeToEscape);
 
             // All agents need to know that the dragons are dead
-            foreach (var agent in agents)
+            foreach (AgentBehavior agent in agents)
             {
-                agent.GetComponent<AgentBehavior>().areDragonsAlive = false;
+                agent.AreDragonsAlive = false;
             }
 
             // Spawn the key in the environment
@@ -306,14 +308,14 @@ public class DungeonController : MonoBehaviour
         keyGrabbedByAgent = true;
     }
 
-    public int CountNearbyAgents(GameObject agent, float radius)
+    public int CountNearbyAgents(int agentId, Vector3 position, float radius)
     {
         int count = 0;
-        foreach (var other in agents)
+        foreach (AgentBehavior other in agents)
         {
-            if (agent != other)
+            if (agentId != other.Id)
             {
-                float dist = Vector3.Distance(other.transform.position, agent.transform.position);
+                float dist = Vector3.Distance(other.transform.position, position);
                 if (dist < radius)
                 {
                     count++;
@@ -322,6 +324,29 @@ public class DungeonController : MonoBehaviour
         }
 
         return count;
+    }
+
+    public float GetAgentDistanceFromTeam(int agentId, Vector3 position)
+    {
+        Vector3 sum = new Vector3(0, 0, 0);
+
+        foreach (AgentBehavior other in agents)
+        {
+            if (agentId != other.Id)
+            {
+                sum += other.transform.position;
+            }
+        }
+
+        Vector3 teamCentroid = sum / (agents.Count() - 1);
+        return Vector3.Distance(teamCentroid, position);
+    }
+
+    public float NormalizedDistanceFromExit(Vector3 position)
+    {
+        // Distance between agent and door
+        float distance = Vector3.Distance(position, door.transform.position);
+        return distance / maxDistance;
     }
 
     private Vector3 GetRandomPosition()

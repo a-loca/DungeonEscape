@@ -7,7 +7,7 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     private bool isLocked = true;
-    public event Action<GameObject> OnAgentEscape;
+    public event Action OnAgentEscape;
 
     private void UnlockDoor()
     {
@@ -33,7 +33,7 @@ public class DoorController : MonoBehaviour
 
             // If the agent has the key, then the door will be
             // unlocked for everyone
-            if (isLocked && agent.HasKey())
+            if (isLocked && agent.HasKey)
             {
                 UnlockDoor();
             }
@@ -45,7 +45,7 @@ public class DoorController : MonoBehaviour
                 if (OnAgentEscape != null)
                 {
                     // Agent escape
-                    OnAgentEscape(collision.gameObject);
+                    OnAgentEscape();
                 }
 
                 return;
