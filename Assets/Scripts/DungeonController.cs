@@ -4,12 +4,12 @@ using Unity.Barracuda;
 using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class DungeonController : MonoBehaviour
 {
-    private int episodeCounter = 0;
-
+    // ========================================================================
+    // Inspector fields
+    // ========================================================================
     [Header("Stats")]
     public bool computeEpisodeStats = false;
 
@@ -18,58 +18,34 @@ public class DungeonController : MonoBehaviour
     private GameObject cave;
 
     [SerializeField]
-    private GameObject floor;
-
-    [HideInInspector]
-    public float maxDistance;
+    private GameObject door;
 
     [SerializeField]
-    private GameObject door;
-    private DoorController doorController;
+    private GameObject floor;
 
     [SerializeField]
     private GameObject columns;
 
     [Header("Prefabs")]
     [SerializeField]
-    private GameObject dragonPrefab;
-
-    [HideInInspector]
-    public List<DragonBehavior> dragons;
-
-    [SerializeField]
     private GameObject agentPrefab;
 
-    [HideInInspector]
-    public List<AgentBehavior> agents;
+    [SerializeField]
+    private GameObject dragonPrefab;
 
     [SerializeField]
     private GameObject keyPrefab;
-
-    [HideInInspector]
-    public GameObject key;
-
-    [HideInInspector]
-    public bool keyGrabbedByAgent = false;
 
     [Header("Episode Settings")]
     public int numberOfAgents = 3;
     public int numberOfDragons = 2;
 
-    [HideInInspector]
-    public int remainingDragons;
-
     [Header("Timer")]
     public float timeToEscape = 30f;
-
-    [HideInInspector]
-    public Timer timer;
 
     [Header("Reward System")]
     [SerializeField]
     private GroupRewardSystem groupRewardSystem;
-
-    private SimpleMultiAgentGroup agentGroup;
 
     // Need an object of both personality and behavior name
     [Header("Personality")]
@@ -85,32 +61,88 @@ public class DungeonController : MonoBehaviour
 
     public PersonalitySettings[] personalitySettings;
 
-    private GlobalEpisodeStats globalEpisodeStats;
+    // ========================================================================
+    // Public state information of the dungeon, read by agents or needed for stats
+    // ========================================================================
+    [HideInInspector]
+    public float maxDistance;
 
+    [HideInInspector]
+    public List<DragonBehavior> dragons;
+
+    [HideInInspector]
+    public List<AgentBehavior> agents;
+
+    [HideInInspector]
+    public bool keyGrabbedByAgent = false;
+
+    [HideInInspector]
+    public int remainingDragons;
+
+    [HideInInspector]
+    public Timer timer;
+
+    [HideInInspector]
+    public GameObject key;
+
+    // ========================================================================
+    // Private state information
+    // ========================================================================
+    private int episodeCounter = 0;
+    private DoorController doorController;
+    private Bounds floorBounds;
+    private SimpleMultiAgentGroup agentGroup;
+    private GlobalEpisodeStats globalEpisodeStats;
+    private LayerMask spawnBlockerLayers;
+
+    // ========================================================================
+    // Constants
+    // ========================================================================
+    private const float CAVE_MARGIN_FROM_WALL = 0.7f;
+    private const float MARGIN_FROM_WALL = 1f;
+    private const float SPAWN_HEIGHT_OFFSET = 0.3f;
+    private const float CAVE_SPAWN_HEIGHT_OFFSET = 0.5f;
+    private const float DOOR_SPAWN_HEIGHT_OFFSET = 0.9f;
+    private const float SAFE_SPAWN_RADIUS = 0.8f;
+
+    private enum LightColor
+    {
+        Default,
+        Green,
+        Red,
+    };
+
+    private readonly Dictionary<LightColor, string> LightColorToHex = new()
+    {
+        { LightColor.Green, "#3AC186" },
+        { LightColor.Red, "#C13A61" },
+        { LightColor.Default, "#943AC1" },
+    };
+
+    // ========================================================================
+    // Initialization and reset
+    // ========================================================================
     void Start()
     {
+        spawnBlockerLayers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent", "Key");
+
         agents = new List<AgentBehavior>();
         dragons = new List<DragonBehavior>();
-
         agentGroup = new SimpleMultiAgentGroup();
 
-        SpawnDragons();
+        floorBounds = floor.GetComponent<Collider>().bounds;
+        maxDistance = Mathf.Sqrt(
+            floorBounds.size.x * floorBounds.size.x + floorBounds.size.z * floorBounds.size.z
+        );
 
-        // Instantiate agents and register them in the group
-        SpawnAgents();
+        InstantiateDragons();
+        InstantiateAgents(); // this also registers them into the group
 
         timer = GetComponent<Timer>();
         timer.onTimerEndEvent += () => FailEpisode(FailureReason.Timer);
 
         doorController = door.GetComponent<DoorController>();
         doorController.OnAgentEscape += WinEpisode;
-
-        // Get maximum distance two objects can be placed at in the arena
-        // Needed for agent rewards
-        Bounds bounds = floor.GetComponent<Collider>().bounds;
-        // Pythagorean theorem
-        maxDistance = (float)
-            Mathf.Sqrt(bounds.size.x * bounds.size.x + bounds.size.z * bounds.size.z);
 
         ResetEnvironment();
     }
@@ -153,11 +185,14 @@ public class DungeonController : MonoBehaviour
             agent.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         }
 
-        // Respawn cave
-        Vector3[] dragonPositions = SpawnCaveAndDragons();
-
         // Respawn door
         SpawnDoor();
+
+        // Lock door
+        doorController.LockDoor();
+
+        // Respawn cave
+        Vector3[] dragonPositions = SpawnCaveAndDragons();
 
         // Heal and reposition dragon (need to warp the mesh agent)
         for (int i = 0; i < dragons.Count; i++)
@@ -165,12 +200,37 @@ public class DungeonController : MonoBehaviour
             dragons[i].Resuscitate(dragonPositions[i]);
         }
 
-        // Lock door
-        doorController.LockDoor();
-
         // Increment episode counter
         episodeCounter++;
+
         //Debug.Log("Starting episode " + episodeCounter);
+    }
+
+    // ========================================================================
+    // Episode handling
+    // ========================================================================
+    public void DragonWasKilled()
+    {
+        remainingDragons--;
+
+        agentGroup.AddGroupReward(groupRewardSystem.killDragon);
+
+        if (remainingDragons == 0)
+        {
+            // Debug.Log("All dragons have been slain!");
+
+            // Start the timer to escape
+            timer.StartTimer(timeToEscape);
+
+            // All agents need to know that the dragons are dead
+            foreach (AgentBehavior agent in agents)
+            {
+                agent.AreDragonsAlive = false;
+            }
+
+            // Spawn the key in the environment
+            InstantiateKey();
+        }
     }
 
     public void FailEpisode(FailureReason reason)
@@ -187,7 +247,7 @@ public class DungeonController : MonoBehaviour
         // The group gets a punishment
         agentGroup.AddGroupReward(groupRewardSystem.dragonsEscape);
 
-        ChangeLightsColor("red");
+        ChangeLightsColor(LightColor.Red);
 
         // End group episode
         agentGroup.EndGroupEpisode();
@@ -202,7 +262,7 @@ public class DungeonController : MonoBehaviour
         if (computeEpisodeStats)
             globalEpisodeStats.win = true;
 
-        ChangeLightsColor("green");
+        ChangeLightsColor(LightColor.Green);
 
         // Group reward
         agentGroup.AddGroupReward(groupRewardSystem.escape);
@@ -214,7 +274,10 @@ public class DungeonController : MonoBehaviour
         ResetEnvironment();
     }
 
-    private void SpawnAgents()
+    // ========================================================================
+    // Instantiate objects from prefabs
+    // ========================================================================
+    private void InstantiateAgents()
     {
         for (int i = 0; i < numberOfAgents; i++)
         {
@@ -248,7 +311,7 @@ public class DungeonController : MonoBehaviour
         }
     }
 
-    private void SpawnDragons()
+    private void InstantiateDragons()
     {
         for (int i = 0; i < numberOfDragons; i++)
         {
@@ -265,31 +328,7 @@ public class DungeonController : MonoBehaviour
         }
     }
 
-    public void DragonWasKilled()
-    {
-        remainingDragons--;
-
-        agentGroup.AddGroupReward(groupRewardSystem.killDragon);
-
-        if (remainingDragons == 0)
-        {
-            // Debug.Log("All dragons have been slain!");
-
-            // Start the timer to escape
-            timer.StartTimer(timeToEscape);
-
-            // All agents need to know that the dragons are dead
-            foreach (AgentBehavior agent in agents)
-            {
-                agent.AreDragonsAlive = false;
-            }
-
-            // Spawn the key in the environment
-            SpawnKey();
-        }
-    }
-
-    private void SpawnKey()
+    private void InstantiateKey()
     {
         // Spawn key in random position
         GameObject key = Instantiate(
@@ -302,34 +341,154 @@ public class DungeonController : MonoBehaviour
         this.key = key;
     }
 
-    public void RemoveKey()
+    public void DestroyKey()
     {
         Destroy(key);
         keyGrabbedByAgent = true;
     }
 
-    public int CountNearbyAgents(int agentId, Vector3 position, float radius)
+    // ========================================================================
+    // Positionin the objects in the environment
+    // ========================================================================
+    private void SpawnDoor()
     {
-        int count = 0;
-        foreach (AgentBehavior other in agents)
+        // Spawn the door in one of the 4 sides of the arena
+        float margin = MARGIN_FROM_WALL;
+
+        float y = floorBounds.max.y + DOOR_SPAWN_HEIGHT_OFFSET;
+        Vector3 center = floorBounds.center;
+
+        // Defining the 4 possible spawn points
+        // which are the center point of each wall
+        Vector3[] sideCenters =
         {
-            if (agentId != other.Id)
+            new Vector3(floorBounds.min.x + margin, y, center.z), // left side
+            new Vector3(floorBounds.max.x - margin, y, center.z), // right side
+            new Vector3(center.x, y, floorBounds.min.z + margin), // bottom side
+            new Vector3(center.x, y, floorBounds.max.z - margin), // top side
+        };
+
+        // Extracting a random side
+        door.transform.position = sideCenters[Random.Range(0, sideCenters.Length)];
+
+        // Rotate door towards center of the floor
+        door.transform.LookAt(new Vector3(center.x, center.y + DOOR_SPAWN_HEIGHT_OFFSET, center.z));
+    }
+
+    private Vector3[] SpawnCaveAndDragons()
+    {
+        float margin = CAVE_MARGIN_FROM_WALL;
+
+        float cave_y = floorBounds.max.y + CAVE_SPAWN_HEIGHT_OFFSET;
+
+        // Define the 4 corners of the arena
+        Vector3[] corners =
+        {
+            new Vector3(floorBounds.min.x + margin, cave_y, floorBounds.min.z + margin),
+            new Vector3(floorBounds.min.x + margin, cave_y, floorBounds.max.z - margin),
+            new Vector3(floorBounds.max.x - margin, cave_y, floorBounds.min.z + margin),
+            new Vector3(floorBounds.max.x - margin, cave_y, floorBounds.max.z - margin),
+        };
+
+        // Choose a random corner of the 4 available on the floor
+        Vector3 cavePosition = corners[Random.Range(0, corners.Length)];
+
+        // Move cave to generated position
+        cave.transform.position = cavePosition;
+
+        // Rotate cave towards center of the floor
+        cave.transform.LookAt(floorBounds.center);
+
+        // Check where the cave is
+        bool caveOnLeft = cavePosition.x < floorBounds.center.x;
+        bool caveOnBottom = cavePosition.z < floorBounds.center.z;
+
+        // Find bounds of the opposite half of the dungeon
+        // with respect to the cave.
+
+        // If the cave is on the left, then the lower bound of the
+        // spawn area of the dragon should be the center,
+        // and the top the top right. If the cave is on the right, then
+        // the upper bound is the center of the arena, the lower bound is
+        // the opposite corner
+        float minX = caveOnLeft ? floorBounds.center.x : floorBounds.min.x + margin;
+        float maxX = caveOnLeft ? floorBounds.max.x - margin : floorBounds.center.x;
+
+        // If the cave is on the bottom side,
+        // lower bound is the center, upper bound is the top of the arena
+        float minZ = caveOnBottom ? floorBounds.center.z : floorBounds.min.z + margin;
+        float maxZ = caveOnBottom ? floorBounds.max.z - margin : floorBounds.center.z;
+
+        return GetNonOverlappingRandomPositions(numberOfDragons, minX, maxX, minZ, maxZ);
+    }
+
+    private Vector3 GetRandomPosition()
+    {
+        // Position slightly on top of the floor
+        float y = floorBounds.max.y + SPAWN_HEIGHT_OFFSET;
+
+        // Some margin to avoid spawning on the walls
+        float margin = MARGIN_FROM_WALL;
+
+        float minX = floorBounds.min.x + margin;
+        float maxX = floorBounds.max.x - margin;
+        float minZ = floorBounds.min.z + margin;
+        float maxZ = floorBounds.max.z - margin;
+
+        return GetNonOverlappingRandomPositions(1, minX, maxX, minZ, maxZ)[0];
+    }
+
+    private Vector3[] GetNonOverlappingRandomPositions(
+        int numberOfPositions,
+        float minX,
+        float maxX,
+        float minZ,
+        float maxZ
+    )
+    {
+        // Position slightly on top of the floor
+        float y = floorBounds.max.y + SPAWN_HEIGHT_OFFSET;
+
+        // Get a position for the dragon within the opposite side of the cave
+        // avoiding columns
+        Vector3[] positions = new Vector3[numberOfPositions];
+        int foundPositions = 0;
+
+        while (foundPositions < numberOfPositions)
+        {
+            float x = Random.Range(minX, maxX);
+            float z = Random.Range(minZ, maxZ);
+
+            Vector3 position = new Vector3(x, y, z);
+
+            // Keep sampling positions until you find one
+            // that is not overlapping a column. Also, avoid spawning
+            // overlapping agent
+            if (!Physics.CheckSphere(position, SAFE_SPAWN_RADIUS, spawnBlockerLayers))
             {
-                float dist = Vector3.Distance(other.transform.position, position);
-                if (dist < radius)
-                {
-                    count++;
-                }
+                positions[foundPositions] = position;
+                foundPositions++;
             }
         }
 
-        return count;
+        return positions;
+    }
+
+    // ========================================================================
+    // Utilities for agents to get information about the dungeon
+    // ========================================================================
+    public int CountNearbyAgents(int agentId, Vector3 position, float radius)
+    {
+        return agents.Count(a =>
+            a.Id != agentId && Vector3.Distance(a.transform.position, position) < radius
+        );
     }
 
     public float GetAgentDistanceFromTeam(int agentId, Vector3 position)
     {
+        // Calc mean position of the agents in the team
+        // excluded the one that is requesting the distance
         Vector3 sum = new Vector3(0, 0, 0);
-
         foreach (AgentBehavior other in agents)
         {
             if (agentId != other.Id)
@@ -339,6 +498,7 @@ public class DungeonController : MonoBehaviour
         }
 
         Vector3 teamCentroid = sum / (agents.Count() - 1);
+
         return Vector3.Distance(teamCentroid, position);
     }
 
@@ -349,180 +509,14 @@ public class DungeonController : MonoBehaviour
         return distance / maxDistance;
     }
 
-    private Vector3 GetRandomPosition()
-    {
-        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
+    // ========================================================================
+    // General utilities
+    // ========================================================================
 
-        // Position slightly on top of the floor
-        float y = floorBounds.max.y + 0.3f;
-
-        // Generate positions until one is not overlapping columns
-        bool foundPosition = false;
-        Vector3 position = new Vector3(0, 0, 0);
-
-        // Some margin to avoid spawning on the walls
-        float margin = 1f;
-        float safeRadius = 0.8f;
-        LayerMask blockers = LayerMask.GetMask("Obstacle", "Door", "Dragon", "Agent", "Key");
-
-        while (!foundPosition)
-        {
-            float randomX = Random.Range(floorBounds.min.x + margin, floorBounds.max.x - margin);
-            float randomZ = Random.Range(floorBounds.min.z + margin, floorBounds.max.z - margin);
-
-            position = new Vector3(randomX, y, randomZ);
-
-            // If the new position is not overlapping with a column/wall/cave/others
-            if (!Physics.CheckSphere(position, safeRadius, blockers))
-                foundPosition = true;
-        }
-
-        return position;
-    }
-
-    private Vector3[] SpawnCaveAndDragons()
-    {
-        float margin = 0.7f;
-
-        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
-
-        float y = floorBounds.max.y + 0.5f;
-
-        // Define the 4 corners
-        Vector3[] corners = new Vector3[4];
-        corners[0] = new Vector3(floorBounds.min.x + margin, y, floorBounds.min.z + margin);
-        corners[1] = new Vector3(floorBounds.min.x + margin, y, floorBounds.max.z - margin);
-        corners[2] = new Vector3(floorBounds.max.x - margin, y, floorBounds.min.z + margin);
-        corners[3] = new Vector3(floorBounds.max.x - margin, y, floorBounds.max.z - margin);
-
-        // Choose a random corner of the 4 available on the floor
-        int caveIndex = Random.Range(0, corners.Length);
-        Vector3 cavePosition = corners[caveIndex];
-
-        // Move cave to generated position
-        cave.transform.position = cavePosition;
-
-        // Rotate cave towards center of the floor
-        cave.transform.LookAt(floorBounds.center);
-
-        // Find bounds of the opposite half of the dungeon
-        // with respect to the cave
-        float minX,
-            maxX,
-            minZ,
-            maxZ;
-
-        // Check where the cave is
-        bool caveOnLeft = cavePosition.x < floorBounds.center.x;
-        bool caveOnBottom = cavePosition.z < floorBounds.center.z;
-
-        if (caveOnLeft)
-        {
-            // If the cave is on the left,
-            // then the lower boun of the spawn area of the dragon
-            // should be the center, and the top the top right
-            minX = floorBounds.center.x;
-            maxX = floorBounds.max.x - margin;
-        }
-        else
-        {
-            // If the cave is on the right, then the upper bound is the
-            // center of the arena, the lower bound is the opposite corner
-            minX = floorBounds.min.x + margin;
-            maxX = floorBounds.center.x;
-        }
-
-        if (caveOnBottom)
-        {
-            // If the cave is on the bottom side,
-            // lower bound is the center, upper bound is the
-            // top of the arena
-            minZ = floorBounds.center.z;
-            maxZ = floorBounds.max.z - margin;
-        }
-        else
-        {
-            minZ = floorBounds.min.z + margin;
-            maxZ = floorBounds.center.z;
-        }
-
-        // Get a position for the dragon within the opposite side of the cave
-        // avoiding columns
-        Vector3[] dragonPositions = new Vector3[numberOfDragons];
-        int foundPositions = 0;
-        float safeRadius = 0.8f;
-        LayerMask spawnBlockers = LayerMask.GetMask("Obstacle", "Agent", "Dragon", "Door");
-
-        while (foundPositions < numberOfDragons)
-        {
-            float x = Random.Range(minX, maxX);
-            float z = Random.Range(minZ, maxZ);
-
-            Vector3 dragonPos = new Vector3(x, y, z);
-
-            // Keep sampling positions until you find one
-            // that is not overlapping a column. Also, avoid spawning
-            // overlapping agent
-            if (!Physics.CheckSphere(dragonPos, safeRadius, spawnBlockers))
-            {
-                dragonPositions[foundPositions] = dragonPos;
-                foundPositions++;
-            }
-        }
-
-        return dragonPositions;
-    }
-
-    private void SpawnDoor()
-    {
-        // Spawn the door in one of the 4 sides of the arena
-        float margin = 1f;
-        float marginBottom = 0.9f;
-
-        Bounds floorBounds = floor.GetComponent<Collider>().bounds;
-
-        float y = floorBounds.max.y + marginBottom;
-        Vector3 center = floorBounds.center;
-
-        // Defining the 4 possible spawn points
-        // which are the center point of each wall
-        Vector3[] sideCenters = new Vector3[4];
-
-        // Left side
-        sideCenters[0] = new Vector3(floorBounds.min.x + margin, y, center.z);
-
-        // Right side
-        sideCenters[1] = new Vector3(floorBounds.max.x - margin, y, center.z);
-
-        // Bottom side
-        sideCenters[2] = new Vector3(center.x, y, floorBounds.min.z + margin);
-
-        // Top side
-        sideCenters[3] = new Vector3(center.x, y, floorBounds.max.z - margin);
-
-        // Extracting a random side
-        Vector3 doorPos = sideCenters[Random.Range(0, sideCenters.Length)];
-        door.transform.position = doorPos;
-
-        // Rotate door towards center of the floor
-        door.transform.LookAt(new Vector3(center.x, center.y + marginBottom, center.z));
-    }
-
-    public void ChangeLightsColor(string color)
+    private void ChangeLightsColor(LightColor color)
     {
         Color newColor;
-        switch (color)
-        {
-            case "green":
-                ColorUtility.TryParseHtmlString("#3AC186", out newColor);
-                break;
-            case "red":
-                ColorUtility.TryParseHtmlString("#C13A61", out newColor);
-                break;
-            default:
-                ColorUtility.TryParseHtmlString("#943AC1", out newColor);
-                break;
-        }
+        ColorUtility.TryParseHtmlString(LightColorToHex[color], out newColor);
 
         // Change color of each column light
         foreach (Transform column in columns.transform)
@@ -534,6 +528,9 @@ public class DungeonController : MonoBehaviour
         }
     }
 
+    // ========================================================================
+    // Stats
+    // ========================================================================
     void FixedUpdate()
     {
         if (!computeEpisodeStats)

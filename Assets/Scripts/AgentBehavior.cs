@@ -7,10 +7,12 @@ using UnityEngine;
 
 public class AgentBehavior : Agent, IAgentState
 {
+    // ========================================================================
+    // Inspector fields
+    // ========================================================================
     [Header("Agent components")]
     [SerializeField]
     private GameObject key;
-    private Rigidbody rb;
 
     [SerializeField]
     private Animator swordAnimator;
@@ -24,9 +26,16 @@ public class AgentBehavior : Agent, IAgentState
 
     [Header("Reward system")]
     public RewardSystem rewardSystem;
-    private AgentRewardCalculator rewardCalculator;
 
+    // ========================================================================
+    // Private fields
+    // ========================================================================
+    private AgentRewardCalculator rewardCalculator;
+    private Rigidbody rb;
+
+    // ========================================================================
     // State information
+    // =========================================================================
     public int Id { get; set; }
     public bool AreDragonsAlive { get; set; }
     public bool HasKey { get; set; }
@@ -37,7 +46,10 @@ public class AgentBehavior : Agent, IAgentState
     public Vector3 Position => transform.position;
     public RewardSystem RewardSystem => rewardSystem;
 
-    // ShoulD code to get the stats be run
+    // ========================================================================
+    // Stats
+    // =========================================================================
+    // Should code to get the stats be run
     [HideInInspector]
     public bool computeEpisodeStats;
 
@@ -47,6 +59,9 @@ public class AgentBehavior : Agent, IAgentState
     // Last position the agent was in, used to compute distance traveled
     private Vector3 lastPosition;
 
+    // ========================================================================
+    // Initialization and reset
+    // ========================================================================
     public override void Initialize()
     {
         // Get rigid body component to allow movement
@@ -56,6 +71,7 @@ public class AgentBehavior : Agent, IAgentState
 
         rewardCalculator = new AgentRewardCalculator(this);
     }
+    
 
     public void Reset()
     {
@@ -71,6 +87,9 @@ public class AgentBehavior : Agent, IAgentState
             stats = new AgentEpisodeStats(this);
     }
 
+    // ========================================================================
+    // Collision handling
+    // ========================================================================
     void OnCollisionEnter(Collision collision)
     {
         string tag = collision.gameObject.tag;
@@ -92,7 +111,7 @@ public class AgentBehavior : Agent, IAgentState
         if (tag == "Key")
         {
             // Destroy the key
-            Dungeon.RemoveKey();
+            Dungeon.DestroyKey();
 
             // Debug.Log("Knight picked up the key!");
 
@@ -139,6 +158,10 @@ public class AgentBehavior : Agent, IAgentState
         AddReward(rewardSystem.hitClosedDoor);
     }
 
+    // ========================================================================
+    // Agent overrides
+    // ========================================================================
+
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveRotate = actions.ContinuousActions[0];
@@ -178,6 +201,10 @@ public class AgentBehavior : Agent, IAgentState
         sensor.AddObservation(HasKey ? 1f : 0f);
     }
 
+    // ========================================================================
+    // Stats collection
+    // ========================================================================
+
     public void FixedUpdate()
     {
         if (!computeEpisodeStats)
@@ -200,6 +227,9 @@ public class AgentBehavior : Agent, IAgentState
         stats.UpdateIdleTime(rb.velocity.magnitude);
     }
 
+    // ========================================================================
+    // Others
+    // ========================================================================
     void OnDrawGizmos()
     {
         // Write the agent's personality name on top of it
