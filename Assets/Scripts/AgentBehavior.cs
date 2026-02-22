@@ -48,16 +48,12 @@ public class AgentBehavior : Agent, IAgentState
 
     // ========================================================================
     // Stats
-    // =========================================================================
-    // Should code to get the stats be run
+    // ========================================================================
     [HideInInspector]
     public bool computeEpisodeStats;
 
     [HideInInspector]
     public AgentEpisodeStats stats;
-
-    // Last position the agent was in, used to compute distance traveled
-    private Vector3 lastPosition;
 
     // ========================================================================
     // Initialization and reset
@@ -71,16 +67,18 @@ public class AgentBehavior : Agent, IAgentState
 
         rewardCalculator = new AgentRewardCalculator(this);
     }
-    
 
     public void Reset()
     {
+        // Reset episode state variables
         HitsInflicted = 0;
         HasKey = false;
         AreDragonsAlive = true;
 
+        // Some rewards rely on cumulative episode stats
         rewardCalculator.ResetCounters();
 
+        // Hide held key
         key.SetActive(false);
 
         if (computeEpisodeStats)
@@ -93,40 +91,48 @@ public class AgentBehavior : Agent, IAgentState
     void OnCollisionEnter(Collision collision)
     {
         string tag = collision.gameObject.tag;
-        if (tag == "Dragon")
+
+        switch (tag)
         {
-            HitDragon(collision.gameObject);
-        }
-        if (tag == "Walls" || tag == "Cave")
-        {
-            AddReward(rewardCalculator.GetObstacleHitReward());
-        }
-        if (tag == "Agent")
-        {
-            AddReward(rewardCalculator.GetAgentHitReward());
+            case "Dragon":
+                HitDragon(collision.gameObject);
+                break;
 
-            if (computeEpisodeStats)
-                stats.agentCollisions++;
-        }
-        if (tag == "Key")
-        {
-            // Destroy the key
-            Dungeon.DestroyKey();
+            case "Walls":
+            case "Cave":
+                AddReward(rewardCalculator.GetObstacleHitReward());
+                break;
 
-            // Debug.Log("Knight picked up the key!");
+            case "Agent":
+                AddReward(rewardCalculator.GetAgentHitReward());
 
-            // Agent acquires the key
-            HasKey = true;
-            key.SetActive(true);
+                if (computeEpisodeStats)
+                    stats.agentCollisions++;
 
-            rewardCalculator.SetPreviousDistanceFromExit(
-                Dungeon.NormalizedDistanceFromExit(transform.position)
-            );
+                break;
 
-            if (computeEpisodeStats)
-            {
-                stats.timeToFindKey = Dungeon.timer.TimeElapsed();
-            }
+            case "Key":
+                // Destroy the key
+                Dungeon.DestroyKey();
+
+                // Debug.Log("Knight picked up the key!");
+
+                // Agent acquires the key
+                HasKey = true;
+                key.SetActive(true);
+
+                rewardCalculator.SetPreviousDistanceFromExit(
+                    Dungeon.NormalizedDistanceFromExit(transform.position)
+                );
+
+                float reward = rewardCalculator.GetKeyGrabReward();
+                AddReward(reward);
+
+                if (computeEpisodeStats)
+                {
+                    stats.timeToFindKey = Dungeon.timer.TimeElapsed();
+                }
+                break;
         }
     }
 
@@ -142,7 +148,8 @@ public class AgentBehavior : Agent, IAgentState
         DragonBehavior dragonBehavior = dragon.GetComponent<DragonBehavior>();
         int livesLeft = dragonBehavior.TakeAHit(Id);
 
-        float reward = rewardCalculator.GetDragonHitReward(dragon);
+        // Reward based on personality for having hit a dragon
+        float reward = rewardCalculator.GetDragonHitReward(dragon, livesLeft);
         AddReward(reward);
 
         // If the dragon has been slain
@@ -212,13 +219,14 @@ public class AgentBehavior : Agent, IAgentState
 
         // Calc distance between last position and current one
         // in order to record distance traveled during the episode
-        float dist = Vector3.Distance(transform.position, lastPosition);
-        stats.distanceTraveled += dist;
-        lastPosition = transform.position;
+        stats.UpdateTraveledDistance();
 
         // Calc mean distance from all agents and time spent
         // in proximity of other agents
         stats.MeanDistanceAndProximityFromAllAgents(Dungeon.agents);
+
+        // Calc mean speed during the episode
+        stats.UpdateMeanSpeed(rb.velocity.magnitude);
 
         // Calc mean distance from all dragons
         stats.MeanDistanceFromAllDragons(Dungeon.dragons);

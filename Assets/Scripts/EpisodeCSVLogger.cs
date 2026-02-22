@@ -40,7 +40,7 @@ public static class EpisodeCSVLogger
 
     public static string GetAgentEpisodeHeader()
     {
-        return "episode;personality;hitsInflicted;dragonsKilled;hasKey;timeToFindKey;agentCollisions;distanceTraveled;avgDistanceFromAgents;avgDistanceFromDragons;idleTime;timeInVicinityOfAgents;";
+        return "episode;personality;hitsInflicted;dragonsKilled;hasKey;timeToFindKey;agentCollisions;distanceTraveled;avgSpeed;avgDistanceFromAgents;avgDistanceFromDragons;idleTime;timeInVicinityOfAgents;";
     }
 
     public static string GetGlobalEpisodeHeader()

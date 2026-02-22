@@ -85,6 +85,9 @@ public class DungeonController : MonoBehaviour
     [HideInInspector]
     public GameObject key;
 
+    [HideInInspector]
+    public float urgency = 0f;
+
     // ========================================================================
     // Private state information
     // ========================================================================
@@ -168,6 +171,9 @@ public class DungeonController : MonoBehaviour
 
         // Reset number of dragons in the environment
         remainingDragons = numberOfDragons;
+
+        // Reset urgency
+        urgency = 0f;
 
         // Reposition and reset agents
         foreach (AgentBehavior agent in agents)
@@ -477,11 +483,13 @@ public class DungeonController : MonoBehaviour
     // ========================================================================
     // Utilities for agents to get information about the dungeon
     // ========================================================================
-    public int CountNearbyAgents(int agentId, Vector3 position, float radius)
+    public float GetAgentDensityWithinRadius(int agentId, Vector3 position, float radius)
     {
-        return agents.Count(a =>
+        int count = agents.Count(a =>
             a.Id != agentId && Vector3.Distance(a.transform.position, position) < radius
         );
+
+        return count / (numberOfAgents - 1);
     }
 
     public float GetAgentDistanceFromTeam(int agentId, Vector3 position)
@@ -509,6 +517,41 @@ public class DungeonController : MonoBehaviour
         return distance / maxDistance;
     }
 
+    private float ComputeUrgencyCausedByDragons()
+    {
+        // Return a value that represents how close the dragons are
+        // to their cave
+        float maxUrgency = 0f;
+
+        foreach (var dragon in dragons)
+        {
+            if (dragon.isActiveAndEnabled)
+            {
+                float distanceFromCave = Vector3.Distance(
+                    dragon.transform.position,
+                    cave.transform.position
+                );
+                float urgency = 1 - (distanceFromCave / maxDistance);
+
+                if (urgency > maxUrgency)
+                {
+                    maxUrgency = urgency;
+                }
+            }
+        }
+
+        // If close to 0, dragons are far from cave. If close to 1,
+        // dragons are close to cave and about to escape
+        return maxUrgency;
+    }
+
+    private float ComputeUrgencyCausedByTimer()
+    {
+        // Based on how much time is left to grab the key and escape, return
+        // a value between 0 and 1
+        return 1f - (timer.TimeLeft() / timer.maxTime);
+    }
+
     // ========================================================================
     // General utilities
     // ========================================================================
@@ -533,6 +576,10 @@ public class DungeonController : MonoBehaviour
     // ========================================================================
     void FixedUpdate()
     {
+        // Compute urgency value
+        urgency =
+            remainingDragons > 0 ? ComputeUrgencyCausedByDragons() : ComputeUrgencyCausedByTimer();
+
         if (!computeEpisodeStats)
             return;
 

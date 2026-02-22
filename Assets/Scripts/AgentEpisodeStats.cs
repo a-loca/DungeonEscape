@@ -5,12 +5,7 @@ using UnityEngine;
 
 public class AgentEpisodeStats
 {
-    private AgentBehavior agent;
-
-    public AgentEpisodeStats(AgentBehavior agent)
-    {
-        this.agent = agent;
-    }
+    private IAgentState agent;
 
     // Combat metrics and episode outcomes
 
@@ -21,8 +16,15 @@ public class AgentEpisodeStats
     // If -1, the agent never picked up the key
     public float timeToFindKey = -1f;
 
+    // Last position the agent was in, used to compute distance traveled
+    private Vector3 lastPosition;
+
     // Distance traveled during the episode
     public float distanceTraveled = 0f;
+
+    // Mean speed during the episode
+    public float meanSpeed = 0f;
+    private int numberOfMeanSpeedCalcs = 0;
 
     // How many times the agent hit another agent
     public int agentCollisions = 0;
@@ -30,7 +32,6 @@ public class AgentEpisodeStats
     // Mean distance from all agents during the episode
     private float runningAverageOfDistancesFromAgents = 0f;
     private int numberOfMeanDistanceFromAgentsCalcs = 0;
-    private const float VICINITY_THRESHOLD = 1f;
 
     // Mean distance from all dragons during the episode
     private float runningAverageOfDistancesFromDragons = 0f;
@@ -38,10 +39,17 @@ public class AgentEpisodeStats
 
     // Idle time during the episode
     public float idleTime = 0f;
-    private const float IDLE_VELOCITY_THRESHOLD = 0.1f;
 
     // Time spent in the vicinity of other agents during the episode
     public float timeInVicinityOfAgents = 0f;
+
+    private const float PROXIMITY_THRESHOLD = 1f;
+    private const float IDLE_VELOCITY_THRESHOLD = 0.1f;
+
+    public AgentEpisodeStats(IAgentState agent)
+    {
+        this.agent = agent;
+    }
 
     public void MeanDistanceAndProximityFromAllAgents(List<AgentBehavior> agents)
     {
@@ -89,16 +97,16 @@ public class AgentEpisodeStats
                 continue;
             }
 
-            float distance = Vector3.Distance(agent.transform.position, obj.transform.position);
+            float distance = Vector3.Distance(agent.Position, obj.transform.position);
             sum += distance;
 
-            if (distance < VICINITY_THRESHOLD)
+            if (distance < PROXIMITY_THRESHOLD)
             {
                 isInVicinity = true;
             }
         }
 
-        return (sum / gameObjects.Count, isInVicinity);
+        return (sum / (gameObjects.Count - 1), isInVicinity);
     }
 
     public void UpdateIdleTime(float velocity)
@@ -107,6 +115,21 @@ public class AgentEpisodeStats
         {
             idleTime += Time.fixedDeltaTime;
         }
+    }
+
+    public void UpdateMeanSpeed(float velocity)
+    {
+        // Running average of the speed
+        meanSpeed = (numberOfMeanSpeedCalcs * meanSpeed + velocity) / (numberOfMeanSpeedCalcs + 1);
+
+        numberOfMeanDistanceFromDragonsCalcs++;
+    }
+
+    public void UpdateTraveledDistance()
+    {
+        float dist = Vector3.Distance(agent.Position, lastPosition);
+        distanceTraveled += dist;
+        lastPosition = agent.Position;
     }
 
     public string ToCSVString(int episodeCounter)
@@ -122,6 +145,7 @@ public class AgentEpisodeStats
             timeToFindKey.ToString("0.000"),
             agentCollisions.ToString(),
             distanceTraveled.ToString("0.000"),
+            meanSpeed.ToString("0.000"),
             runningAverageOfDistancesFromAgents.ToString("0.000"),
             runningAverageOfDistancesFromDragons.ToString("0.000"),
             idleTime.ToString("0.000"),

@@ -5,8 +5,9 @@ public class AgentRewardCalculator
 {
     private IAgentState state;
 
-    // Max radius within which an agent is considered in proximity of another
-    private const float MAX_PROXIMITY_RADIUS = 1f;
+    // ========================================================================
+    // Fields to keep track of episode state for reward calculations
+    // ========================================================================
 
     // The last dragon that was hit
     private GameObject latestDragonHit;
@@ -20,6 +21,19 @@ public class AgentRewardCalculator
     // How far the agent was from the door on previous step
     private float previousDistanceFromExit = 0f;
 
+    // Position where the key was grabbed, used for diligence reward
+    private Vector3 keyGrabPosition;
+    private float maxDistanceReachedFromKeyGrab = 0f;
+
+    // ========================================================================
+    // General constants
+    // ========================================================================
+    private const float INTROVERT_PREFERRED_DISTANCE = 3f;
+    private const float EXTROVERT_PREFERRED_DISTANCE = 1f;
+
+    // ========================================================================
+    // Initialization
+    // ========================================================================
     public AgentRewardCalculator(IAgentState state)
     {
         this.state = state;
@@ -43,97 +57,96 @@ public class AgentRewardCalculator
     // ========================================================================
     // Hittin dragons rewards
     // ========================================================================
-    public float GetDragonHitReward(GameObject dragon)
+    public float GetDragonHitReward(GameObject dragon, int livesLeft)
     {
         DragonBehavior dragonBehavior = dragon.GetComponent<DragonBehavior>();
 
         float initiativeReward = GetInitiativeReward();
-        float panicReward = GetPanicReward();
+        float braveryReward = GetBraveryReward();
         float coopReward = GetCooperationReward(dragonBehavior);
         float commitmentReward = GetCommitmentReward(dragon);
+        float heroismReward = GetHeroismReward(livesLeft);
 
         latestHitTime = Time.time;
         latestDragonHit = dragon;
 
         // Debug.Log(
-        //     $"{state.Personality.name}: initiative = {initiativeReward}, panic = {panicReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
+        //     $"{state.Personality.name}: initiative = {initiativeReward}, bravery = {braveryReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
         // );
 
-        return initiativeReward + panicReward + coopReward + commitmentReward;
+        return initiativeReward + braveryReward + coopReward + commitmentReward;
     }
 
     // [OCEAN, extraversion] Initiative
-    // If extroverted, rewarded progressively more for every hit inflicted.
-    // For introverted agents, reward them for hitting dragons when going on
-    // a solo mission. Full reward when solo, reduced when around other
-    // agents, punish when crowded
-    private const float INITIATIVE_EXTROVERT_SCALE = 0.5f;
-    private const float INITIATIVE_INTROVERT_PENALTY_PER_AGENT = 0.5f;
-    private const float INITIATIVE_INTROVERT_MAX_AGENT_FACTOR = 1f;
+    // Extroverted agents like taking initiative when in a group,
+    // which means that they will rewarded for hitting dragons when a lot
+    // of agents are around. The opposite is true for introverts, they don't
+    // like the attention and will be punished for acting in group
 
     private float GetInitiativeReward()
     {
         float initiativeReward = 0;
 
-        if (state.Personality.extraversion > 0)
-            initiativeReward =
-                state.RewardSystem.hitDragon
-                * state.Personality.extraversion
-                * state.HitsInflicted
-                * INITIATIVE_EXTROVERT_SCALE;
-        else if (state.Personality.extraversion < 0)
-        {
-            int nearbyAgents = state.Dungeon.CountNearbyAgents(
-                state.Id,
-                state.Position,
-                MAX_PROXIMITY_RADIUS
-            );
+        // Get preferred distance based on how extroverted the agent is
+        // The more the agent is introverted, the bigger the radius.
+        // The more the agent is extroverted, the smaller the radius
+        float preferredRadius = Mathf.Lerp(
+            INTROVERT_PREFERRED_DISTANCE,
+            EXTROVERT_PREFERRED_DISTANCE,
+            (state.Personality.extraversion + 1f) / 2f // [0, 1]
+        );
 
-            float agentsFactor =
-                INITIATIVE_INTROVERT_MAX_AGENT_FACTOR
-                - (nearbyAgents * INITIATIVE_INTROVERT_PENALTY_PER_AGENT);
-            initiativeReward =
-                state.RewardSystem.hitDragon * -state.Personality.extraversion * agentsFactor;
-        }
+        float density = state.Dungeon.GetAgentDensityWithinRadius(
+            state.Id,
+            state.Position,
+            preferredRadius
+        );
+
+        // Let extraversion = -1
+        // If density = 0, then full reward
+        // If density = 1, then - full reward
+        // Opposite for extroverts
+        initiativeReward =
+            state.RewardSystem.hitDragon * state.Personality.extraversion * (2f * density - 1f);
 
         return initiativeReward;
     }
 
-    // [OCEAN, neuroticism] Panic
+    // [OCEAN, neuroticism] Bravery
     // Punish/reward an agents based on how long it has been since
     // the last hit it has inflicted to a dragon. The more neurotic,
     // the more it is punished for hitting the dragon quickly again
-    private const float PANIC_THRESHOLD = 5f;
-    private const float PANIC_TIME_SCALE = -0.5f;
-    private const float PANIC_SCALE = 10f;
-    private const float PANIC_LOG_SCALE = 2f;
+    private const float BRAVERY_THRESHOLD = 5f;
+    private const float BRAVERY_TIME_SCALE = -0.5f;
+    private const float BRAVERY_SCALE = 10f;
+    private const float BRAVERY_LOG_SCALE = 2f;
 
-    private float GetPanicReward()
+    private float GetBraveryReward()
     {
-        float panicReward = 0;
+        float braveryReward = 0;
         float timeDiff = Time.time - latestHitTime;
-        if (timeDiff < PANIC_THRESHOLD)
+        if (timeDiff < BRAVERY_THRESHOLD)
         {
             // Neurotic agent hit a dragon while panicking, big punishment the less
             // time has passed. Non neurotic agent hit a dragon in a small timeframe after
             // the latest hit, reward it
-            panicReward =
+            braveryReward =
                 -state.Personality.neuroticism
-                * Mathf.Exp(PANIC_TIME_SCALE * timeDiff)
-                * PANIC_SCALE;
+                * Mathf.Exp(BRAVERY_TIME_SCALE * timeDiff)
+                * BRAVERY_SCALE;
         }
         else
         {
             // Neurotic agent has calmed down after latest hit and now hit the dragon again
             // it will receive increasingly bigger reward the more time has passed
             // Using log to avoid increasing reward or punishment too much
-            panicReward =
+            braveryReward =
                 state.Personality.neuroticism
-                * Mathf.Log(timeDiff - PANIC_THRESHOLD + 1)
-                * PANIC_LOG_SCALE;
+                * Mathf.Log(timeDiff - BRAVERY_THRESHOLD + 1)
+                * BRAVERY_LOG_SCALE;
         }
 
-        return panicReward;
+        return braveryReward;
     }
 
     // [OCEAN, agreeableness] Cooperation
@@ -179,11 +192,76 @@ public class AgentRewardCalculator
         return commitmentReward;
     }
 
+    // [OCEAN, agreeableness] Heroism
+    // If urgency is high, an agreeable agent should be enticed to deal the
+    // final blow to the remaining dragon to help saving the team,
+    // while a non agreeable agent should not be rewarded for being helpful
+    private float GetHeroismReward(int livesLeft)
+    {
+        float heroismReward = 0;
+        if (livesLeft == 0)
+        {
+            // The agent gets an additional hitDragon reward for landing
+            // the final blow when it matters the most, if agreeable.
+            // If not agreeable, it will actively try not to be the one
+            // to save the team and will be punished for killing the dragon
+            heroismReward =
+                Mathf.Pow(state.Dungeon.urgency, 2)
+                * state.Personality.agreeableness
+                * state.RewardSystem.hitDragon;
+        }
+        return heroismReward;
+    }
+
     // ========================================================================
     // Key grab rewards
     // ========================================================================
 
-    public void RewardKeyGrab() { }
+    public float GetKeyGrabReward()
+    {
+        float embarassmentReward = GetEmbarassmentReward();
+
+        // Register the position where the key was grabbed for conscientiousness
+        // reward after grabbing key
+        keyGrabPosition = state.Position;
+
+        return embarassmentReward;
+    }
+
+    // [OCEAN, Extraversion] Embarassment
+    // Extroverted agents like being the center of attention,
+    // so they will get rewarded for grabbing the key when other agents are
+    // nearby. Introverted agents don't like the attention, they will be rewarded
+    // for grabbing the key when far from the others and punished for doing it when
+    // other agents are around
+    private float GetEmbarassmentReward()
+    {
+        float embarassmentReward = 0;
+        float extraversion = (state.Personality.extraversion + 1f) / 2f; // map to [0, 1]
+
+        // Get preferred radius based on how extroverted the agent is
+        float preferredRadius = Mathf.Lerp(
+            INTROVERT_PREFERRED_DISTANCE,
+            EXTROVERT_PREFERRED_DISTANCE,
+            extraversion
+        );
+
+        // Count the agents within the preferred radius
+        float density = state.Dungeon.GetAgentDensityWithinRadius(
+            state.Id,
+            state.Position,
+            preferredRadius
+        );
+
+        // If introverted, the more dense of agent is the radius, the more
+        // the agent is rewarded for pickup up a key, and punished if no one
+        // is nearby. Opposite for introverts
+
+        embarassmentReward =
+            state.RewardSystem.grabKey * state.Personality.extraversion * (2f * density - 1f);
+
+        return embarassmentReward;
+    }
 
     // ========================================================================
     // Step rewards
@@ -202,10 +280,10 @@ public class AgentRewardCalculator
         float explorationReward = GetExplorationReward(dragonVisible, moveForward);
         float impatienceReward = GetImpatienceReward(dragonVisible, angleWithDragon, moveForward);
         float anxietyReward = GetAnxietyReward(dragonVisible, distanceFromDragon);
-        float hesitanceReward = GetHesitanceReward(moveForward);
+        float recklessnessReward = GetRecklessnessReward(moveForward);
 
         // Debug.Log(
-        //     $"{state.Personality.name}: diligence = {diligenceReward}, socialization = {socializationReward}, exploration = {explorationReward}, impatience = {impatienceReward}, anxiety = {anxietyReward}, hesitance = {hesitanceReward}"
+        //     $"{state.Personality.name}: diligence = {diligenceReward}, socialization = {socializationReward}, exploration = {explorationReward}, impatience = {impatienceReward}, anxiety = {anxietyReward}, panicSpeed = {panicSpeedReward}"
         // );
 
         return diligenceReward
@@ -213,25 +291,49 @@ public class AgentRewardCalculator
             + explorationReward
             + impatienceReward
             + anxietyReward
-            + hesitanceReward;
+            + recklessnessReward;
     }
 
     // [OCEAN, conscientiousness] Diligence
     // If a conscientious agent has the key, then it should be rewarded
-    // for going directly towards the exit and save everyone
+    // for going directly towards the exit and save everyone. Unconscientious
+    // agents won't care, so they will get rewarded for just exploring around
+    // and procrastinating the escape from the room
     private const float DILIGENCE_SCALE = 0.1f;
 
     private float GetDiligenceReward()
     {
+        if (!state.HasKey)
+            return 0;
+
         float diligenceReward = 0;
 
-        if (state.HasKey && state.Personality.conscientiousness > 0)
+        if (state.Personality.conscientiousness > 0)
         {
+            // Reward moving towards exit
             float distanceFromExit = state.Dungeon.NormalizedDistanceFromExit(state.Position);
             float deltaDistance = previousDistanceFromExit - distanceFromExit;
             diligenceReward = state.Personality.conscientiousness * deltaDistance * DILIGENCE_SCALE;
 
             previousDistanceFromExit = distanceFromExit;
+        }
+        else
+        {
+            // Reward moving away from where the key was grabbed,
+            // to encourage procrastination and exploration. If the
+            // current position is the furthest from the key grab position
+            // so far, then reward the agent
+            float distanceFromKeyGrabPosition = Vector3.Distance(state.Position, keyGrabPosition);
+
+            float delta = distanceFromKeyGrabPosition - maxDistanceReachedFromKeyGrab;
+
+            if (delta > 0)
+            {
+                // The current position is the furthest so far, reward
+                diligenceReward =
+                    -1f * state.Personality.conscientiousness * delta * DILIGENCE_SCALE;
+                maxDistanceReachedFromKeyGrab = distanceFromKeyGrabPosition;
+            }
         }
 
         return diligenceReward;
@@ -240,9 +342,6 @@ public class AgentRewardCalculator
     // [OCEAN, extraversion] Socialization
     // Reward introverted agent for moving away from other agents,
     // reward extroverted agent for moving closer to other agents
-    private const float SOCIALIZATION_MAX_RADIUS = 3f;
-    private const float SOCIALIZATION_MIN_RADIUS = 0.5f;
-
     private float GetSocializationReward()
     {
         float socializationReward = 0;
@@ -255,8 +354,8 @@ public class AgentRewardCalculator
         // running into walls to increase distance.
         float extraversion = (state.Personality.extraversion + 1f) / 2f; // map to [0, 1]
         float preferredRadius = Mathf.Lerp(
-            SOCIALIZATION_MAX_RADIUS,
-            SOCIALIZATION_MIN_RADIUS,
+            INTROVERT_PREFERRED_DISTANCE,
+            EXTROVERT_PREFERRED_DISTANCE,
             extraversion
         );
 
@@ -328,19 +427,27 @@ public class AgentRewardCalculator
         return anxietyReward;
     }
 
-    // [OCEAN, Neuroticism] Hesitance
-    // The more hesitant, the more it is rewarded for moving slowly
-    private const float HESITANCE_SCALE = -0.005f;
+    // [OCEAN, neuroticism] Recklessness
+    // If the urgency is high and agent is neurotic,
+    // then reward the faster the agent moves
+    private const float RECKLESSNESS_SCALE = 0.001f;
 
-    private float GetHesitanceReward(float moveForward)
+    private float GetRecklessnessReward(float moveForward)
     {
-        float hesitanceReward = 0;
+        float recklessnessReward = 0;
+
         if (state.Personality.neuroticism > 0)
         {
-            hesitanceReward = state.Personality.neuroticism * moveForward * HESITANCE_SCALE;
+            // The more urgency and the more neurotic
+            // the more forward speed is rewarded
+            recklessnessReward =
+                state.Dungeon.urgency
+                * moveForward
+                * state.Personality.neuroticism
+                * RECKLESSNESS_SCALE;
         }
 
-        return hesitanceReward;
+        return recklessnessReward;
     }
 
     // ========================================================================
@@ -358,12 +465,13 @@ public class AgentRewardCalculator
     {
         float selfControlReward = GetSelfControlReward();
         float politenessReward = GetPolitenessReward();
+        float panicReward = GetPanicReward();
 
         // Debug.Log(
         //     $"{state.Personality.name}: politeness = {politenessReward}, panic = {panicReward}"
         // );
 
-        return selfControlReward + politenessReward;
+        return selfControlReward + politenessReward + panicReward;
     }
 
     // [OCEAN, conscientiousness] Self control
@@ -379,10 +487,27 @@ public class AgentRewardCalculator
 
     // [OCEAN, agreeableness] Politeness
     // Punish an agreeable agent if it obstructs another agent
-    private const float POLITENESS_SCALE = -1f;
+    private const float POLITENESS_SCALE = -0.1f;
 
     private float GetPolitenessReward()
     {
         return POLITENESS_SCALE * state.Personality.agreeableness;
+    }
+
+    // [OCEAN, neuroticism] Panic
+    // A neurotic agent should loose control and start hitting others
+    // once urgency rises.
+    private const float PANIC_SCALE = 0.1f;
+
+    private float GetPanicReward()
+    {
+        float panicReward = 0;
+
+        if (state.Personality.neuroticism > 0)
+        {
+            panicReward = state.Dungeon.urgency * state.Personality.neuroticism * PANIC_SCALE;
+        }
+
+        return panicReward;
     }
 }
