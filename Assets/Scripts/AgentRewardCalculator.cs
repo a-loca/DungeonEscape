@@ -28,7 +28,7 @@ public class AgentRewardCalculator
     // ========================================================================
     // General constants
     // ========================================================================
-    private const float INTROVERT_PREFERRED_DISTANCE = 3f;
+    private const float INTROVERT_PREFERRED_DISTANCE = 4f;
     private const float EXTROVERT_PREFERRED_DISTANCE = 1f;
 
     // ========================================================================
@@ -74,7 +74,7 @@ public class AgentRewardCalculator
         //     $"{state.Personality.name}: initiative = {initiativeReward}, bravery = {braveryReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
         // );
 
-        return initiativeReward + braveryReward + coopReward + commitmentReward;
+        return initiativeReward + braveryReward + coopReward + commitmentReward + heroismReward;
     }
 
     // [OCEAN, extraversion] Initiative
@@ -181,7 +181,7 @@ public class AgentRewardCalculator
     // A conscientious agent should not be switching targets while hitting
     // dragons until it has been killed, while a non conscientious agent
     // should be easily distracted and not disciplined and constantly switch
-    private const float COMMITMENT_BASE_HIT_PERCENT = 0.2f;
+    private const float COMMITMENT_BASE_HIT_PERCENT = 1f;
 
     private float GetCommitmentReward(GameObject dragon)
     {
@@ -272,18 +272,23 @@ public class AgentRewardCalculator
             state.RaysHelper.CanSeeObjectWithTag("Dragon");
 
         // Debug.Log(
-        //     $"Testing: dragonVisible = {dragonVisible}, distanceFromDragon = {distanceFromDragon}, angleWithDragon = {angleWithDragon}"
+        //     $"{state.Personality.name}: dragonVisible = {dragonVisible}, distanceFromDragon = {distanceFromDragon}, angleWithDragon = {angleWithDragon}"
         // );
 
         float diligenceReward = GetDiligenceReward();
         float socializationReward = GetSocializationReward();
         float explorationReward = GetExplorationReward(dragonVisible, moveForward);
-        float impatienceReward = GetImpatienceReward(dragonVisible, angleWithDragon, moveForward);
+        float impatienceReward = GetImpatienceReward(
+            dragonVisible,
+            distanceFromDragon,
+            angleWithDragon,
+            moveForward
+        );
         float anxietyReward = GetAnxietyReward(dragonVisible, distanceFromDragon);
         float recklessnessReward = GetRecklessnessReward(moveForward);
 
         // Debug.Log(
-        //     $"{state.Personality.name}: diligence = {diligenceReward}, socialization = {socializationReward}, exploration = {explorationReward}, impatience = {impatienceReward}, anxiety = {anxietyReward}, panicSpeed = {panicSpeedReward}"
+        //     $"{state.Personality.name}: diligence = {diligenceReward}, socialization = {socializationReward}, exploration = {explorationReward}, impatience = {impatienceReward}, anxiety = {anxietyReward}, recklessness = {recklessnessReward}"
         // );
 
         return diligenceReward
@@ -342,6 +347,8 @@ public class AgentRewardCalculator
     // [OCEAN, extraversion] Socialization
     // Reward introverted agent for moving away from other agents,
     // reward extroverted agent for moving closer to other agents
+    private const float SOCIALIZATION_SCALE = 0.5f;
+
     private float GetSocializationReward()
     {
         float socializationReward = 0;
@@ -363,11 +370,12 @@ public class AgentRewardCalculator
         // punish otherwise
         float error = Mathf.Abs(distanceFromTeam - preferredRadius);
         float deltaError = previousError - error;
+
         // If moving towards preferred radius, delta error will be positive:
         // extrovert will be rewarded, introvert will be punished.
         // If moving away from team, delta error will be negative:
         // extrovert will be punished, introvert will be rewarded
-        socializationReward = state.Personality.extraversion * deltaError;
+        socializationReward = deltaError * SOCIALIZATION_SCALE;
 
         previousError = error;
 
@@ -391,19 +399,37 @@ public class AgentRewardCalculator
     }
 
     // [OCEAN, Conscientiousness] Impatience
-    // If low conscientiousness, rewarded for running towards the dragon when visible
-    // directly once it is in view, otherwise punished for it to encourage patience
+    // If low conscientiousness, agent should be enticed to approach the dragon
+    // even if the dragon is far away, while the conscientious agent should
+    // be more disciplined and consider whether there are closer dragons,
+    // meaning is it rewarded for engaging at lower distances
     private const float IMPATIENCE_SCALE = -0.02f;
+    private const float LOCK_ONTO_ENEMY_DISTANCE = 3f;
 
-    private float GetImpatienceReward(bool dragonVisible, float angleWithDragon, float moveForward)
+    private float GetImpatienceReward(
+        bool dragonVisible,
+        float distanceFromDragon,
+        float angleWithDragon,
+        float moveForward
+    )
     {
         float impatienceReward = 0;
 
         if (dragonVisible)
         {
-            float cosine = Mathf.Cos(angleWithDragon * Mathf.Deg2Rad);
-            impatienceReward =
-                IMPATIENCE_SCALE * state.Personality.conscientiousness * moveForward * cosine;
+            float cos = Mathf.Cos(angleWithDragon * Mathf.Deg2Rad);
+
+            // Forward movement towards the dragon
+            float forwardTowardDragon = Mathf.Max(0f, moveForward * cos);
+
+            // Punish conscientious agent for moving towars dragon when
+            // it is still far away, reward non conscientious agent
+            // for doing it.
+            if (distanceFromDragon > LOCK_ONTO_ENEMY_DISTANCE)
+            {
+                impatienceReward =
+                    -state.Personality.conscientiousness * forwardTowardDragon * IMPATIENCE_SCALE;
+            }
         }
 
         return impatienceReward;
@@ -478,7 +504,7 @@ public class AgentRewardCalculator
     // A conscientious agent should be punished for hitting
     // other agents, otherwise a low conscientiousness agent
     // should be prone to panic and hit others
-    private const float SELF_CONTROL_SCALE = -0.1f;
+    private const float SELF_CONTROL_SCALE = -0.01f;
 
     private float GetSelfControlReward()
     {
@@ -487,7 +513,7 @@ public class AgentRewardCalculator
 
     // [OCEAN, agreeableness] Politeness
     // Punish an agreeable agent if it obstructs another agent
-    private const float POLITENESS_SCALE = -0.1f;
+    private const float POLITENESS_SCALE = -0.01f;
 
     private float GetPolitenessReward()
     {
@@ -495,7 +521,7 @@ public class AgentRewardCalculator
     }
 
     // [OCEAN, neuroticism] Panic
-    // A neurotic agent should loose control and start hitting others
+    // A neurotic agent should lose control and start hitting others
     // once urgency rises.
     private const float PANIC_SCALE = 0.1f;
 

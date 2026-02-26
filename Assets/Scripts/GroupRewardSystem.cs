@@ -11,6 +11,7 @@ public class GroupRewardSystem : ScriptableObject
     [Header("Episode Outcome")]
     public float dragonsEscape = -15f;
     public float escape = 10f;
+    public float grabKey = 3f;
 
     [Header("Combat")]
     public float killDragon = 5f;

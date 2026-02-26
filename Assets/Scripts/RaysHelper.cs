@@ -43,11 +43,10 @@ public class RaysHelper : MonoBehaviour
                     closestDistance = hitDistance;
 
                     // Calc angle between agent and dragon
-                    var rayDirectionNormalized = rayDirection.normalized;
-                    var forward = transform.forward;
-                    angle = Vector3.SignedAngle(forward, rayDirectionNormalized, Vector3.up);
-                }
+                    Vector3 toDragon = (goHit.transform.position - transform.position).normalized;
 
+                    angle = Vector3.SignedAngle(transform.forward, toDragon, Vector3.up);
+                }
             }
         }
 

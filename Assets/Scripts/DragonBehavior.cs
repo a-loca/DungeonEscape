@@ -46,11 +46,13 @@ public class DragonBehavior : MonoBehaviour
     public int TakeAHit(int agentID)
     {
         whoHitMe.Add(agentID);
+        
         // Take damage
         lives--;
 
         // Flash red to indicate the damage taken
-        Flash();
+        // Flash();
+        
         //Debug.Log($"Dragon took a hit! {lives} lives left.");
 
         // Check if the dragon has been slain

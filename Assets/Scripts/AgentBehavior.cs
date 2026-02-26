@@ -113,7 +113,7 @@ public class AgentBehavior : Agent, IAgentState
 
             case "Key":
                 // Destroy the key
-                Dungeon.DestroyKey();
+                Dungeon.KeyWasGrabbed();
 
                 // Debug.Log("Knight picked up the key!");
 

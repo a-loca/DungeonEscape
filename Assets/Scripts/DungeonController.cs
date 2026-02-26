@@ -347,10 +347,14 @@ public class DungeonController : MonoBehaviour
         this.key = key;
     }
 
-    public void DestroyKey()
+    public void KeyWasGrabbed()
     {
+        // Destroy the game object of the key in the environment
         Destroy(key);
+        
         keyGrabbedByAgent = true;
+
+        agentGroup.AddGroupReward(groupRewardSystem.grabKey);
     }
 
     // ========================================================================

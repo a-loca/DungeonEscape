@@ -1,0 +1,239 @@
+{
+    "ConscientiousBehavior": {
+        "checkpoints": [
+            {
+                "steps": 8499938,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-8499938.onnx",
+                "reward": -1.3589915855504249,
+                "creation_time": 1772043167.0479443,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-8499938.pt"
+                ]
+            },
+            {
+                "steps": 8999962,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-8999962.onnx",
+                "reward": -1.2996919836629839,
+                "creation_time": 1772044112.4781568,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-8999962.pt"
+                ]
+            },
+            {
+                "steps": 9499966,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-9499966.onnx",
+                "reward": -1.1317416341044009,
+                "creation_time": 1772045056.2049074,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-9499966.pt"
+                ]
+            },
+            {
+                "steps": 9999982,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-9999982.onnx",
+                "reward": -0.9613048060458492,
+                "creation_time": 1772046001.4147532,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-9999982.pt"
+                ]
+            },
+            {
+                "steps": 10000046,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-10000046.onnx",
+                "reward": -0.9613048060458492,
+                "creation_time": 1772046001.6254833,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-10000046.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000046,
+            "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior.onnx",
+            "reward": -0.9613048060458492,
+            "creation_time": 1772046001.6254833,
+            "auxillary_file_paths": [
+                "Assets/Training/Extr_Consc_Neuro_Agree/ConscientiousBehavior/ConscientiousBehavior-10000046.pt"
+            ]
+        }
+    },
+    "NeuroticBehavior": {
+        "checkpoints": [
+            {
+                "steps": 8499938,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-8499938.onnx",
+                "reward": -1.5138502572713743,
+                "creation_time": 1772043167.102222,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-8499938.pt"
+                ]
+            },
+            {
+                "steps": 8999962,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-8999962.onnx",
+                "reward": -1.532304811894017,
+                "creation_time": 1772044112.538814,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-8999962.pt"
+                ]
+            },
+            {
+                "steps": 9499966,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-9499966.onnx",
+                "reward": 0.17539091625561318,
+                "creation_time": 1772045056.2601564,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-9499966.pt"
+                ]
+            },
+            {
+                "steps": 9999982,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-9999982.onnx",
+                "reward": -0.9618532318113879,
+                "creation_time": 1772046001.4695275,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-9999982.pt"
+                ]
+            },
+            {
+                "steps": 10000046,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-10000046.onnx",
+                "reward": -0.9618532318113879,
+                "creation_time": 1772046001.668468,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-10000046.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000046,
+            "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior.onnx",
+            "reward": -0.9618532318113879,
+            "creation_time": 1772046001.668468,
+            "auxillary_file_paths": [
+                "Assets/Training/Extr_Consc_Neuro_Agree/NeuroticBehavior/NeuroticBehavior-10000046.pt"
+            ]
+        }
+    },
+    "ExtrovertBehavior": {
+        "checkpoints": [
+            {
+                "steps": 8499938,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-8499938.onnx",
+                "reward": -0.3132275537304256,
+                "creation_time": 1772043167.156025,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-8499938.pt"
+                ]
+            },
+            {
+                "steps": 8999962,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-8999962.onnx",
+                "reward": -0.4667641502969405,
+                "creation_time": 1772044112.597864,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-8999962.pt"
+                ]
+            },
+            {
+                "steps": 9499966,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-9499966.onnx",
+                "reward": -0.471752492710948,
+                "creation_time": 1772045056.3156443,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-9499966.pt"
+                ]
+            },
+            {
+                "steps": 9999982,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-9999982.onnx",
+                "reward": -0.3562393269755624,
+                "creation_time": 1772046001.5226624,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-9999982.pt"
+                ]
+            },
+            {
+                "steps": 10000046,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-10000046.onnx",
+                "reward": -0.3562393269755624,
+                "creation_time": 1772046001.7108343,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-10000046.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000046,
+            "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior.onnx",
+            "reward": -0.3562393269755624,
+            "creation_time": 1772046001.7108343,
+            "auxillary_file_paths": [
+                "Assets/Training/Extr_Consc_Neuro_Agree/ExtrovertBehavior/ExtrovertBehavior-10000046.pt"
+            ]
+        }
+    },
+    "AgreeableBehavior": {
+        "checkpoints": [
+            {
+                "steps": 8499938,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-8499938.onnx",
+                "reward": 1.166710264980793,
+                "creation_time": 1772043167.2109885,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-8499938.pt"
+                ]
+            },
+            {
+                "steps": 8999962,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-8999962.onnx",
+                "reward": 2.855006769299507,
+                "creation_time": 1772044112.657878,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-8999962.pt"
+                ]
+            },
+            {
+                "steps": 9499966,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-9499966.onnx",
+                "reward": 2.129269932086269,
+                "creation_time": 1772045056.3698978,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-9499966.pt"
+                ]
+            },
+            {
+                "steps": 9999982,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-9999982.onnx",
+                "reward": 1.759494486688213,
+                "creation_time": 1772046001.5769372,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-9999982.pt"
+                ]
+            },
+            {
+                "steps": 10000046,
+                "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-10000046.onnx",
+                "reward": 1.759494486688213,
+                "creation_time": 1772046001.7540436,
+                "auxillary_file_paths": [
+                    "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-10000046.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000046,
+            "file_path": "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior.onnx",
+            "reward": 1.759494486688213,
+            "creation_time": 1772046001.7540436,
+            "auxillary_file_paths": [
+                "Assets/Training/Extr_Consc_Neuro_Agree/AgreeableBehavior/AgreeableBehavior-10000046.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}
