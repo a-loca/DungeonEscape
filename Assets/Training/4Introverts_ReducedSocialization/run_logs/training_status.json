@@ -1,0 +1,65 @@
+{
+    "IntrovertBehavior": {
+        "checkpoints": [
+            {
+                "steps": 8499980,
+                "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-8499980.onnx",
+                "reward": -0.9378500843460922,
+                "creation_time": 1772277832.0920792,
+                "auxillary_file_paths": [
+                    "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-8499980.pt"
+                ]
+            },
+            {
+                "steps": 8999984,
+                "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-8999984.onnx",
+                "reward": 0.5357338577945484,
+                "creation_time": 1772278059.0468695,
+                "auxillary_file_paths": [
+                    "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-8999984.pt"
+                ]
+            },
+            {
+                "steps": 9499940,
+                "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-9499940.onnx",
+                "reward": -12.538555830833502,
+                "creation_time": 1772278287.433781,
+                "auxillary_file_paths": [
+                    "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-9499940.pt"
+                ]
+            },
+            {
+                "steps": 9999940,
+                "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-9999940.onnx",
+                "reward": -0.24603072030004114,
+                "creation_time": 1772278514.998403,
+                "auxillary_file_paths": [
+                    "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-9999940.pt"
+                ]
+            },
+            {
+                "steps": 10000196,
+                "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-10000196.onnx",
+                "reward": -0.24603072030004114,
+                "creation_time": 1772278515.071003,
+                "auxillary_file_paths": [
+                    "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-10000196.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000196,
+            "file_path": "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior.onnx",
+            "reward": -0.24603072030004114,
+            "creation_time": 1772278515.071003,
+            "auxillary_file_paths": [
+                "Assets/Training/4Introverts_ReducedSocialization/IntrovertBehavior/IntrovertBehavior-10000196.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.8.0+cu128"
+    }
+}

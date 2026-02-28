@@ -100,18 +100,18 @@ MonoBehaviour:
   groupRewardSystem: {fileID: 11400000, guid: f3237ebf172c4ef0ebdd466d5c896db7, type: 2}
   inference: 1
   personalitySettings:
-  - personality: {fileID: 11400000, guid: e3d0483c418d32e6ba34fa09e3f0a6b3, type: 2}
-    behaviorName: IntrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: 66cce213443d5556bb4cd7e31fe36a2a, type: 3}
-  - personality: {fileID: 11400000, guid: e3d0483c418d32e6ba34fa09e3f0a6b3, type: 2}
-    behaviorName: IntrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: 66cce213443d5556bb4cd7e31fe36a2a, type: 3}
-  - personality: {fileID: 11400000, guid: e3d0483c418d32e6ba34fa09e3f0a6b3, type: 2}
-    behaviorName: IntrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: 66cce213443d5556bb4cd7e31fe36a2a, type: 3}
-  - personality: {fileID: 11400000, guid: e3d0483c418d32e6ba34fa09e3f0a6b3, type: 2}
-    behaviorName: IntrovertBehavior
-    inferenceModel: {fileID: 5022602860645237092, guid: 66cce213443d5556bb4cd7e31fe36a2a, type: 3}
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+    inferenceModel: {fileID: 5022602860645237092, guid: 7d2f15f8bdd54635f9069a0bb894097d, type: 3}
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+    inferenceModel: {fileID: 5022602860645237092, guid: 7d2f15f8bdd54635f9069a0bb894097d, type: 3}
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+    inferenceModel: {fileID: 5022602860645237092, guid: 7d2f15f8bdd54635f9069a0bb894097d, type: 3}
+  - personality: {fileID: 11400000, guid: 5934542fee0c3ff36a09f13a28ea37d3, type: 2}
+    behaviorName: ExtrovertBehavior
+    inferenceModel: {fileID: 5022602860645237092, guid: 7d2f15f8bdd54635f9069a0bb894097d, type: 3}
   maxDistance: 0
   dragons: []
   agents: []
