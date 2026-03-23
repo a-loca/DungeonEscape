@@ -6,18 +6,36 @@ using UnityEngine.AI;
 
 public class DragonBehavior : MonoBehaviour
 {
-    public event Action onDragonEscapeEvent;
-    public event Action onDragonSlainEvent;
+    // ========================================================================
+    // Inspector fields
+    // ========================================================================
+    public int maxLives = 3;
+
+    // ========================================================================
+    // Private fields
+    // ========================================================================
     private NavMeshAgent meshAgent;
     private GameObject cave;
     private Renderer dragonRenderer;
     private Color originalColor;
-    public int maxLives = 3;
-    private int lives;
 
+    // ========================================================================
+    // Events
+    // ========================================================================
+    public event Action onDragonEscapeEvent;
+    public event Action onDragonSlainEvent;
+
+    // ========================================================================
+    // State information
+    // ========================================================================
     [HideInInspector]
     public HashSet<int> whoHitMe = new HashSet<int>();
 
+    private int lives;
+
+    // ========================================================================
+    // Initialization
+    // ========================================================================
     void Awake()
     {
         // Get the dragon's color to allow flashing
@@ -33,6 +51,9 @@ public class DragonBehavior : MonoBehaviour
         this.cave = cave;
     }
 
+    // ========================================================================
+    // Collision and Damage handling
+    // ========================================================================
     void OnCollisionEnter(Collision collision)
     {
         // When the dragon reaches its destination the episode should end
@@ -98,6 +119,9 @@ public class DragonBehavior : MonoBehaviour
         StartWalking();
     }
 
+    // ========================================================================
+    // Navmesh functionality
+    // ========================================================================
     public void StartWalking()
     {
         meshAgent.enabled = true;
@@ -125,6 +149,9 @@ public class DragonBehavior : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    // ========================================================================
+    // Visual effects
+    // =======================================================================
     private void Flash()
     {
         StopAllCoroutines();

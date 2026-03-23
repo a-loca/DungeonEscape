@@ -29,7 +29,7 @@ public class AgentRewardCalculator
     // General constants
     // ========================================================================
     private const float INTROVERT_PREFERRED_DISTANCE = 4f;
-    private const float EXTROVERT_PREFERRED_DISTANCE = 1f;
+    private const float EXTROVERT_PREFERRED_DISTANCE = 2f;
 
     // ========================================================================
     // Initialization
@@ -61,7 +61,7 @@ public class AgentRewardCalculator
     {
         DragonBehavior dragonBehavior = dragon.GetComponent<DragonBehavior>();
 
-        float initiativeReward = GetInitiativeReward();
+        float boldnessReward = GetBoldnessReward();
         float braveryReward = GetBraveryReward();
         float coopReward = GetCooperationReward(dragonBehavior);
         float commitmentReward = GetCommitmentReward(dragon);
@@ -71,21 +71,21 @@ public class AgentRewardCalculator
         latestDragonHit = dragon;
 
         // Debug.Log(
-        //     $"{state.Personality.name}: initiative = {initiativeReward}, bravery = {braveryReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
+        //     $"{state.Personality.name}: social boldness = {boldnessReward}, bravery = {braveryReward}, cooperation = {coopReward}, commitment = {commitmentReward}"
         // );
 
-        return initiativeReward + braveryReward + coopReward + commitmentReward + heroismReward;
+        return boldnessReward + braveryReward + coopReward + commitmentReward + heroismReward;
     }
 
-    // [OCEAN, extraversion] Initiative
-    // Extroverted agents like taking initiative when in a group,
+    // [OCEAN, extraversion] Social boldness
+    // Extroverted agents like acting when in a group,
     // which means that they will rewarded for hitting dragons when a lot
     // of agents are around. The opposite is true for introverts, they don't
     // like the attention and will be punished for acting in group
 
-    private float GetInitiativeReward()
+    private float GetBoldnessReward()
     {
-        float initiativeReward = 0;
+        float boldnessReward = 0;
 
         // Get preferred distance based on how extroverted the agent is
         // The more the agent is introverted, the bigger the radius.
@@ -106,10 +106,10 @@ public class AgentRewardCalculator
         // If density = 0, then full reward
         // If density = 1, then - full reward
         // Opposite for extroverts
-        initiativeReward =
+        boldnessReward =
             state.RewardSystem.hitDragon * state.Personality.extraversion * (2f * density - 1f);
 
-        return initiativeReward;
+        return boldnessReward;
     }
 
     // [OCEAN, neuroticism] Bravery
@@ -123,11 +123,11 @@ public class AgentRewardCalculator
 
     private float GetBraveryReward()
     {
-        float braveryReward = 0;
+        float braveryReward;
         float timeDiff = Time.time - latestHitTime;
         if (timeDiff < BRAVERY_THRESHOLD)
         {
-            // Neurotic agent hit a dragon while panicking, big punishment the less
+            // Neurotic agent hit a dragon while panicking, bigger punishment the less
             // time has passed. Non neurotic agent hit a dragon in a small timeframe after
             // the latest hit, reward it
             braveryReward =
@@ -484,6 +484,11 @@ public class AgentRewardCalculator
         return state.RewardSystem.hitWall;
     }
 
+    public float GetClosedDoorHitReward()
+    {
+        return state.RewardSystem.hitClosedDoor;
+    }
+
     // ========================================================================
     // Hitting agents rewards
     // ========================================================================
@@ -522,17 +527,15 @@ public class AgentRewardCalculator
 
     // [OCEAN, neuroticism] Panic
     // A neurotic agent should lose control and start hitting others
-    // once urgency rises.
+    // once urgency rises. A non neurotic agent should lock in and 
+    // avoid annoying other agents since it's time to act quickly
     private const float PANIC_SCALE = 0.1f;
 
     private float GetPanicReward()
     {
         float panicReward = 0;
 
-        if (state.Personality.neuroticism > 0)
-        {
-            panicReward = state.Dungeon.urgency * state.Personality.neuroticism * PANIC_SCALE;
-        }
+        panicReward = state.Dungeon.urgency * state.Personality.neuroticism * PANIC_SCALE;
 
         return panicReward;
     }

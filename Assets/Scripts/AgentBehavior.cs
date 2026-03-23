@@ -162,7 +162,7 @@ public class AgentBehavior : Agent, IAgentState
 
     public void HitClosedDoor()
     {
-        AddReward(rewardSystem.hitClosedDoor);
+        AddReward(rewardCalculator.GetClosedDoorHitReward());
     }
 
     // ========================================================================
